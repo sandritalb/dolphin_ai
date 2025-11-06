@@ -1,7 +1,23 @@
-[gd_scene load_steps=4 format=3 uid="uid://crx1f60ttgfq0"]
+[gd_scene load_steps=6 format=3 uid="uid://crx1f60ttgfq0"]
 
 [ext_resource type="Script" uid="uid://dpjje5l7f1rid" path="res://scripts/Dolphin.gd" id="1_vfbjk"]
 [ext_resource type="Texture2D" uid="uid://cvoxeclkgpmq3" path="res://assets/dolphin.png" id="2_5wnvp"]
+
+[sub_resource type="Shader" id="Shader_transparent"]
+code = "shader_type canvas_item;
+
+void fragment() {
+	vec4 color = texture(TEXTURE, UV);
+	// Make green #64c973 transparent
+	vec3 target_green = vec3(0.392, 0.788, 0.451); // #64c973
+	if (distance(color.rgb, target_green) < 0.1) {
+		color.a = 0.0;
+	}
+	COLOR = color;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_transparent"]
+shader = SubResource("Shader_transparent")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5wnvp"]
 size = Vector2(144, 42)
@@ -10,7 +26,12 @@ size = Vector2(144, 42)
 script = ExtResource("1_vfbjk")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_transparent")
 texture = ExtResource("2_5wnvp")
+hframes = 2
+vframes = 3
+region_enabled = true
+region_rect = Rect2(48, 72, 928, 864)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-3, -5)

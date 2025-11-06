@@ -3,12 +3,22 @@ extends CharacterBody2D
 @export var gravity: float = 600.0
 @export var jump_force: float = -350.0
 @export var auto_play: bool = false
+@export var animation_speed: float = 0.15
 
 var velocity_y = 0.0
 var memory = []
 var is_jumping = false
+var animation_timer: float = 0.0
+var current_frame: int = 0
 
 func _physics_process(delta):
+    # Update animation
+    animation_timer += delta
+    if animation_timer >= animation_speed:
+        animation_timer = 0.0
+        current_frame = (current_frame + 1) % 6
+        $Sprite2D.frame = current_frame
+    
     # Aplicar gravedad
     velocity_y += gravity * delta
     
