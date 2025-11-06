@@ -1,17 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://b3dooy1wuw7mn"]
+[gd_scene load_steps=3 format=3 uid="uid://b3dooy1wuw7mn"]
 
 [ext_resource type="Script" uid="uid://cm4ej4x6mmaf2" path="res://scripts/Wave.gd" id="1_wdk0v"]
-[ext_resource type="Texture2D" uid="uid://dwhbgyekuw6cp" path="res://assets/wave.jpg" id="2_xhl1w"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_xhl1w"]
-size = Vector2(1165, 521)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wave"]
+size = Vector2(80, 100)
 
 [node name="Wave" type="Area2D"]
 script = ExtResource("1_wdk0v")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_xhl1w")
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(17, 140)
-shape = SubResource("RectangleShape2D_xhl1w")
+shape = SubResource("RectangleShape2D_wave")
+
+[node name="VisualWave" type="Polygon2D" parent="."]
+color = Color(0.1, 0.3, 0.6, 0.8)
