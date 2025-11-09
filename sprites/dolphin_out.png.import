@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://jr5u4iwuna2m"
-path="res://.godot/imported/ship.png-0b2a8e7064d2d88a0149f9491a8ea676.ctex"
+uid="uid://degy36s5xlgv4"
+path="res://.godot/imported/dolphin_out.png-392a4e60fae51816311792c0f053f917.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ship.png"
-dest_files=["res://.godot/imported/ship.png-0b2a8e7064d2d88a0149f9491a8ea676.ctex"]
+source_file="res://sprites/dolphin_out.png"
+dest_files=["res://.godot/imported/dolphin_out.png-392a4e60fae51816311792c0f053f917.ctex"]
 
 [params]
 

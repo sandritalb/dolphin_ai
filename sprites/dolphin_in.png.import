@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c8ankq3luw7mo"
-path="res://.godot/imported/shark1.png-af7cb1fcb8c20025d9bc6028f7980353.ctex"
+uid="uid://cw1woppy0s7d6"
+path="res://.godot/imported/dolphin_in.png-89e8c3c9605d1258781afdf12fc08de5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/shark1.png"
-dest_files=["res://.godot/imported/shark1.png-af7cb1fcb8c20025d9bc6028f7980353.ctex"]
+source_file="res://sprites/dolphin_in.png"
+dest_files=["res://.godot/imported/dolphin_in.png-89e8c3c9605d1258781afdf12fc08de5.ctex"]
 
 [params]
 
