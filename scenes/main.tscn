@@ -9,7 +9,7 @@
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("target_a", "target_b")]
 script = ExtResource("1_jyhfs")
-target_a = NodePath("../Dolphin1")
+target_a = NodePath("../DolphinPlayer")
 target_b = NodePath("")
 
 [node name="BorderContainer" type="Node" parent="."]
@@ -26,4 +26,8 @@ scale = Vector2(50, 0.5)
 position = Vector2(2.9999747, 62.499992)
 scale = Vector2(1.5343914, 0.8363273)
 
-[node name="Dolphin1" parent="." instance=ExtResource("1_0wfyh")]
+[node name="DolphinAI" parent="." instance=ExtResource("1_0wfyh")]
+controller_type = 1
+
+[node name="DolphinPlayer" parent="." instance=ExtResource("1_0wfyh")]
+position = Vector2(291, 120)
