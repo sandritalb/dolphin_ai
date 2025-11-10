@@ -1,16 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://crvd34oyxlqvf"]
+[gd_scene load_steps=6 format=3 uid="uid://crvd34oyxlqvf"]
 
-[ext_resource type="PackedScene" uid="uid://ctx3a85l4ts2r" path="res://scenes/Dolphin.tscn" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://36mglcqoomaa" path="res://scripts/camera.gd" id="1_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://bh2rvmu3i3oo3" path="res://scenes/Water.tscn" id="2_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://k1dy8g8njeco" path="res://scenes/Border.tscn" id="2_sugp2"]
+[ext_resource type="PackedScene" uid="uid://ctx3a85l4ts3r" path="res://scenes/DolphinAI.tscn" id="4_tbgi4"]
+[ext_resource type="PackedScene" uid="uid://ctx3a85l4ts2r" path="res://scenes/DolphinPlayer.tscn" id="5_tefeu"]
 
 [node name="Main" type="Node2D"]
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("target_a", "target_b")]
 script = ExtResource("1_jyhfs")
-target_a = NodePath("../DolphinPlayer")
-target_b = NodePath("")
+target_a = NodePath("../Dolphin")
+target_b = NodePath("../DolphinAI")
 
 [node name="BorderContainer" type="Node" parent="."]
 
@@ -26,8 +27,7 @@ scale = Vector2(50, 0.5)
 position = Vector2(2.9999747, 62.499992)
 scale = Vector2(1.5343914, 0.8363273)
 
-[node name="DolphinAI" parent="." instance=ExtResource("1_0wfyh")]
-controller_type = 1
+[node name="DolphinAI" parent="." instance=ExtResource("4_tbgi4")]
 
-[node name="DolphinPlayer" parent="." instance=ExtResource("1_0wfyh")]
-position = Vector2(291, 120)
+[node name="Dolphin" parent="." instance=ExtResource("5_tefeu")]
+position = Vector2(-294, 6)

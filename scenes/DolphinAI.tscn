@@ -1,0 +1,63 @@
+[gd_scene load_steps=11 format=3 uid="uid://ctx3a85l4ts3r"]
+
+[ext_resource type="Texture2D" uid="uid://cw1woppy0s7d6" path="res://sprites/dolphin_in.png" id="1_csw6p"]
+[ext_resource type="Script" uid="uid://b3827jbbou8r" path="res://scripts/dolphin.gd" id="1_dl5jv"]
+[ext_resource type="Texture2D" uid="uid://degy36s5xlgv4" path="res://sprites/dolphin_out.png" id="2_qgn84"]
+[ext_resource type="Material" uid="uid://ds0e504hsan5u" path="res://shaders/green_screen.tres" id="3_green"]
+[ext_resource type="Script" uid="uid://daq0o1y61cnsx" path="res://scripts/dolphin_ai.gd" id="4_ai"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qgn84"]
+atlas = ExtResource("1_csw6p")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_g1ctg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qgn84")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l8u8y"]
+atlas = ExtResource("2_qgn84")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dl5jv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l8u8y")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qgn84"]
+radius = 13.266365
+height = 87.819145
+
+[node name="DolphinAI" type="CharacterBody2D"]
+script = ExtResource("1_dl5jv")
+
+[node name="in" type="AnimatedSprite2D" parent="."]
+position = Vector2(-3.199997, -15.199997)
+scale = Vector2(0.3, 0.3)
+sprite_frames = SubResource("SpriteFrames_g1ctg")
+
+[node name="out" type="AnimatedSprite2D" parent="."]
+material = ExtResource("3_green")
+position = Vector2(-3.199997, -15.199997)
+scale = Vector2(0.3, 0.3)
+sprite_frames = SubResource("SpriteFrames_dl5jv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.3962634
+shape = SubResource("CapsuleShape2D_qgn84")
+
+[node name="DolphinAI" type="Node" parent="."]
+script = ExtResource("4_ai")
+ai_wander_speed = 1.0
