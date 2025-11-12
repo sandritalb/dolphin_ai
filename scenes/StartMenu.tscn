@@ -1,0 +1,40 @@
+[gd_scene load_steps=3 format=3 uid="uid://crsqhbm5qpveo"]
+
+[ext_resource type="Script" uid="uid://c7w7ae4i1h5yw" path="res://scripts/start_menu.gd" id="1_5t9q1"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_menu"]
+
+[node name="StartMenu" type="CanvasLayer"]
+script = ExtResource("1_5t9q1")
+
+[node name="Panel" type="Panel" parent="."]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = 100.0
+alignment = 1
+
+[node name="Title" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "Dolphin"
+label_settings = SubResource("LabelSettings_menu")
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ActionButton" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 2
+text = "Start Game"
+
+[node name="QuitButton" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 2
+text = "Quit"
