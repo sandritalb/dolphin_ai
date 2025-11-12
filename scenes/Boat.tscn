@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://bvvgqdmvn0x1j"]
+
+[ext_resource type="Script" uid="uid://bfn8786pn1ips" path="res://scripts/boat.gd" id="1_mlulb"]
+[ext_resource type="PhysicsMaterial" uid="uid://dfsy2h6yp8u6a" path="res://materials/boat.tres" id="1_nai5d"]
+[ext_resource type="Texture2D" uid="uid://26e0amdnno7f" path="res://sprites/ship.png" id="1_xwkqa"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mlulb"]
+radius = 32.0
+height = 262.0
+
+[node name="Boat" type="StaticBody2D"]
+physics_material_override = ExtResource("1_nai5d")
+script = ExtResource("1_mlulb")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -141)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_xwkqa")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, -41)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_mlulb")
