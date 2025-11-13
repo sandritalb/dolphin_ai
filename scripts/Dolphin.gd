@@ -14,13 +14,13 @@ extends CharacterBody2D
 
 # Water vs Air physics
 @export var water_acceleration = 1000.0    # Acceleration in water
-@export var air_friction = 1500.0          # High friction in air
-@export var water_friction = 300.0         # Low friction in water
+@export var air_friction = 300.0          # Low friction in air
+@export var water_friction = 1500.0         # High friction in water
 @export var gravity = 800.0                # Gravity force (pixels/second²)
 
 # Speed burst on exit water
-@export var speed_burst_multiplier = 1.5   # Multiplier for speed burst
-@export var speed_burst_duration = 0.3     # Duration of speed burst in seconds
+@export var speed_burst_multiplier = 1.6   # Multiplier for speed burst
+@export var speed_burst_duration = 0.1     # Duration of speed burst in seconds
 
 # Water interaction
 @export var water_level = -100.0           # Y position of water surface
@@ -70,6 +70,7 @@ func _physics_process(delta: float) -> void:
 	
 	# Update speed burst timer
 	if is_speed_bursting:
+		print("💨 Speed burst timer: ", speed_burst_timer)
 		speed_burst_timer -= delta
 		if speed_burst_timer <= 0.0:
 			is_speed_bursting = false
