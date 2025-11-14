@@ -14,3 +14,9 @@ config/name="Dolphin AI"
 run/main_scene="uid://10afwgyl3uhn"
 config/features=PackedStringArray("4.5")
 config/icon="res://assets/dolphin.png"
+
+[display]
+
+window/size/viewport_width=1024
+window/size/viewport_height=1024
+window/stretch/mode="canvas_items"

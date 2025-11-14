@@ -1,0 +1,6 @@
+[gd_scene format=3]
+[node name="Main" type="Node2D"]
+[node name="GameManager" type="Node2D" parent="."]
+script = ExtResource("res://scripts/GameManager.gd")
+[node name="Dolphin" parent="." instance=ExtResource("res://Dolphin.tscn")]
+[node name="Timer" type="Timer" parent="."]

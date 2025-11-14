@@ -1,0 +1,5 @@
+[gd_scene format=3]
+[node name="Wave" type="Area2D"]
+script = ExtResource("res://scripts/Wave.gd")
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("res://assets/wave.png")

@@ -1,0 +1,6 @@
+[application]
+config/name="Dolphin AI"
+run/main_scene="res://main.tscn"
+config/icon="res://assets/dolphin.png"
+[rendering]
+renderer/rendering_method="forward_plus"

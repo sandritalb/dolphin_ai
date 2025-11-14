@@ -27,6 +27,8 @@ script = ExtResource("1_vfbjk")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_transparent")
+position = Vector2(-22.062496, 12.3125105)
+scale = Vector2(0.5606142, 0.57421875)
 texture = ExtResource("2_5wnvp")
 hframes = 2
 vframes = 3

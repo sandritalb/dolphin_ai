@@ -1,0 +1,5 @@
+[gd_scene format=3]
+[node name="Dolphin" type="CharacterBody2D"]
+script = ExtResource("res://scripts/Dolphin.gd")
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("res://assets/dolphin.png")
