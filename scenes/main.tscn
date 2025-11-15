@@ -1,11 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://crvd34oyxlqvf"]
+[gd_scene load_steps=11 format=3 uid="uid://crvd34oyxlqvf"]
 
 [ext_resource type="Script" uid="uid://36mglcqoomaa" path="res://scripts/camera.gd" id="1_jyhfs"]
 [ext_resource type="Script" uid="uid://cygc517leoia2" path="res://scripts/game_manager.gd" id="1_tipki"]
 [ext_resource type="PackedScene" uid="uid://bh2rvmu3i3oo3" path="res://scenes/Water.tscn" id="2_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://k1dy8g8njeco" path="res://scenes/Border.tscn" id="2_sugp2"]
 [ext_resource type="PackedScene" uid="uid://bvvgqdmvn0x1j" path="res://scenes/Boat.tscn" id="4_o6xl0"]
-[ext_resource type="PackedScene" uid="uid://ctx3a85l4ts3r" path="res://scenes/DolphinAI.tscn" id="4_tbgi4"]
 [ext_resource type="Script" uid="uid://c803solqrng77" path="res://scripts/obstacle_generator.gd" id="5_85g3d"]
 [ext_resource type="PackedScene" uid="uid://ctx3a85l4ts2r" path="res://scenes/DolphinPlayer.tscn" id="5_tefeu"]
 [ext_resource type="PackedScene" uid="uid://c4ggd2praa3ra" path="res://scenes/Shark.tscn" id="7_tipki"]
@@ -42,11 +41,8 @@ script = ExtResource("5_85g3d")
 [node name="BoatContainer" type="Node" parent="Obstacles"]
 
 [node name="Boat" parent="." instance=ExtResource("4_o6xl0")]
-position = Vector2(629, -118)
+position = Vector2(600, -100)
 physics_material_override = SubResource("PhysicsMaterial_tipki")
-
-[node name="DolphinAI" parent="." instance=ExtResource("4_tbgi4")]
-visible = false
 
 [node name="Dolphin" parent="." instance=ExtResource("5_tefeu")]
 position = Vector2(-294, 6)

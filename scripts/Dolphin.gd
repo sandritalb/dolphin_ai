@@ -26,12 +26,19 @@ extends CharacterBody2D
 @export var water_level = -100.0           # Y position of water surface
 @export var water_detection_range = 10.0
 
+# Stun/Impact mechanics
+@export var stun_duration: float = 0.1     # Stun duration on boat collision (seconds)
+@export var stun_knockback: float = 150.0  # Knockback speed when hit (pixels/second)
+
 # Internal state
 var is_in_water: bool = true
 
 # Speed burst state
 var speed_burst_timer: float = 0.0
 var is_speed_bursting: bool = false
+
+# Stun state
+var is_stunned: bool = false
 
 # Controller references
 var controller: Node = null
@@ -80,9 +87,17 @@ func _physics_process(delta: float) -> void:
 	if controller and controller.has_method("get_input"):
 		input_direction = controller.get_input(delta)
 	
+	# Check for boat collision
+	_check_boat_collision()
+	
 	# ============================================================================
 	# APPLY PHYSICS BASED ON MEDIUM
 	# ============================================================================
+	
+	# Skip physics if stunned
+	if is_stunned:
+		move_and_slide()
+		return
 	
 	if is_in_water:
 		# WATER PHYSICS - Apply acceleration and friction
@@ -118,6 +133,37 @@ func _physics_process(delta: float) -> void:
 	# Rotate dolphin toward movement direction
 	if velocity.length() > 10.0:
 		rotation = velocity.angle()
+
+
+# ============================================================================
+# COLLISION DETECTION
+# ============================================================================
+
+func _check_boat_collision() -> void:
+	# Check all slide collisions from move_and_slide
+	for i in range(get_slide_collision_count()):
+		var collision = get_slide_collision(i)
+		var body = collision.get_collider()
+		if body and body.name == "Boat":
+			# Apply stun effect with knockback
+			_apply_stun(body)
+			break
+
+
+func _apply_stun(boat: Node2D) -> void:
+	if not is_stunned:
+		is_stunned = true
+		
+		# Calculate knockback direction (opposite to boat)
+		var knockback_direction = (position - boat.position).normalized()
+		velocity = knockback_direction * stun_knockback
+		
+		print("💥 Boat hit! Stunned for %.1f seconds" % stun_duration)
+		
+		# Use timer to automatically end stun
+		await get_tree().create_timer(stun_duration).timeout
+		is_stunned = false
+		print("✅ Stun ended")
 
 
 # ============================================================================

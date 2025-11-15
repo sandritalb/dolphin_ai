@@ -52,9 +52,11 @@ func _physics_process(delta: float) -> void:
 	var direction = (current_target - position).normalized()
 	position += direction * patrol_speed * delta
 	
-	# Rotate shark to face movement direction
-	if direction != Vector2.ZERO:
-		rotation = direction.angle()
+	# Mirror shark sprite based on movement direction
+	if direction.x > 0:
+		scale.x = abs(scale.x)  # Face right
+	elif direction.x < 0:
+		scale.x = -abs(scale.x)  # Face left (mirrored)
 	
 	# Check if reached target and switch direction
 	if position.distance_to(current_target) < patrol_speed * delta:
