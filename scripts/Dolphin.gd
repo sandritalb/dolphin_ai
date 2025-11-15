@@ -24,7 +24,7 @@ extends CharacterBody2D
 
 # Water interaction
 @export var water_level = -100.0           # Y position of water surface
-@export var water_detection_range = 20.0
+@export var water_detection_range = 10.0
 
 # Internal state
 var is_in_water: bool = true
@@ -127,10 +127,11 @@ func _physics_process(delta: float) -> void:
 func update_medium_state() -> void:
 	var was_in_water = is_in_water
 	is_in_water = position.y > (water_level - water_detection_range)
-	
+	#print("🌊 Dolphin Y: ", position.y, " Water Level: ", water_level, " In Water: ", is_in_water)
 	# Detect water transitions and notify controller
 	if was_in_water and not is_in_water:
 		# Activate speed burst when exiting water
+		print("💨 Exiting water - activating speed burst!", position.y, water_level-water_detection_range, was_in_water, is_in_water)
 		is_speed_bursting = true
 		speed_burst_timer = speed_burst_duration
 		
