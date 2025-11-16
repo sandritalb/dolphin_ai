@@ -2,12 +2,6 @@ class_name SmoothPath
 extends Path2D
 
 @export var spline_length = 8
-@export var _smooth: bool:
-	set(value):
-		smooth(value)
-@export var _straighten: bool:
-	set(value):
-		straighten(value)
 @export var color = Color(1,1,1,1)
 var width = 8
 
@@ -28,7 +22,6 @@ func smooth(value):
 			curve.set_point_out(i, spline)
 
 func _get_spline(i):
-	
 	var last_point = _get_point(i - 1)
 	var next_point = _get_point(i + 1)
 	var spline = last_point.direction_to(next_point) * spline_length

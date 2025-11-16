@@ -6,6 +6,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yvbnd"]
 shader = ExtResource("2_fmpup")
+shader_parameter/tint = Color(0.16470589, 0.7058824, 0.92156863, 1)
 
 [sub_resource type="Curve2D" id="Curve2D_iofi6"]
 
