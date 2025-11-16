@@ -1,17 +1,13 @@
-[gd_scene load_steps=12 format=3 uid="uid://crvd34oyxlqvf"]
+[gd_scene load_steps=9 format=3 uid="uid://crvd34oyxlqvf"]
 
 [ext_resource type="Script" uid="uid://36mglcqoomaa" path="res://scripts/camera.gd" id="1_jyhfs"]
 [ext_resource type="Script" uid="uid://cygc517leoia2" path="res://scripts/game_manager.gd" id="1_tipki"]
 [ext_resource type="PackedScene" uid="uid://k1dy8g8njeco" path="res://scenes/Border.tscn" id="2_sugp2"]
 [ext_resource type="Texture2D" uid="uid://b676u7vkxksk6" path="res://sprites/sea.png" id="4_choun"]
-[ext_resource type="PackedScene" uid="uid://bvvgqdmvn0x1j" path="res://scenes/Boat.tscn" id="4_o6xl0"]
 [ext_resource type="Script" uid="uid://c803solqrng77" path="res://scripts/obstacle_generator.gd" id="5_85g3d"]
 [ext_resource type="PackedScene" uid="uid://ctx3a85l4ts2r" path="res://scenes/DolphinPlayer.tscn" id="5_tefeu"]
 [ext_resource type="Texture2D" uid="uid://db4qcr04q50pl" path="res://sprites/waves.png" id="5_ya4ey"]
-[ext_resource type="PackedScene" uid="uid://c4ggd2praa3ra" path="res://scenes/Shark.tscn" id="7_tipki"]
 [ext_resource type="PackedScene" uid="uid://crsqhbm5qpveo" path="res://scenes/StartMenu.tscn" id="8_start"]
-
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_tipki"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_tipki")
@@ -19,6 +15,27 @@ script = ExtResource("1_tipki")
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("target_a")]
 script = ExtResource("1_jyhfs")
 target_a = NodePath("../Dolphin")
+
+[node name="background" type="Node" parent="."]
+
+[node name="sea" type="Sprite2D" parent="background"]
+z_index = -1
+z_as_relative = false
+position = Vector2(2582.3, 103)
+scale = Vector2(6.1693363, 0.45)
+texture = ExtResource("4_choun")
+
+[node name="waves" type="Sprite2D" parent="background"]
+z_index = -1
+position = Vector2(-346, -151)
+scale = Vector2(0.45, 0.45)
+texture = ExtResource("5_ya4ey")
+
+[node name="waves2" type="Sprite2D" parent="background"]
+z_index = -1
+position = Vector2(114, -151.00002)
+scale = Vector2(0.45, 0.45)
+texture = ExtResource("5_ya4ey")
 
 [node name="BorderContainer" type="Node" parent="."]
 
@@ -30,18 +47,6 @@ scale = Vector2(50, 0.5)
 position = Vector2(4398, 360)
 scale = Vector2(50, 0.5)
 
-[node name="background" type="Node" parent="."]
-
-[node name="sea" type="Sprite2D" parent="background"]
-position = Vector2(-346, 103)
-scale = Vector2(0.45, 0.45)
-texture = ExtResource("4_choun")
-
-[node name="waves" type="Sprite2D" parent="background"]
-position = Vector2(-346, -151)
-scale = Vector2(0.45, 0.45)
-texture = ExtResource("5_ya4ey")
-
 [node name="Obstacles" type="Node" parent="."]
 script = ExtResource("5_85g3d")
 
@@ -49,17 +54,9 @@ script = ExtResource("5_85g3d")
 
 [node name="BoatContainer" type="Node" parent="Obstacles"]
 
-[node name="Boat" parent="." instance=ExtResource("4_o6xl0")]
-position = Vector2(600, -100)
-physics_material_override = SubResource("PhysicsMaterial_tipki")
-
 [node name="Dolphin" parent="." instance=ExtResource("5_tefeu")]
 position = Vector2(-294, 6)
 
-[node name="Shark" parent="." instance=ExtResource("7_tipki")]
-position = Vector2(1361, 40)
-
 [node name="StartMenu" parent="." instance=ExtResource("8_start")]
 process_mode = 3
-visible = false
 follow_viewport_enabled = true

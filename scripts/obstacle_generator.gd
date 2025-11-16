@@ -6,6 +6,13 @@ extends Node
 # ============================================================================
 
 # ============================================================================
+# CONSTANTS
+# ============================================================================
+const WATER_LEVEL: float = -100.0
+const SHARK_CONTAINER_NAME: String = "SharkContainer"
+const BOAT_CONTAINER_NAME: String = "BoatContainer"
+
+# ============================================================================
 # PRELOAD SCENES
 # ============================================================================
 var shark_scene = preload("res://scenes/Shark.tscn")
@@ -30,7 +37,7 @@ var active_boats: Array = []
 # SETTINGS
 # ============================================================================
 @export var pool_size: int = 5
-@export var spawn_distance_ahead: float = 800.0  # How far ahead to spawn
+@export var spawn_distance_ahead: float = 1500.0  # How far ahead to spawn
 @export var despawn_distance_behind: float = 500.0  # How far behind to despawn
 @export var spawn_width: float = 600.0  # Width range for random spawning
 @export var shark_spawn_chance: float = 0.6  # Chance to spawn shark per cycle
@@ -50,20 +57,20 @@ var spawn_timer: float = 0.0
 func _ready() -> void:
 	# Get references
 	player = get_tree().root.get_node("Main/Dolphin")
-	shark_container = get_parent().get_node("SharkContainer")
-	boat_container = get_parent().get_node("BoatContainer")
+	shark_container = get_node(SHARK_CONTAINER_NAME)
+	boat_container = get_node(BOAT_CONTAINER_NAME)
 	
 	# Verify containers exist
 	if not shark_container:
 		print("⚠️ SharkContainer not found! Creating one...")
 		shark_container = Node.new()
-		shark_container.name = "SharkContainer"
+		shark_container.name = SHARK_CONTAINER_NAME
 		get_parent().add_child(shark_container)
 	
 	if not boat_container:
 		print("⚠️ BoatContainer not found! Creating one...")
 		boat_container = Node.new()
-		boat_container.name = "BoatContainer"
+		boat_container.name = BOAT_CONTAINER_NAME
 		get_parent().add_child(boat_container)
 	
 	if not player:
@@ -137,17 +144,23 @@ func _spawn_shark() -> void:
 func _spawn_boat() -> void:
 	var boat = _get_pooled_boat()
 	if boat:
-		_position_obstacle_ahead(boat)
+		_position_boat_ahead(boat)
 		boat.show()
 		boat.set_meta("pooled", false)
 		active_boats.append(boat)
 
 
 func _position_obstacle_ahead(obstacle: Node2D) -> void:
-	# Position ahead of player
+	# Position shark ahead of player, below water level
 	var spawn_x = player.position.x + spawn_distance_ahead
-	var spawn_y = player.position.y + randf_range(-spawn_width / 2.0, spawn_width / 2.0)
+	var spawn_y = WATER_LEVEL + randf_range(0.0, spawn_width)
 	obstacle.position = Vector2(spawn_x, spawn_y)
+
+func _position_boat_ahead(boat: Node2D) -> void:
+	# Position boat ahead of player at water level
+	var spawn_x = player.position.x + spawn_distance_ahead
+	print("Positioning boat at x: %f" % spawn_x)
+	boat.position = Vector2(spawn_x, WATER_LEVEL)
 
 
 # ============================================================================

@@ -1,9 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://ctx3a85l4ts3r"]
+[gd_scene load_steps=10 format=3 uid="uid://ctx3a85l4ts3r"]
 
 [ext_resource type="Texture2D" uid="uid://cw1woppy0s7d6" path="res://sprites/dolphin_in.png" id="1_csw6p"]
-[ext_resource type="Script" uid="uid://b3827jbbou8r" path="res://scripts/dolphin.gd" id="1_dl5jv"]
+[ext_resource type="Script" uid="uid://b3827jbbou8r" path="res://scripts/Dolphin.gd" id="1_dl5jv"]
 [ext_resource type="Texture2D" uid="uid://degy36s5xlgv4" path="res://sprites/dolphin_out.png" id="2_qgn84"]
-[ext_resource type="Material" uid="uid://ds0e504hsan5u" path="res://shaders/green_screen.tres" id="3_green"]
 [ext_resource type="Script" uid="uid://daq0o1y61cnsx" path="res://scripts/dolphin_ai.gd" id="4_ai"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qgn84"]
@@ -49,7 +48,6 @@ scale = Vector2(0.3, 0.3)
 sprite_frames = SubResource("SpriteFrames_g1ctg")
 
 [node name="out" type="AnimatedSprite2D" parent="."]
-material = ExtResource("3_green")
 position = Vector2(-3.199997, -15.199997)
 scale = Vector2(0.3, 0.3)
 sprite_frames = SubResource("SpriteFrames_dl5jv")

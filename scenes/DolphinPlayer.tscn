@@ -1,9 +1,17 @@
-[gd_scene load_steps=10 format=3 uid="uid://ctx3a85l4ts2r"]
+[gd_scene load_steps=13 format=3 uid="uid://ctx3a85l4ts2r"]
 
-[ext_resource type="Script" uid="uid://b3827jbbou8r" path="res://scripts/dolphin.gd" id="1_u1i24"]
+[ext_resource type="Script" uid="uid://b3827jbbou8r" path="res://scripts/Dolphin.gd" id="1_u1i24"]
 [ext_resource type="Texture2D" uid="uid://cw1woppy0s7d6" path="res://sprites/dolphin_in.png" id="2_xpcap"]
 [ext_resource type="Texture2D" uid="uid://degy36s5xlgv4" path="res://sprites/dolphin_out.png" id="4_g7ysk"]
-[ext_resource type="Script" path="res://scripts/dolphin_player.gd" id="5_rqavp"]
+[ext_resource type="Script" uid="uid://ltbyqkt0a8ho" path="res://scripts/dolphin_player.gd" id="5_rqavp"]
+[ext_resource type="Texture2D" uid="uid://bno1y7ikga7ri" path="res://sprites/wate_drop.png" id="5_xpcap"]
+[ext_resource type="Script" uid="uid://b28yhgaicscqf" path="res://scripts/water_particles.gd" id="6_water"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_enter"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 20.0
+gravity = Vector3(0, 300, 0)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qgn84"]
 atlas = ExtResource("2_xpcap")
@@ -41,6 +49,21 @@ height = 87.819145
 
 [node name="Dolphin" type="CharacterBody2D"]
 script = ExtResource("1_u1i24")
+
+[node name="WaterParticlesEnter" type="GPUParticles2D" parent="."]
+visible = false
+rotation = 0.09599311
+scale = Vector2(0.5, 0.5)
+amount = 20
+texture = ExtResource("5_xpcap")
+lifetime = 0.19
+preprocess = 1.05
+explosiveness = 0.2
+randomness = 1.0
+collision_base_size = 0.0
+visibility_rect = Rect2(-100, 0, 700, 200)
+process_material = SubResource("ParticleProcessMaterial_enter")
+script = ExtResource("6_water")
 
 [node name="in" type="AnimatedSprite2D" parent="."]
 position = Vector2(-3.199997, -15.199997)

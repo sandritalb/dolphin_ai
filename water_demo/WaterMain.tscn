@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://cbsqxnffvxg7y"]
+
+[ext_resource type="PackedScene" uid="uid://ct4tnu1g2g4tk" path="res://water_demo/WaterBody.tscn" id="1_365ye"]
+[ext_resource type="Texture2D" uid="uid://d1uk1od7rxu6r" path="res://water_demo/joint.png" id="2_6c4fd"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_6c4fd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vxi1m"]
+
+[node name="WaterMain" type="Node2D"]
+
+[node name="WaterBody" parent="." instance=ExtResource("1_365ye")]
+position = Vector2(234, 363)
+
+[node name="Stone" type="RigidBody2D" parent="."]
+position = Vector2(322, 198)
+physics_material_override = SubResource("PhysicsMaterial_6c4fd")
+
+[node name="Sprite2D" type="Sprite2D" parent="Stone"]
+texture = ExtResource("2_6c4fd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Stone"]
+shape = SubResource("RectangleShape2D_vxi1m")

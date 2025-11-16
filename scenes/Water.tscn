@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bh2rvmu3i3oo3"]
-
-[ext_resource type="Texture2D" uid="uid://0dkbe8tj6cg7" path="res://sprites/square.png" id="1_h7np4"]
-
-[node name="Water" type="Sprite2D"]
-self_modulate = Color(0, 17.094124, 17.129978, 1)
-texture = ExtResource("1_h7np4")
