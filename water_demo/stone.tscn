@@ -4,13 +4,19 @@
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_6c4fd"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_vxi1m"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4mvh2"]
+size = Vector2(77.000015, 78)
 
 [node name="Stone" type="RigidBody2D"]
 physics_material_override = SubResource("PhysicsMaterial_6c4fd")
+collision_layer = 1
+collision_mask = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(10, 10)
 texture = ExtResource("1_4mvh2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_vxi1m")
+position = Vector2(-0.5, -0.99999636)
+scale = Vector2(0.9999998, 0.9999998)
+shape = SubResource("RectangleShape2D_4mvh2")

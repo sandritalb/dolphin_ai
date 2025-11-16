@@ -15,4 +15,13 @@ position = Vector2(322, 198)
 position = Vector2(495, 124)
 
 [node name="Stone3" parent="." instance=ExtResource("2_6c4fd")]
-position = Vector2(737, 79)
+position = Vector2(531, 12)
+
+[node name="Stone4" parent="." instance=ExtResource("2_6c4fd")]
+position = Vector2(531, 12)
+
+[node name="Stone5" parent="." instance=ExtResource("2_6c4fd")]
+position = Vector2(717, -238)
+
+[node name="Stone7" parent="." instance=ExtResource("2_6c4fd")]
+position = Vector2(862, -304)

@@ -22,6 +22,22 @@ var bottom = target_height + depth
 @onready var water_border = get_node("WaterBorder")
 @export var border_thickness = 4.0
 
+@onready var water_particles = preload("res://water_demo/WaterParticlesDemo.tscn")
+@export var splash_intensity = 5.0
+@export var detection_area_radius = 50.0
+
+var detection_areas = []
+var items_in_water = {}
+var particle_cooldown = {}
+@export var particle_cooldown_time = 0.5  # Cooldown between particle spawns
+
+# Wave generation
+@export var wave_enabled = true
+@export var wave_frequency = 0.5  # How often waves are generated
+@export var wave_amplitude = 1.0  # Strength of the waves
+var wave_timer = 0.0
+var wave_spring_spacing = 2  # Apply waves every N springs
+
 
 func _ready() -> void:
 	water_border.width = border_thickness
@@ -32,10 +48,16 @@ func _ready() -> void:
 		w.initialize(x_pos)
 		add_child(w)
 		springs.append(w)
-	splash(2, 5)
-	
+
 
 func _physics_process(_delta: float) -> void:
+	# Generate waves constantly
+	if wave_enabled:
+		wave_timer -= _delta
+		if wave_timer <= 0.0:
+			wave_timer = wave_frequency
+			_generate_waves()
+	
 	for spring in springs:
 		spring.water_update(k, d)
 	
@@ -54,6 +76,13 @@ func _physics_process(_delta: float) -> void:
 			if i < springs.size() - 1:
 				right_deltas[i] = spread * (springs[i].height - springs[i + 1].height)
 				springs[i + 1].velocity += right_deltas[i]
+	
+	# Update cooldowns
+	for spring_index in particle_cooldown.keys():
+		particle_cooldown[spring_index] -= _delta
+		if particle_cooldown[spring_index] <= 0:
+			particle_cooldown.erase(spring_index)
+	
 	draw_water_body()
 	draw_water_border()
 	
@@ -62,11 +91,40 @@ func splash(index: int, velocity: float) -> void:
 	if index >= 0 and index < springs.size():
 		springs[index].velocity += velocity
 
-	# for i in range(springs.size()):
-	#     if i > 0:
-	#         springs[i - 1].height += left_deltas[i]
-	#     if i < springs.size() - 1:
-	#         springs[i + 1].height += right_deltas[i]
+
+
+func _generate_waves() -> void:
+	# Apply waves to random springs spaced out across the water
+	for i in range(0, springs.size(), wave_spring_spacing):
+		splash(i, randf_range(-wave_amplitude, wave_amplitude))
+
+
+func _on_detection_area_entered(area: Area2D, spring_index: int) -> void:
+	# Item entered water
+	print("Area entered water:", area, "at spring index:", spring_index)
+	if not items_in_water.has(area):
+		items_in_water[area] = spring_index
+		splash(spring_index, splash_intensity)
+		_play_water_particles(spring_index)
+
+
+func _on_detection_area_exited(area: Area2D, spring_index: int) -> void:
+	# Item exited water
+	print("Area exited water:", area, "at spring index:", spring_index)
+	if items_in_water.has(area):
+		items_in_water.erase(area)
+		splash(spring_index, splash_intensity)
+		_play_water_particles(spring_index)
+
+
+func _play_water_particles(spring_index: int) -> void:
+	# Only play particles if cooldown has expired
+	if not particle_cooldown.has(spring_index):
+		if spring_index >= 0 and spring_index < springs.size():
+			var particles = water_particles.instantiate()
+			particles.global_position = springs[spring_index].global_position
+			get_parent().add_child(particles)
+			particle_cooldown[spring_index] = particle_cooldown_time
 
 
 func draw_water_body() -> void:

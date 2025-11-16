@@ -1,10 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://qo71v2fe1k33"]
+[gd_scene load_steps=4 format=3 uid="uid://qo71v2fe1k33"]
 
 [ext_resource type="Texture2D" uid="uid://d1uk1od7rxu6r" path="res://water_demo/joint.png" id="1_b3h3n"]
 [ext_resource type="Script" uid="uid://bseemmcbu5x2c" path="res://water_demo/water_spring.gd" id="1_bldip"]
+[ext_resource type="Shape2D" uid="uid://tml7j3u4ubjq" path="res://water_demo/WaterSpringCollisionShape.tres" id="3_emfek"]
 
 [node name="WaterSpring" type="Node2D"]
 script = ExtResource("1_bldip")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
 texture = ExtResource("1_b3h3n")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = ExtResource("3_emfek")
