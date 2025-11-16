@@ -14,7 +14,7 @@ extends CanvasLayer
 
 # Constants
 const PIXELS_TO_METERS: float = 1.0  # 1 pixel = 1 meter (configurable)
-const PIXELS_PER_SECOND_TO_KNOTS: float = 0.01944  # Conversion factor
+const PIXELS_PER_SECOND_TO_KNOTS: float = 0.03  # Conversion factor
 
 # Initial position tracking
 var initial_position: Vector2 = Vector2.ZERO
