@@ -37,19 +37,12 @@ func _ready() -> void:
 func setup_patrol_points(base_position: Vector2, water_level: float, min_depth_offset: float, max_depth: float) -> void:
 	# Store the starting position (Point A)
 	start_position = base_position
-	
 	# Calculate Point B (offset in patrol direction)
 	target_position = start_position + (patrol_direction.normalized() * patrol_distance)
-	
 	# Clamp only the target position Y to stay within depth bounds
 	target_position.y = clamp(target_position.y, water_level + min_depth_offset, max_depth)
-	
 	# Initialize current target as Point B
 	current_target = target_position
-	
-	print("🦈 Shark patrol points set at position: ", start_position)
-	print("🦈 Patrol Point A: ", start_position)
-	print("🦈 Patrol Point B: ", target_position)
 
 func _physics_process(delta: float) -> void:
 	# Move toward current target

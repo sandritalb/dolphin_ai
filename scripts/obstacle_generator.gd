@@ -168,6 +168,7 @@ func _position_shark_ahead(shark: Node2D) -> void:
 	
 	# Setup patrol points relative to shark position
 	shark.setup_patrol_points(spawn_position, WATER_LEVEL, shark_min_depth_offset, shark_max_depth)
+	print("🦈 Shark spawned at position: ", shark.position)
 
 func _position_boat_ahead(boat: Node2D) -> void:
 	# Position boat ahead of player at water level
@@ -175,7 +176,6 @@ func _position_boat_ahead(boat: Node2D) -> void:
 	boat.position = Vector2(spawn_x, WATER_LEVEL)
 	boat.base_position = boat.position  # Reset bobbing base position
 	print("⛵ Boat spawned at position: ", boat.position)
-	print("Player position: ", player.position)
 
 
 # ============================================================================
