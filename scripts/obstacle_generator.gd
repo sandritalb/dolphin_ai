@@ -173,6 +173,9 @@ func _position_boat_ahead(boat: Node2D) -> void:
 	# Position boat ahead of player at water level
 	var spawn_x = player.position.x + spawn_distance_ahead + randf_range(-spawn_width / 2.0, spawn_width / 2.0)
 	boat.position = Vector2(spawn_x, WATER_LEVEL)
+	boat.base_position = boat.position  # Reset bobbing base position
+	print("⛵ Boat spawned at position: ", boat.position)
+	print("Player position: ", player.position)
 
 
 # ============================================================================
