@@ -36,16 +36,16 @@ var active_boats: Array = []
 # ============================================================================
 # SETTINGS
 # ============================================================================
-@export var pool_size: int = 10
+@export var pool_size: int = 20
 @export var spawn_distance_ahead: float = 1400.0  # How far ahead to spawn
 @export var despawn_distance_behind: float = 900.0  # How far behind to despawn
 @export var spawn_width: float = 1000.0  # Width range for random spawning
-@export var shark_spawn_chance: float = 0.4  # Chance to spawn shark per cycle
-@export var boat_spawn_chance: float = 0.4  # Chance to spawn boat per cycle
+@export var shark_spawn_chance: float = 0.3  # Chance to spawn shark per cycle
+@export var boat_spawn_chance: float = 0.3  # Chance to spawn boat per cycle
 @export var spawn_cycle_time: float = 2.0  # Seconds between spawn attempts
 @export var shark_min_depth_offset: float = 50.0  # Minimum offset below water level
 @export var shark_max_depth: float = 350.0  # Maximum depth (above this value)
-@export var spawn_chance_increase_rate: float = 0.005  # How much to increase spawn chances per second
+@export var spawn_chance_increase_rate: float = 0.004  # How much to increase spawn chances per second
 @export var max_spawn_chance: float = 0.8  # Maximum spawn chance cap
 
 # ============================================================================
