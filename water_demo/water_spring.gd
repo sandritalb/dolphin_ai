@@ -56,12 +56,13 @@ func water_update(spring_constant: float, damping: float) -> void:
 	velocity += force
 	position.y += velocity
 
-func initialize(x_pos: float) -> void:
+func initialize(x_pos: float, motion_factor_param: float = 0.006) -> void:
 	target_height = position.y
 	height = position.y
 	position.x = x_pos
 	velocity = 0
 	force = 0
+	motion_factor = motion_factor_param
 
 
 func splash(intensity: float) -> void:

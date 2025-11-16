@@ -38,6 +38,8 @@ var particle_cooldown = {}
 var wave_timer = 0.0
 var wave_spring_spacing = 2  # Apply waves every N springs
 
+@export var water_motion_factor = 0.006
+
 
 func _ready() -> void:
 	water_border.width = border_thickness
@@ -45,7 +47,7 @@ func _ready() -> void:
 	for i in range(spring_number):
 		var w = water_pring.instantiate()
 		var x_pos = i * distance_between_springs
-		w.initialize(x_pos)
+		w.initialize(x_pos, water_motion_factor)
 		add_child(w)
 		springs.append(w)
 
