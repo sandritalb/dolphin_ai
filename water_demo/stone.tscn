@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://defnapw34omtw"]
+
+[ext_resource type="Texture2D" uid="uid://d1uk1od7rxu6r" path="res://water_demo/joint.png" id="1_4mvh2"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_6c4fd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vxi1m"]
+
+[node name="Stone" type="RigidBody2D"]
+physics_material_override = SubResource("PhysicsMaterial_6c4fd")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_4mvh2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_vxi1m")

@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://dr6eqj7jr0avb"]
+
+[ext_resource type="Texture2D" uid="uid://bno1y7ikga7ri" path="res://sprites/wate_drop.png" id="1_57tlh"]
+
+[sub_resource type="Gradient" id="Gradient_c4tww"]
+offsets = PackedFloat32Array(0.27093595, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[node name="WaterParticles" type="CPUParticles2D"]
+scale = Vector2(0.1, 0.1)
+amount = 20
+texture = ExtResource("1_57tlh")
+lifetime = 0.6
+explosiveness = 0.94
+emission_shape = 1
+emission_sphere_radius = 40.0
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 98)
+initial_velocity_min = 200.0
+initial_velocity_max = 400.0
+linear_accel_min = 5.05
+linear_accel_max = 11.1
+angle_min = 80.0
+angle_max = 100.0
+scale_amount_min = 0.01
+scale_amount_max = 0.03
+color_ramp = SubResource("Gradient_c4tww")
+hue_variation_min = -0.74
+hue_variation_max = -0.74

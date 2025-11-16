@@ -13,6 +13,9 @@ var target_height = 0 #position.y + 80
 # # Damping constant
 # var d = 0.03
 
+var motion_factor = 0.02
+
+
 
 func water_update(spring_constant: float, damping: float) -> void:
     height = position.y
@@ -32,3 +35,7 @@ func initialize(x_pos: float) -> void:
     position.x = x_pos
     velocity = 0
     force = 0
+
+
+func on_splash(intensity: float) -> void:
+    velocity += intensity * motion_factor
