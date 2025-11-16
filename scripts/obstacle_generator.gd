@@ -36,20 +36,25 @@ var active_boats: Array = []
 # ============================================================================
 # SETTINGS
 # ============================================================================
-@export var pool_size: int = 5
-@export var spawn_distance_ahead: float = 1500.0  # How far ahead to spawn
-@export var despawn_distance_behind: float = 500.0  # How far behind to despawn
-@export var spawn_width: float = 600.0  # Width range for random spawning
-@export var shark_spawn_chance: float = 0.6  # Chance to spawn shark per cycle
+@export var pool_size: int = 10
+@export var spawn_distance_ahead: float = 1400.0  # How far ahead to spawn
+@export var despawn_distance_behind: float = 900.0  # How far behind to despawn
+@export var spawn_width: float = 1000.0  # Width range for random spawning
+@export var shark_spawn_chance: float = 0.4  # Chance to spawn shark per cycle
 @export var boat_spawn_chance: float = 0.4  # Chance to spawn boat per cycle
 @export var spawn_cycle_time: float = 2.0  # Seconds between spawn attempts
 @export var shark_min_depth_offset: float = 50.0  # Minimum offset below water level
 @export var shark_max_depth: float = 350.0  # Maximum depth (above this value)
+@export var spawn_chance_increase_rate: float = 0.005  # How much to increase spawn chances per second
+@export var max_spawn_chance: float = 0.8  # Maximum spawn chance cap
 
 # ============================================================================
 # INTERNAL STATE
 # ============================================================================
 var spawn_timer: float = 0.0
+var elapsed_time: float = 0.0  # Track time to increase spawn chances
+var current_shark_spawn_chance: float = 0.0
+var current_boat_spawn_chance: float = 0.0
 
 
 # ============================================================================
@@ -81,12 +86,21 @@ func _ready() -> void:
 	
 	# Initialize pools
 	_initialize_pools()
+	
+	# Initialize spawn chances
+	current_shark_spawn_chance = shark_spawn_chance
+	current_boat_spawn_chance = boat_spawn_chance
+	
 	print("✅ Obstacle Generator initialized with pools of %d" % pool_size)
 
 
 func _physics_process(delta: float) -> void:
 	if not player:
 		return
+	
+	# Track elapsed time and increase spawn chances
+	elapsed_time += delta
+	_update_spawn_chances()
 	
 	# Update spawn timer
 	spawn_timer -= delta
@@ -128,11 +142,11 @@ func _initialize_pools() -> void:
 
 func _try_spawn_obstacles() -> void:
 	# Try to spawn a shark
-	if randf() < shark_spawn_chance:
+	if randf() < current_shark_spawn_chance:
 		_spawn_shark()
 	
 	# Try to spawn a boat
-	if randf() < boat_spawn_chance:
+	if randf() < current_boat_spawn_chance:
 		_spawn_boat()
 
 
@@ -149,11 +163,20 @@ func _spawn_shark() -> void:
 func _spawn_boat() -> void:
 	var boat = _get_pooled_boat()
 	if boat:
-		_position_boat_ahead(boat)
-		boat.show()
-		boat.process_mode = Node.PROCESS_MODE_INHERIT  # Enable physics
-		boat.set_meta("pooled", false)
-		active_boats.append(boat)
+		# Try to find a valid spawn position with minimum distance from other boats
+		var spawn_position = _get_valid_boat_spawn_position()
+		if spawn_position:
+			boat.position = spawn_position
+			boat.base_position = boat.position  # Reset bobbing base position
+			boat.show()
+			boat.process_mode = Node.PROCESS_MODE_INHERIT  # Enable physics
+			boat.set_meta("pooled", false)
+			active_boats.append(boat)
+			print("⛵ Boat spawned at position: ", boat.position)
+		else:
+			# No valid position found, return boat to pool
+			boat_pool.append(boat)
+			print("⚠️ Could not find valid spawn position for boat; returning to pool.")
 
 
 func _position_shark_ahead(shark: Node2D) -> void:
@@ -176,6 +199,29 @@ func _position_boat_ahead(boat: Node2D) -> void:
 	boat.position = Vector2(spawn_x, WATER_LEVEL)
 	boat.base_position = boat.position  # Reset bobbing base position
 	print("⛵ Boat spawned at position: ", boat.position)
+
+
+func _get_valid_boat_spawn_position() -> Variant:
+	# Try to find a spawn position that's at least 150 pixels away from other boats
+	const MIN_DISTANCE: float = 150.0
+	const MAX_ATTEMPTS: int = 5
+	
+	for attempt in range(MAX_ATTEMPTS):
+		var spawn_x = player.position.x + spawn_distance_ahead + randf_range(-spawn_width / 2.0, spawn_width / 2.0)
+		var spawn_position = Vector2(spawn_x, WATER_LEVEL)
+		
+		# Check distance from all active boats
+		var is_valid = true
+		for active_boat in active_boats:
+			if spawn_position.distance_to(active_boat.position) < MIN_DISTANCE:
+				is_valid = false
+				break
+		
+		if is_valid:
+			return spawn_position
+	
+	# No valid position found after max attempts
+	return null
 
 
 # ============================================================================
@@ -215,3 +261,14 @@ func _despawn_out_of_view_obstacles() -> void:
 			boat.set_meta("pooled", true)
 			active_boats.remove_at(i)
 			boat_pool.append(boat)
+
+
+# ============================================================================
+# SPAWN CHANCE MANAGEMENT
+# ============================================================================
+
+func _update_spawn_chances() -> void:
+	# Increase spawn chances based on elapsed time
+	current_shark_spawn_chance = min(shark_spawn_chance + (elapsed_time * spawn_chance_increase_rate), max_spawn_chance)
+	current_boat_spawn_chance = min(boat_spawn_chance + (elapsed_time * spawn_chance_increase_rate), max_spawn_chance)
+	print("🔺 Updated spawn chances - Shark: %.2f, Boat: %.2f" % [current_shark_spawn_chance, current_boat_spawn_chance])
