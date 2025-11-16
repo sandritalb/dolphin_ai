@@ -44,8 +44,6 @@ var is_stunned: bool = false
 var controller: Node = null
 var sprite_in: AnimatedSprite2D
 var sprite_out: AnimatedSprite2D
-var water_particles_enter: GPUParticles2D
-var water_particles_exit: GPUParticles2D
 
 
 func _ready():
@@ -57,10 +55,6 @@ func _ready():
 	# Get sprite references
 	sprite_in = get_node_or_null("in")
 	sprite_out = get_node_or_null("out")
-	
-	# Get particle effect references
-	water_particles_enter = get_node_or_null("WaterParticlesEnter")
-	water_particles_exit = get_node_or_null("WaterParticlesExit")
 	
 	# Find controller node (either dolphin_player or dolphin_ai)
 	if has_node("DolphinPlayer"):
@@ -139,6 +133,18 @@ func _physics_process(delta: float) -> void:
 	# Rotate dolphin toward movement direction
 	if velocity.length() > 10.0:
 		rotation = velocity.angle()
+	
+	# # Flip sprites based on horizontal velocity direction
+	# if velocity.x > 0:
+	# 	if sprite_in:
+	# 		sprite_in.flip_v = false
+	# 	if sprite_out:
+	# 		sprite_out.flip_v = false
+	# elif velocity.x < 0:
+	# 	if sprite_in:
+	# 		sprite_in.flip_v = true
+	# 	if sprite_out:
+	# 		sprite_out.flip_v = true
 
 
 # ============================================================================
@@ -192,16 +198,9 @@ func update_medium_state() -> void:
 			velocity = velocity.normalized() * min(velocity.length() * speed_burst_multiplier, max_speed * speed_burst_multiplier)
 		
 		# Trigger exit water particles
-		if water_particles_exit:
-			water_particles_exit.emitting = true
-		
 		if controller and controller.has_method("on_exit_water"):
 			controller.on_exit_water()
 	elif not was_in_water and is_in_water:
-		# Trigger enter water particles
-		if water_particles_enter:
-			water_particles_enter.emitting = true
-		
 		if controller and controller.has_method("on_enter_water"):
 			controller.on_enter_water()
 

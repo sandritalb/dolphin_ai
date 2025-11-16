@@ -43,6 +43,8 @@ var active_boats: Array = []
 @export var shark_spawn_chance: float = 0.6  # Chance to spawn shark per cycle
 @export var boat_spawn_chance: float = 0.4  # Chance to spawn boat per cycle
 @export var spawn_cycle_time: float = 2.0  # Seconds between spawn attempts
+@export var shark_min_depth_offset: float = 50.0  # Minimum offset below water level
+@export var shark_max_depth: float = 350.0  # Maximum depth (above this value)
 
 # ============================================================================
 # INTERNAL STATE
@@ -56,7 +58,7 @@ var spawn_timer: float = 0.0
 
 func _ready() -> void:
 	# Get references
-	player = get_tree().root.get_node("Main/Dolphin")
+	player = get_tree().root.get_node("Main/DolphinPlayer")
 	shark_container = get_node(SHARK_CONTAINER_NAME)
 	boat_container = get_node(BOAT_CONTAINER_NAME)
 	
@@ -106,6 +108,7 @@ func _initialize_pools() -> void:
 		var shark = shark_scene.instantiate()
 		shark_container.add_child(shark)
 		shark.hide()
+		shark.process_mode = Node.PROCESS_MODE_DISABLED  # Disable physics
 		shark.set_meta("pooled", true)
 		shark_pool.append(shark)
 	
@@ -114,6 +117,7 @@ func _initialize_pools() -> void:
 		var boat = boat_scene.instantiate()
 		boat_container.add_child(boat)
 		boat.hide()
+		boat.process_mode = Node.PROCESS_MODE_DISABLED  # Disable physics
 		boat.set_meta("pooled", true)
 		boat_pool.append(boat)
 
@@ -135,8 +139,9 @@ func _try_spawn_obstacles() -> void:
 func _spawn_shark() -> void:
 	var shark = _get_pooled_shark()
 	if shark:
-		_position_obstacle_ahead(shark)
+		_position_shark_ahead(shark)
 		shark.show()
+		shark.process_mode = Node.PROCESS_MODE_INHERIT  # Enable physics
 		shark.set_meta("pooled", false)
 		active_sharks.append(shark)
 
@@ -146,20 +151,27 @@ func _spawn_boat() -> void:
 	if boat:
 		_position_boat_ahead(boat)
 		boat.show()
+		boat.process_mode = Node.PROCESS_MODE_INHERIT  # Enable physics
 		boat.set_meta("pooled", false)
 		active_boats.append(boat)
 
 
-func _position_obstacle_ahead(obstacle: Node2D) -> void:
+func _position_shark_ahead(shark: Node2D) -> void:
 	# Position shark ahead of player, below water level
 	var spawn_x = player.position.x + spawn_distance_ahead
-	var spawn_y = WATER_LEVEL + randf_range(0.0, spawn_width)
-	obstacle.position = Vector2(spawn_x, spawn_y)
+	# Spawn between min_depth_offset and max_depth
+	var spawn_y = randf_range(WATER_LEVEL + shark_min_depth_offset, shark_max_depth)
+	var spawn_position = Vector2(spawn_x, spawn_y)
+	
+	# Set the shark's position first
+	shark.position = spawn_position
+	
+	# Setup patrol points relative to shark position
+	shark.setup_patrol_points(spawn_position, WATER_LEVEL, shark_min_depth_offset, shark_max_depth)
 
 func _position_boat_ahead(boat: Node2D) -> void:
 	# Position boat ahead of player at water level
-	var spawn_x = player.position.x + spawn_distance_ahead
-	print("Positioning boat at x: %f" % spawn_x)
+	var spawn_x = player.position.x + spawn_distance_ahead + randf_range(-spawn_width / 2.0, spawn_width / 2.0)
 	boat.position = Vector2(spawn_x, WATER_LEVEL)
 
 
@@ -185,6 +197,7 @@ func _despawn_out_of_view_obstacles() -> void:
 		var shark = active_sharks[i]
 		if shark.position.x < player.position.x - despawn_distance_behind:
 			shark.hide()
+			shark.process_mode = Node.PROCESS_MODE_DISABLED  # Disable physics
 			shark.set_meta("pooled", true)
 			active_sharks.remove_at(i)
 			shark_pool.append(shark)
@@ -194,8 +207,8 @@ func _despawn_out_of_view_obstacles() -> void:
 		var boat = active_boats[i]
 		if boat.position.x < player.position.x - despawn_distance_behind:
 			boat.hide()
+			boat.process_mode = Node.PROCESS_MODE_DISABLED  # Disable physics
+			boat.position = Vector2.ZERO  # Reset position when returning to pool
 			boat.set_meta("pooled", true)
 			active_boats.remove_at(i)
 			boat_pool.append(boat)
-
-

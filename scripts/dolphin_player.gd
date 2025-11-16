@@ -36,7 +36,7 @@ func get_input(_delta: float) -> Vector2:
 		if Input.is_action_pressed(key_right):
 			input_direction.x = 1.0
 		if Input.is_action_pressed(key_left):
-			input_direction.x = -1.0
+			input_direction.x = 0.0
 		if Input.is_action_pressed(key_up):
 			input_direction.y = -1.0
 		if Input.is_action_pressed(key_down):

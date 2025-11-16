@@ -14,7 +14,7 @@ script = ExtResource("1_tipki")
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("target_a")]
 script = ExtResource("1_jyhfs")
-target_a = NodePath("../Dolphin")
+target_a = NodePath("../DolphinPlayer")
 
 [node name="background" type="Node" parent="."]
 
@@ -49,13 +49,16 @@ scale = Vector2(50, 0.5)
 
 [node name="Obstacles" type="Node" parent="."]
 script = ExtResource("5_85g3d")
+spawn_distance_ahead = 1000.0
+despawn_distance_behind = 1100.0
+spawn_width = 50.0
 
 [node name="SharkContainer" type="Node" parent="Obstacles"]
 
 [node name="BoatContainer" type="Node" parent="Obstacles"]
 
-[node name="Dolphin" parent="." instance=ExtResource("5_tefeu")]
-position = Vector2(-294, 6)
+[node name="DolphinPlayer" parent="." instance=ExtResource("5_tefeu")]
+position = Vector2(-300, 50)
 
 [node name="StartMenu" parent="." instance=ExtResource("8_start")]
 process_mode = 3
