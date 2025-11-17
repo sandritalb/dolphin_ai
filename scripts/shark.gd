@@ -72,6 +72,6 @@ func _physics_process(delta: float) -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	# Check if the entering body is a dolphin (CharacterBody2D)
-	if body.name == "Dolphin":
+	if body.name.begins_with("Dolphin"):
 		print("💥 Shark touched dolphin!")
 		emit_signal("dolphin_touched")

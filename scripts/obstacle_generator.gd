@@ -271,4 +271,4 @@ func _update_spawn_chances() -> void:
 	# Increase spawn chances based on elapsed time
 	current_shark_spawn_chance = min(shark_spawn_chance + (elapsed_time * spawn_chance_increase_rate), max_spawn_chance)
 	current_boat_spawn_chance = min(boat_spawn_chance + (elapsed_time * spawn_chance_increase_rate), max_spawn_chance)
-	print("🔺 Updated spawn chances - Shark: %.2f, Boat: %.2f" % [current_shark_spawn_chance, current_boat_spawn_chance])
+	# print("🔺 Updated spawn chances - Shark: %.2f, Boat: %.2f" % [current_shark_spawn_chance, current_boat_spawn_chance])

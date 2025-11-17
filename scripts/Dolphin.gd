@@ -60,6 +60,9 @@ func _ready():
 	if has_node("DolphinPlayer"):
 		controller = get_node("DolphinPlayer")
 		print("🎮 Player Dolphin initialized")
+	elif has_node("DolphinPlayer2"):
+		controller = get_node("DolphinPlayer2")
+		print("🎮 Player Dolphin 2 initialized")
 	elif has_node("DolphinAI"):
 		controller = get_node("DolphinAI")
 		print("🤖 AI Dolphin initialized")
