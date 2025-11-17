@@ -15,16 +15,9 @@ extends Node
 # ============================================================================
 
 func _ready() -> void:
-	# Connect to the shark's signal
-	var shark = get_tree().root.get_node_or_null("Main/Shark")
-	if shark:
-		if shark.has_signal("dolphin_touched"):
-			shark.dolphin_touched.connect(_on_shark_dolphin_touched)
-			print("✅ GameManager connected to Shark's dolphin_touched signal")
-		else:
-			print("⚠️ WARNING: Shark doesn't have 'dolphin_touched' signal")
-	else:
-		print("⚠️ WARNING: Could not find Shark node in the scene")
+	# Note: Dynamically spawned sharks will connect their dolphin_touched signals
+	# through the ObstacleGenerator when they spawn
+	print("✅ GameManager initialized")
 
 
 # ============================================================================

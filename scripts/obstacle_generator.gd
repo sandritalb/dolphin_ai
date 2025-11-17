@@ -158,6 +158,11 @@ func _spawn_shark() -> void:
 		shark.process_mode = Node.PROCESS_MODE_INHERIT  # Enable physics
 		shark.set_meta("pooled", false)
 		active_sharks.append(shark)
+		# Connect to dolphin_touched signal if not already connected
+		if shark.has_signal("dolphin_touched"):
+			if not shark.dolphin_touched.is_connected(Callable(self, "_on_shark_dolphin_touched")):
+				shark.dolphin_touched.connect(Callable(self, "_on_shark_dolphin_touched"))
+				print("🔗 Connected shark's dolphin_touched signal to obstacle generator")
 
 
 func _spawn_boat() -> void:
@@ -245,6 +250,11 @@ func _despawn_out_of_view_obstacles() -> void:
 	for i in range(active_sharks.size() - 1, -1, -1):
 		var shark = active_sharks[i]
 		if shark.position.x < player.position.x - despawn_distance_behind:
+			# Disconnect signal before returning to pool
+			if shark.has_signal("dolphin_touched"):
+				if shark.dolphin_touched.is_connected(Callable(self, "_on_shark_dolphin_touched")):
+					shark.dolphin_touched.disconnect(Callable(self, "_on_shark_dolphin_touched"))
+			
 			shark.hide()
 			shark.process_mode = Node.PROCESS_MODE_DISABLED  # Disable physics
 			shark.set_meta("pooled", true)
@@ -272,3 +282,18 @@ func _update_spawn_chances() -> void:
 	current_shark_spawn_chance = min(shark_spawn_chance + (elapsed_time * spawn_chance_increase_rate), max_spawn_chance)
 	current_boat_spawn_chance = min(boat_spawn_chance + (elapsed_time * spawn_chance_increase_rate), max_spawn_chance)
 	# print("🔺 Updated spawn chances - Shark: %.2f, Boat: %.2f" % [current_shark_spawn_chance, current_boat_spawn_chance])
+
+
+# ============================================================================
+# SIGNAL HANDLERS
+# ============================================================================
+
+func _on_shark_dolphin_touched() -> void:
+	"""Handle when a shark touches the dolphin"""
+	print("🦈 Obstacle Generator: Shark touched dolphin!")
+	var game_manager = get_tree().root.get_node_or_null("Main")
+	if game_manager:
+		print("📍 Found GameManager, calling _on_shark_dolphin_touched()")
+		game_manager._on_shark_dolphin_touched()
+	else:
+		print("❌ GameManager not found!")
