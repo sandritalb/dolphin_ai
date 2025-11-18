@@ -19,7 +19,7 @@ extends CharacterBody2D
 @export var gravity = 800.0                # Gravity force (pixels/second²)
 
 # Speed burst on exit water
-@export var speed_burst_multiplier = 1.6   # Multiplier for speed burst
+@export var speed_burst_multiplier = 2.6   # Multiplier for speed burst
 @export var speed_burst_duration = 0.1     # Duration of speed burst in seconds
 
 # Water interaction

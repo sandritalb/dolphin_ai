@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://crvd34oyxlqvf"]
+[gd_scene load_steps=12 format=3 uid="uid://crvd34oyxlqvf"]
 
 [ext_resource type="Script" uid="uid://36mglcqoomaa" path="res://scripts/camera.gd" id="1_jyhfs"]
 [ext_resource type="Script" uid="uid://cygc517leoia2" path="res://scripts/game_manager.gd" id="1_tipki"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://ctx3a85l4ts2r" path="res://scenes/DolphinPlayer.tscn" id="5_tefeu"]
 [ext_resource type="Texture2D" uid="uid://db4qcr04q50pl" path="res://sprites/waves.png" id="5_ya4ey"]
 [ext_resource type="PackedScene" uid="uid://crsqhbm5qpveo" path="res://scenes/StartMenu.tscn" id="8_start"]
+[ext_resource type="PackedScene" uid="uid://cy45s7p4ru35f" path="res://scenes/DolphinPlayer2.tscn" id="8_ya4ey"]
 [ext_resource type="PackedScene" uid="uid://b7w4lqmx0kyt0" path="res://scenes/HUD.tscn" id="9_hud"]
 [ext_resource type="PackedScene" uid="uid://18qcs0m6sg1y" path="res://scenes/ResultMenu.tscn" id="10_result"]
 
@@ -51,6 +52,9 @@ scale = Vector2(50, 0.5)
 
 [node name="Obstacles" type="Node" parent="."]
 script = ExtResource("5_85g3d")
+pool_size = 30
+shark_spawn_chance = 0.8
+boat_spawn_chance = 0.8
 max_spawn_chance = 0.9
 
 [node name="SharkContainer" type="Node" parent="Obstacles"]
@@ -59,6 +63,9 @@ max_spawn_chance = 0.9
 
 [node name="DolphinPlayer" parent="." instance=ExtResource("5_tefeu")]
 position = Vector2(0, 50)
+
+[node name="DolphinPlayer2" parent="." instance=ExtResource("8_ya4ey")]
+position = Vector2(-2, -41)
 
 [node name="StartMenu" parent="." instance=ExtResource("8_start")]
 process_mode = 3

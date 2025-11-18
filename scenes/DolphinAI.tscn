@@ -48,7 +48,7 @@ scale = Vector2(0.3, 0.3)
 sprite_frames = SubResource("SpriteFrames_g1ctg")
 
 [node name="out" type="AnimatedSprite2D" parent="."]
-position = Vector2(-3.199997, -15.199997)
+position = Vector2(-4, -13.000001)
 scale = Vector2(0.3, 0.3)
 sprite_frames = SubResource("SpriteFrames_dl5jv")
 

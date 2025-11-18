@@ -1,12 +1,12 @@
-[gd_scene load_steps=10 format=3 uid="uid://ctx3a85l4ts2r"]
+[gd_scene load_steps=10 format=3 uid="uid://cy45s7p4ru35f"]
 
-[ext_resource type="Script" uid="uid://b3827jbbou8r" path="res://scripts/dolphin.gd" id="1_u1i24"]
-[ext_resource type="Texture2D" uid="uid://cw1woppy0s7d6" path="res://sprites/dolphin_in.png" id="2_xpcap"]
-[ext_resource type="Texture2D" uid="uid://degy36s5xlgv4" path="res://sprites/dolphin_out.png" id="4_g7ysk"]
-[ext_resource type="Script" uid="uid://ltbyqkt0a8ho" path="res://scripts/dolphin_player.gd" id="5_rqavp"]
+[ext_resource type="Script" uid="uid://b3827jbbou8r" path="res://scripts/dolphin.gd" id="1_ktj2f"]
+[ext_resource type="Texture2D" uid="uid://cw1woppy0s7d6" path="res://sprites/dolphin_in.png" id="2_d0ywq"]
+[ext_resource type="Texture2D" uid="uid://degy36s5xlgv4" path="res://sprites/dolphin_out.png" id="3_lrqrr"]
+[ext_resource type="Script" uid="uid://ltbyqkt0a8ho" path="res://scripts/dolphin_player.gd" id="4_uhewy"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qgn84"]
-atlas = ExtResource("2_xpcap")
+atlas = ExtResource("2_d0ywq")
 region = Rect2(512, 0, 512, 512)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_g1ctg"]
@@ -21,7 +21,7 @@ animations = [{
 }]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l8u8y"]
-atlas = ExtResource("4_g7ysk")
+atlas = ExtResource("3_lrqrr")
 region = Rect2(512, 0, 512, 512)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_dl5jv"]
@@ -40,7 +40,7 @@ radius = 13.266365
 height = 87.819145
 
 [node name="Dolphin" type="CharacterBody2D"]
-script = ExtResource("1_u1i24")
+script = ExtResource("1_ktj2f")
 
 [node name="in" type="AnimatedSprite2D" parent="."]
 position = Vector2(-3.199997, -15.199997)
@@ -48,6 +48,7 @@ scale = Vector2(0.3, 0.3)
 sprite_frames = SubResource("SpriteFrames_g1ctg")
 
 [node name="out" type="AnimatedSprite2D" parent="."]
+visible = false
 position = Vector2(-4, -13.000001)
 scale = Vector2(0.3, 0.3)
 sprite_frames = SubResource("SpriteFrames_dl5jv")
@@ -57,8 +58,9 @@ rotation = 1.3962634
 shape = SubResource("CapsuleShape2D_qgn84")
 
 [node name="DolphinPlayer" type="Node" parent="."]
-script = ExtResource("5_rqavp")
-key_right = "P1_right"
-key_left = "P1_left"
-key_up = "P1_up"
-key_down = "P1_down"
+script = ExtResource("4_uhewy")
+key_right = "P2_right"
+key_left = "P2_left"
+key_up = "P2_up"
+key_down = "P2_down"
+key_debug = "key_q"
