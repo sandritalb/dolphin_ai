@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://crvd34oyxlqvf"]
+[gd_scene load_steps=11 format=3 uid="uid://crvd34oyxlqvf"]
 
 [ext_resource type="Script" uid="uid://36mglcqoomaa" path="res://scripts/camera.gd" id="1_jyhfs"]
 [ext_resource type="Script" uid="uid://cygc517leoia2" path="res://scripts/game_manager.gd" id="1_tipki"]
@@ -8,7 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://ctx3a85l4ts2r" path="res://scenes/DolphinPlayer.tscn" id="5_tefeu"]
 [ext_resource type="Texture2D" uid="uid://db4qcr04q50pl" path="res://sprites/waves.png" id="5_ya4ey"]
 [ext_resource type="PackedScene" uid="uid://crsqhbm5qpveo" path="res://scenes/StartMenu.tscn" id="8_start"]
-[ext_resource type="PackedScene" path="res://scenes/HUD.tscn" id="9_hud"]
+[ext_resource type="PackedScene" uid="uid://b7w4lqmx0kyt0" path="res://scenes/HUD.tscn" id="9_hud"]
+[ext_resource type="PackedScene" uid="uid://18qcs0m6sg1y" path="res://scenes/ResultMenu.tscn" id="10_result"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_tipki")
@@ -61,7 +62,14 @@ position = Vector2(0, 50)
 
 [node name="StartMenu" parent="." instance=ExtResource("8_start")]
 process_mode = 3
-follow_viewport_enabled = true
+offset = Vector2(600, 400)
+transform = Transform2D(1, 0, 0, 1, 600, 400)
 
 [node name="HUD" parent="." node_paths=PackedStringArray("target") instance=ExtResource("9_hud")]
+offset = Vector2(20, 20)
+transform = Transform2D(1, 0, 0, 1, 20, 20)
 target = NodePath("../DolphinPlayer")
+
+[node name="ResultMenu" parent="." instance=ExtResource("10_result")]
+process_mode = 3
+follow_viewport_enabled = false
