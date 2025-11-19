@@ -53,8 +53,8 @@ scale = Vector2(50, 0.5)
 [node name="Obstacles" type="Node" parent="."]
 script = ExtResource("5_85g3d")
 pool_size = 30
-shark_spawn_chance = 0.8
-boat_spawn_chance = 0.8
+shark_spawn_chance = 0.4
+boat_spawn_chance = 0.4
 max_spawn_chance = 0.9
 
 [node name="SharkContainer" type="Node" parent="Obstacles"]

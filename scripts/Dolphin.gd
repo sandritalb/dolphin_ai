@@ -33,6 +33,9 @@ extends CharacterBody2D
 # Internal state
 var is_in_water: bool = true
 
+# Bubble Ring
+var bubble_ring_scene = preload("res://scenes/BubbleRing.tscn")
+
 # Speed burst state
 var speed_burst_timer: float = 0.0
 var is_speed_bursting: bool = false
@@ -151,6 +154,28 @@ func _physics_process(delta: float) -> void:
 
 
 # ============================================================================
+# ABILITIES
+# ============================================================================
+
+func spawn_bubble_ring() -> void:
+	if not is_in_water:
+		return
+		
+	if bubble_ring_scene:
+		var ring = bubble_ring_scene.instantiate()
+		# Add to the same parent as dolphin (usually the main scene)
+		get_parent().add_child(ring)
+		
+		# Spawn in front of the dolphin
+		# Use a slight offset so it doesn't spawn inside
+		var spawn_offset = Vector2.RIGHT.rotated(rotation) * 40.0
+		ring.position = position + spawn_offset
+		ring.rotation = rotation
+		
+		print("OoO Bubble Ring spawned!")
+
+
+# ============================================================================
 # COLLISION DETECTION
 # ============================================================================
 
@@ -206,6 +231,7 @@ func update_medium_state() -> void:
 	elif not was_in_water and is_in_water:
 		if controller and controller.has_method("on_enter_water"):
 			controller.on_enter_water()
+		spawn_bubble_ring()
 
 
 # ============================================================================

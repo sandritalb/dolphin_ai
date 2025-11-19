@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dlv05702ddra5"]
 
-[ext_resource type="Texture2D" uid="uid://bno1y7ikga7ri" path="res://sprites/wate_drop.png" id="1_q3rhi"]
+[ext_resource type="Texture2D" uid="uid://generateddrop1" path="res://materials/generated_drop.tres" id="1_q3rhi"]
 
 [sub_resource type="Gradient" id="Gradient_c4tww"]
 offsets = PackedFloat32Array(0.27093595, 1)
