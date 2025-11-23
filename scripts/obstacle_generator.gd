@@ -207,8 +207,8 @@ func _position_boat_ahead(boat: Node2D) -> void:
 
 
 func _get_valid_boat_spawn_position() -> Variant:
-	# Try to find a spawn position that's at least 150 pixels away from other boats
-	const MIN_DISTANCE: float = 150.0
+	# Try to find a spawn position that's at least 400 pixels away from other boats
+	const MIN_DISTANCE: float = 400.0
 	const MAX_ATTEMPTS: int = 5
 	
 	for attempt in range(MAX_ATTEMPTS):

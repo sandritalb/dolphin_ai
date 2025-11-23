@@ -134,6 +134,13 @@ func _physics_process(delta: float) -> void:
 	
 	# Apply velocity and collision
 	velocity = velocity  # This just assigns our calculated velocity
+	
+	# Cap velocity to maximum speed of 1000 or 600 in water
+	if velocity.length() > 1000.0 and not is_in_water:
+		velocity = velocity.normalized() * 1000.0
+	elif velocity.length() > 600.0 and is_in_water:
+		velocity = velocity.normalized() * 600
+	
 	move_and_slide()
 	
 	# Rotate dolphin toward movement direction
