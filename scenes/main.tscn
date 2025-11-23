@@ -13,13 +13,17 @@
 [ext_resource type="PackedScene" uid="uid://18qcs0m6sg1y" path="res://scenes/ResultMenu.tscn" id="10_result"]
 [ext_resource type="AudioStream" uid="uid://mgxtcdgv6tna" path="res://sounds/audio.mp3" id="12_eb6dy"]
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node"]
 script = ExtResource("1_tipki")
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("target_a", "target_b")]
+limit_smoothed = true
+editor_draw_limits = true
+editor_draw_drag_margin = true
 script = ExtResource("1_jyhfs")
 target_a = NodePath("../DolphinPlayer")
 target_b = NodePath("../DolphinPlayer2")
+lookahead_distance = 400.0
 
 [node name="background" type="Node" parent="."]
 
@@ -59,23 +63,30 @@ max_spawn_chance = 0.9
 
 [node name="BoatContainer" type="Node" parent="Obstacles"]
 
+[node name="Spawn1" type="Node2D" parent="."]
+
+[node name="Spawn2" type="Node2D" parent="."]
+position = Vector2(0, 128)
+
 [node name="DolphinPlayer" parent="." instance=ExtResource("5_tefeu")]
 position = Vector2(0, 50)
 
 [node name="DolphinPlayer2" parent="." instance=ExtResource("8_ya4ey")]
 position = Vector2(-2, 48)
 
-[node name="StartMenu" parent="." instance=ExtResource("8_start")]
+[node name="Canvas" type="Node2D" parent="."]
+
+[node name="StartMenu" parent="Canvas" instance=ExtResource("8_start")]
 process_mode = 3
 offset = Vector2(600, 400)
 transform = Transform2D(1, 0, 0, 1, 600, 400)
 
-[node name="HUD" parent="." node_paths=PackedStringArray("target") instance=ExtResource("9_hud")]
+[node name="HUD" parent="Canvas" node_paths=PackedStringArray("target") instance=ExtResource("9_hud")]
 offset = Vector2(20, 20)
 transform = Transform2D(1, 0, 0, 1, 20, 20)
-target = NodePath("../DolphinPlayer")
+target = NodePath("../../DolphinPlayer")
 
-[node name="ResultMenu" parent="." instance=ExtResource("10_result")]
+[node name="ResultMenu" parent="Canvas" instance=ExtResource("10_result")]
 process_mode = 3
 follow_viewport_enabled = false
 

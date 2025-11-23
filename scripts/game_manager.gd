@@ -8,8 +8,11 @@ extends Node
 # ============================================================================
 # REFERENCES
 # ============================================================================
-@onready var hud: CanvasLayer = $HUD
-@onready var result_menu: CanvasLayer = $ResultMenu
+@onready var hud: CanvasLayer = $Canvas/HUD
+@onready var result_menu: CanvasLayer = $Canvas/ResultMenu
+@onready var camera: Camera2D = $Camera2D
+@onready var spawn1: Node2D = $Spawn1
+@onready var spawn2: Node2D = $Spawn2
 
 # ============================================================================
 # SIGNALS
