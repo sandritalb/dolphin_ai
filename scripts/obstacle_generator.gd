@@ -63,7 +63,6 @@ var current_boat_spawn_chance: float = 0.0
 
 func _ready() -> void:
 	# Get references
-	player = get_tree().root.get_node("Main/DolphinPlayer")
 	shark_container = get_node(SHARK_CONTAINER_NAME)
 	boat_container = get_node(BOAT_CONTAINER_NAME)
 	
@@ -80,9 +79,8 @@ func _ready() -> void:
 		boat_container.name = BOAT_CONTAINER_NAME
 		get_parent().add_child(boat_container)
 	
-	if not player:
-		print("❌ ERROR: Dolphin player not found!")
-		return
+	# Note: Player will be set dynamically by game manager
+	# This allows for flexible game mode setup
 	
 	# Initialize pools
 	_initialize_pools()
@@ -287,6 +285,15 @@ func _update_spawn_chances() -> void:
 # ============================================================================
 # SIGNAL HANDLERS
 # ============================================================================
+
+func connect_shark_signals_to_target(target: Node) -> void:
+	"""
+	Dynamically set the player target and connect shark signals.
+	Called by GameManager when a game mode is selected.
+	"""
+	player = target
+	print("🎯 Obstacle Generator: Setting player target to: %s" % target.name)
+
 
 func _on_shark_dolphin_touched() -> void:
 	"""Handle when a shark touches the dolphin"""

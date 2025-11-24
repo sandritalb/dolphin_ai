@@ -27,11 +27,17 @@ horizontal_alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ActionButton" type="Button" parent="Panel/VBoxContainer"]
+[node name="SinglePlayerButton" type="Button" parent="Panel/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 2
-text = "Start Game"
+text = "1 Player"
+
+[node name="TwoPlayersButton" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 2
+text = "2 Players"
 
 [node name="QuitButton" type="Button" parent="Panel/VBoxContainer"]
 layout_mode = 2

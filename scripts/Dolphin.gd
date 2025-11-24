@@ -50,8 +50,6 @@ var sprite_out: AnimatedSprite2D
 
 
 func _ready():
-	# Initialize state
-	position.y = water_level
 	velocity = Vector2.ZERO
 	is_in_water = true
 	
@@ -62,13 +60,13 @@ func _ready():
 	# Find controller node (either dolphin_player or dolphin_ai)
 	if has_node("DolphinPlayer"):
 		controller = get_node("DolphinPlayer")
-		print("🎮 Player Dolphin initialized")
+		print("🎮 Player Dolphin initialized at position: ", position)
 	elif has_node("DolphinPlayer2"):
 		controller = get_node("DolphinPlayer2")
-		print("🎮 Player Dolphin 2 initialized")
+		print("🎮 Player Dolphin 2 initialized at position: ", position)
 	elif has_node("DolphinAI"):
 		controller = get_node("DolphinAI")
-		print("🤖 AI Dolphin initialized")
+		print("🤖 AI Dolphin initialized at position: ", position)
 	else:
 		print("⚠️ WARNING: No controller node found (DolphinPlayer or DolphinAI)")
 	

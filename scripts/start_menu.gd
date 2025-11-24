@@ -1,10 +1,24 @@
 # ============================================================================
-# PAUSE MENU - Pause menu that appears on ESC key
-# Handles menu interactions and game pause/resume
+# START MENU - Start menu with game mode selection
+# Handles game mode selection (1 player vs 2 players)
 # ============================================================================
 
 extends CanvasLayer
 
+# ============================================================================
+# SIGNALS
+# ============================================================================
+signal game_mode_selected(mode: int)  # 1 for single player, 2 for two players
+
+# ============================================================================
+# CONSTANTS
+# ============================================================================
+const MODE_1_PLAYER = 1
+const MODE_2_PLAYERS = 2
+
+# ============================================================================
+# VARIABLES
+# ============================================================================
 var game_started: bool = false
 var menu_visible: bool = false
 var result_menu_active: bool = false
@@ -14,21 +28,25 @@ var result_menu_active: bool = false
 # ============================================================================
 
 func _ready() -> void:
-	print("🎮 PauseMenu: _ready() called")
+	print("🎮 StartMenu: _ready() called")
 	
 	# Get button references
-	var action_btn = $Panel/VBoxContainer/ActionButton
+	var single_player_btn = $Panel/VBoxContainer/SinglePlayerButton
+	var two_player_btn = $Panel/VBoxContainer/TwoPlayersButton
 	var quit_btn = $Panel/VBoxContainer/QuitButton
 	
-	print("Action button: ", action_btn)
-	print("Quit button: ", quit_btn)
-	
-	# Connect button signals
-	if action_btn:
-		action_btn.pressed.connect(_on_action_pressed)
-		print("✅ Connected ActionButton")
+	# Connect mode selection buttons
+	if single_player_btn:
+		single_player_btn.pressed.connect(_on_single_player_pressed)
+		print("✅ Connected SinglePlayerButton")
 	else:
-		print("❌ Could not find ActionButton")
+		print("❌ Could not find SinglePlayerButton")
+	
+	if two_player_btn:
+		two_player_btn.pressed.connect(_on_two_players_pressed)
+		print("✅ Connected TwoPlayersButton")
+	else:
+		print("❌ Could not find TwoPlayersButton")
 	
 	if quit_btn:
 		quit_btn.pressed.connect(_on_quit_pressed)
@@ -36,15 +54,7 @@ func _ready() -> void:
 	else:
 		print("❌ Could not find QuitButton")
 	
-	# Connect to result menu signals
-	var result_menu = get_tree().root.get_node_or_null("Main/ResultMenu")
-	if result_menu:
-		if result_menu.has_signal("result_menu_shown"):
-			result_menu.result_menu_shown.connect(_on_result_menu_shown)
-		if result_menu.has_signal("result_menu_hidden"):
-			result_menu.result_menu_hidden.connect(_on_result_menu_hidden)
-	
-	get_tree().paused = true
+	print("✅ StartMenu initialized")
 
 func _input(event: InputEvent) -> void:
 	# Toggle menu with ESC key
@@ -54,7 +64,7 @@ func _input(event: InputEvent) -> void:
 	
 	if event.is_action_pressed("ui_cancel"):
 		if menu_visible:
-			_on_action_pressed()  # Resume
+			_on_quit_pressed()  # Quit on menu
 		else:
 			show_menu()
 
@@ -64,22 +74,13 @@ func _input(event: InputEvent) -> void:
 # ============================================================================
 
 func show_menu() -> void:
-	print("📋 Showing pause menu...")
+	print("📋 Showing start menu...")
 	menu_visible = true
 	visible = true
-	get_tree().paused = true
-	
-	# Update button text based on game state
-	var action_btn = $Panel/VBoxContainer/ActionButton
-	if action_btn:
-		if game_started:
-			action_btn.text = "Resume Game"
-		else:
-			action_btn.text = "Start Game"
 
 
 func hide_menu() -> void:
-	print("📋 Hiding pause menu...")
+	print("📋 Hiding start menu...")
 	menu_visible = false
 	visible = false
 
@@ -88,16 +89,18 @@ func hide_menu() -> void:
 # SIGNAL HANDLERS
 # ============================================================================
 
-func _on_action_pressed() -> void:
-	if game_started:
-		print("▶️ Resuming game...")
-		get_tree().paused = false
-		hide_menu()
-	else:
-		print("🎮 Starting game...")
-		game_started = true
-		get_tree().paused = false
-		hide_menu()
+func _on_single_player_pressed() -> void:
+	print("🎮 Starting Single Player mode...")
+	game_started = true
+	game_mode_selected.emit(MODE_1_PLAYER)
+	hide_menu()
+
+
+func _on_two_players_pressed() -> void:
+	print("🎮 Starting Two Players mode...")
+	game_started = true
+	game_mode_selected.emit(MODE_2_PLAYERS)
+	hide_menu()
 
 
 func _on_quit_pressed() -> void:
@@ -106,10 +109,10 @@ func _on_quit_pressed() -> void:
 
 
 func _on_result_menu_shown() -> void:
-	print("📊 Result menu shown - disabling pause menu input")
+	print("📊 Result menu shown - disabling start menu input")
 	result_menu_active = true
 
 
 func _on_result_menu_hidden() -> void:
-	print("📊 Result menu hidden - enabling pause menu input")
+	print("📊 Result menu hidden - enabling start menu input")
 	result_menu_active = false
