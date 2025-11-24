@@ -1,6 +1,6 @@
 # ============================================================================
 # DOLPHIN PLAYER - Player input controller (composition)
-# Handles human player input and control
+# Handles human player input and control (keyboard + joystick)
 # ============================================================================
 
 extends Node
@@ -11,6 +11,11 @@ extends Node
 @export var key_up: String = "ui_up"
 @export var key_down: String = "ui_down"
 @export var key_debug: String = "ui_accept"
+
+# Joystick axis names (for analog stick support)
+@export var joy_axis_x: String = ""  # e.g., "P1_joy_x" or "P2_joy_x"
+@export var joy_axis_y: String = ""  # e.g., "P1_joy_y" or "P2_joy_y"
+@export var joystick_deadzone: float = 0.2
 
 # Parent dolphin reference
 var dolphin: Node = null
@@ -33,6 +38,7 @@ func get_input(_delta: float) -> Vector2:
 	
 	# Directional controls - only work in water!
 	if is_in_water:
+		# Keyboard input
 		if Input.is_action_pressed(key_right):
 			input_direction.x = 1.0
 		if Input.is_action_pressed(key_left):
@@ -41,6 +47,15 @@ func get_input(_delta: float) -> Vector2:
 			input_direction.y = -1.0
 		if Input.is_action_pressed(key_down):
 			input_direction.y = 1.0
+		
+		# Joystick analog stick input (if configured)
+		var joy_input = get_joystick_input()
+		if joy_input.length() > joystick_deadzone:
+			# Joystick overrides keyboard if active
+			if abs(joy_input.x) > joystick_deadzone:
+				input_direction.x = 1.0 if joy_input.x > 0 else 0.0
+			if abs(joy_input.y) > joystick_deadzone:
+				input_direction.y = joy_input.y
 	
 	# Debug input
 	if Input.is_action_just_pressed(key_debug):
@@ -48,6 +63,23 @@ func get_input(_delta: float) -> Vector2:
 			dolphin.print_debug_info()
 	
 	return input_direction
+
+
+func get_joystick_input() -> Vector2:
+	"""Get joystick analog stick input as a Vector2"""
+	var joy_vector = Vector2.ZERO
+	
+	# Use axis actions if configured
+	if joy_axis_x != "" and InputMap.has_action(joy_axis_x + "_pos"):
+		joy_vector.x = Input.get_action_strength(joy_axis_x + "_pos") - Input.get_action_strength(joy_axis_x + "_neg")
+	if joy_axis_y != "" and InputMap.has_action(joy_axis_y + "_pos"):
+		joy_vector.y = Input.get_action_strength(joy_axis_y + "_pos") - Input.get_action_strength(joy_axis_y + "_neg")
+	
+	# Apply deadzone
+	if joy_vector.length() < joystick_deadzone:
+		return Vector2.ZERO
+	
+	return joy_vector
 
 
 func on_exit_water() -> void:
