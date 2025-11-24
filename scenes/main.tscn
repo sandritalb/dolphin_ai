@@ -31,7 +31,7 @@ scale = Vector2(6.1693363, 0.45)
 texture = ExtResource("4_choun")
 
 [node name="WaterBody" parent="background" instance=ExtResource("4_eb6dy")]
-position = Vector2(-600, 0)
+position = Vector2(-591, -466)
 spring_number = 50
 distance_between_springs = 40
 depth = 500.0
@@ -63,7 +63,7 @@ max_spawn_chance = 0.9
 position = Vector2(0, -50)
 
 [node name="Spawn2" type="Node2D" parent="."]
-position = Vector2(0, 75)
+position = Vector2(0, 73)
 
 [node name="Canvas" type="Node2D" parent="."]
 

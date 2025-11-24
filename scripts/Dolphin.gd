@@ -43,6 +43,10 @@ var is_speed_bursting: bool = false
 # Stun state
 var is_stunned: bool = false
 
+# Screen visibility tracking
+var was_visible_last_frame: bool = false
+var dolphin_name: String = ""
+
 # Controller references
 var controller: Node = null
 var sprite_in: AnimatedSprite2D
@@ -60,15 +64,22 @@ func _ready():
 	# Find controller node (either dolphin_player or dolphin_ai)
 	if has_node("DolphinPlayer"):
 		controller = get_node("DolphinPlayer")
+		dolphin_name = "🎮 Player Dolphin"
 		print("🎮 Player Dolphin initialized at position: ", position)
 	elif has_node("DolphinPlayer2"):
 		controller = get_node("DolphinPlayer2")
-		print("🎮 Player Dolphin 2 initialized at position: ", position)
+		dolphin_name = "🐬 Player Dolphin 2"
+		print("🐬 Player Dolphin 2 initialized at position: ", position)
 	elif has_node("DolphinAI"):
 		controller = get_node("DolphinAI")
+		dolphin_name = "🤖 AI Dolphin"
 		print("🤖 AI Dolphin initialized at position: ", position)
 	else:
+		dolphin_name = "⚠️ Unknown Dolphin"
 		print("⚠️ WARNING: No controller node found (DolphinPlayer or DolphinAI)")
+	
+	# Initialize visibility tracking
+	was_visible_last_frame = get_viewport().get_visible_rect().has_point(position)
 	
 	# Notify controller that it's ready
 	if controller and controller.has_method("on_ready"):
@@ -78,6 +89,9 @@ func _ready():
 func _physics_process(delta: float) -> void:
 	# Update medium detection
 	update_medium_state()
+	
+	# Check screen visibility
+	_check_screen_visibility()
 	
 	# Update speed burst timer
 	if is_speed_bursting:
@@ -242,6 +256,17 @@ func update_medium_state() -> void:
 # ============================================================================
 # DEBUG / VISUALIZATION
 # ============================================================================
+
+func _check_screen_visibility() -> void:
+	"""Detect when dolphin disappears from screen by going left (based on X axis only)"""
+	var viewport_rect = get_viewport().get_visible_rect()
+	var viewport_x = viewport_rect.position.x - viewport_rect.size.x * 0.5
+	var is_visible_now = position.x > viewport_x and position.x < viewport_x + viewport_rect.size.x
+	if not is_visible_now:
+		print("%s 📺 DISAPPEARED LEFT from screen at X position: %.1f" % [dolphin_name, position.x], viewport_rect.position.x)
+
+	was_visible_last_frame = is_visible_now
+
 
 func print_debug_info() -> void:
 	var controller_type = "Unknown"
