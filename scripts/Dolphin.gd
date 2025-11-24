@@ -6,6 +6,11 @@
 extends CharacterBody2D
 
 # ============================================================================
+# SIGNALS
+# ============================================================================
+signal dolphin_disappeared_from_screen(dolphin: Node, dolphin_name: String)
+
+# ============================================================================
 # MOVEMENT PHYSICS
 # ============================================================================
 @export var max_speed = 300.0              # Maximum movement speed (pixels/second)
@@ -259,12 +264,28 @@ func update_medium_state() -> void:
 
 func _check_screen_visibility() -> void:
 	"""Detect when dolphin disappears from screen by going left (based on X axis only)"""
-	var viewport_rect = get_viewport().get_visible_rect()
-	var viewport_x = viewport_rect.position.x - viewport_rect.size.x * 0.5
-	var is_visible_now = position.x > viewport_x and position.x < viewport_x + viewport_rect.size.x
-	if not is_visible_now:
-		print("%s 📺 DISAPPEARED LEFT from screen at X position: %.1f" % [dolphin_name, position.x], viewport_rect.position.x)
-
+	var camera = get_viewport().get_camera_2d()
+	if not camera:
+		return
+	
+	# Get viewport size and camera position to calculate visible world bounds
+	var viewport_size = get_viewport().get_visible_rect().size
+	var camera_pos = camera.global_position
+	var zoom = camera.zoom
+	
+	# Calculate the left edge of the visible area in world coordinates
+	var half_width = (viewport_size.x / zoom.x) * 0.5
+	var left_edge = camera_pos.x - half_width
+	var right_edge = camera_pos.x + half_width
+	
+	var is_visible_now = position.x > left_edge and position.x < right_edge
+	
+	if not is_visible_now and was_visible_last_frame:
+		print("%s 📺 DISAPPEARED from screen at X: %.1f (left edge: %.1f)" % [dolphin_name, position.x, left_edge])
+		
+		# Emit signal with dolphin name and let game manager handle the result
+		dolphin_disappeared_from_screen.emit(self, dolphin_name)
+		
 	was_visible_last_frame = is_visible_now
 
 

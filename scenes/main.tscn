@@ -26,7 +26,7 @@ lookahead_distance = 400.0
 [node name="sea" type="Sprite2D" parent="background"]
 z_index = -1
 z_as_relative = false
-position = Vector2(2582.3, 103)
+position = Vector2(2583.3003, 103)
 scale = Vector2(6.1693363, 0.45)
 texture = ExtResource("4_choun")
 

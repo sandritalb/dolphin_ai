@@ -33,6 +33,11 @@ var game_mode: int = 0
 var dolphin_player: Node = null
 var dolphin_opponent: Node = null
 
+# Dolphin tags for identification (used to determine winner)
+const TAG_PLAYER_1 = "Player 1"
+const TAG_PLAYER_2 = "Player 2"
+const TAG_AI = "AI"
+
 # ============================================================================
 # SIGNALS
 # ============================================================================
@@ -70,104 +75,115 @@ func _on_game_mode_selected(mode: int) -> void:
 	game_mode = mode
 	
 	if game_mode == MODE_1_PLAYER:
-		_setup_dolphins_vs_ai()
+		_setup_game(DOLPHIN_PLAYER, TAG_PLAYER_1, DOLPHIN_AI, TAG_AI)
 	elif game_mode == MODE_2_PLAYERS:
-		_setup_dolphins_vs_player()
+		_setup_game(DOLPHIN_PLAYER, TAG_PLAYER_1, DOLPHIN_PLAYER2, TAG_PLAYER_2)
 
 
-func _setup_dolphins_vs_ai() -> void:
-	"""Setup 1 Player mode: DolphinPlayer vs DolphinAI"""
-	print("🐬 GameManager: Setting up 1 Player mode (vs AI)")
+# ============================================================================
+# GAME SETUP
+# ============================================================================
+
+func _setup_game(player_scene: PackedScene, player_tag: String, opponent_scene: PackedScene, opponent_tag: String) -> void:
+	"""Setup game with specified dolphin scenes and tags"""
+	print("🐬 GameManager: Setting up game - %s vs %s" % [player_tag, opponent_tag])
 	
 	# Clear existing dolphins
+	_clear_dolphins()
+	
+	# Instantiate dolphins
+	dolphin_player = _create_dolphin(player_scene, spawn1.position, player_tag)
+	dolphin_opponent = _create_dolphin(opponent_scene, spawn2.position, opponent_tag)
+	
+	# Connect signals and setup game systems
+	_connect_dolphin_signals()
+	_setup_obstacle_generator()
+	_setup_camera()
+	_setup_hud()
+	
+	# Start game
+	get_tree().paused = false
+	print("▶️ Game unpaused - Starting %s vs %s!" % [player_tag, opponent_tag])
+
+
+func _clear_dolphins() -> void:
+	"""Clear existing dolphin instances"""
 	if dolphin_player:
 		dolphin_player.queue_free()
+		dolphin_player = null
 	if dolphin_opponent:
 		dolphin_opponent.queue_free()
-	
-	# Instantiate DolphinPlayer at spawn1
-	dolphin_player = DOLPHIN_PLAYER.instantiate()
-	dolphin_player.position = spawn1.position
-	add_child(dolphin_player)
-	print("🐬 DolphinPlayer instantiated at position: ", dolphin_player.position)
-	
-	# Instantiate DolphinAI at spawn2
-	dolphin_opponent = DOLPHIN_AI.instantiate()
-	dolphin_opponent.position = spawn2.position
-	add_child(dolphin_opponent)
-	print("🦾 DolphinAI instantiated at position: ", dolphin_opponent.position)
-	
-	# Connect shark signals to player
+		dolphin_opponent = null
+
+
+func _create_dolphin(scene: PackedScene, spawn_position: Vector2, tag: String) -> Node:
+	"""Create and configure a dolphin instance"""
+	var dolphin = scene.instantiate()
+	dolphin.position = spawn_position
+	dolphin.set_meta("dolphin_tag", tag)
+	add_child(dolphin)
+	print("🐬 %s dolphin instantiated at position: %s" % [tag, dolphin.position])
+	return dolphin
+
+
+func _connect_dolphin_signals() -> void:
+	"""Connect disappear signals from both dolphins"""
+	if dolphin_player and dolphin_player.has_signal("dolphin_disappeared_from_screen"):
+		dolphin_player.dolphin_disappeared_from_screen.connect(_on_dolphin_disappeared)
+	if dolphin_opponent and dolphin_opponent.has_signal("dolphin_disappeared_from_screen"):
+		dolphin_opponent.dolphin_disappeared_from_screen.connect(_on_dolphin_disappeared)
+
+
+func _setup_obstacle_generator() -> void:
+	"""Connect obstacle generator signals to player dolphin"""
 	var obstacle_generator = get_node_or_null("Obstacles")
 	if obstacle_generator:
 		obstacle_generator.connect_shark_signals_to_target(dolphin_player)
-		print("🔗 Connected obstacle generator to DolphinPlayer")
-	
-	# Update camera target
+		print("🔗 Connected obstacle generator to player dolphin")
+
+
+func _setup_camera() -> void:
+	"""Setup camera to follow both dolphins"""
 	if camera:
 		camera.target_a = dolphin_player
 		camera.target_b = dolphin_opponent
-		print("📷 Camera setup: following DolphinPlayer and DolphinAI")
-	
-	# Update HUD target
-	if hud and hud.has_method("set_target"):
-		hud.set_target(dolphin_player)
-		print("📊 HUD tracking DolphinPlayer")
-	
-	# Unpause game to start
-	get_tree().paused = false
-	print("▶️ Game unpaused - Starting 1 Player mode!")
+		print("📷 Camera setup: following both dolphins")
 
 
-func _setup_dolphins_vs_player() -> void:
-	"""Setup 2 Players mode: DolphinPlayer vs DolphinPlayer2"""
-	print("🐬 GameManager: Setting up 2 Players mode (vs Player)")
-	print("📍 Spawn1 position: ", spawn1.position)
-	print("📍 Spawn2 position: ", spawn2.position)
-	
-	# Clear existing dolphins
-	if dolphin_player:
-		dolphin_player.queue_free()
-	if dolphin_opponent:
-		dolphin_opponent.queue_free()
-	
-	# Instantiate DolphinPlayer at spawn1
-	dolphin_player = DOLPHIN_PLAYER.instantiate()
-	dolphin_player.position = spawn1.position
-	add_child(dolphin_player)
-	print("🐬 DolphinPlayer instantiated at position: ", dolphin_player.position)
-	
-	# Instantiate DolphinPlayer2 at spawn2
-	dolphin_opponent = DOLPHIN_PLAYER2.instantiate()
-	dolphin_opponent.position = spawn2.position
-	add_child(dolphin_opponent)
-	print("🐬 DolphinPlayer2 instantiated at position: ", dolphin_opponent.position)
-	
-	# Connect shark signals to first player
-	var obstacle_generator = get_node_or_null("Obstacles")
-	if obstacle_generator:
-		obstacle_generator.connect_shark_signals_to_target(dolphin_player)
-		print("🔗 Connected obstacle generator to DolphinPlayer")
-	
-	# Update camera to follow both players
-	if camera:
-		camera.target_a = dolphin_player
-		camera.target_b = dolphin_opponent
-		print("📷 Camera setup: following both DolphinPlayer and DolphinPlayer2")
-	
-	# Update HUD target to first player
+func _setup_hud() -> void:
+	"""Setup HUD to track player dolphin"""
 	if hud and hud.has_method("set_target"):
 		hud.set_target(dolphin_player)
-		print("📊 HUD tracking DolphinPlayer")
-	
-	# Unpause game to start
-	get_tree().paused = false
-	print("▶️ Game unpaused - Starting 2 Player mode!")
+		print("📊 HUD tracking player dolphin")
 
 
 func _on_shark_dolphin_touched() -> void:
 	print("🎮 GameManager: Dolphin was touched by shark!")
 	show_result_menu()
+
+
+func _on_dolphin_disappeared(disappeared_dolphin: Node, _disappeared_dolphin_name: String) -> void:
+	"""Handle when a dolphin disappears from screen - the other dolphin wins"""
+	print("🎮 GameManager: Dolphin disappeared - ", disappeared_dolphin.name)
+	
+	# The winner is the OTHER dolphin (the one that didn't disappear)
+	var winner_tag = ""
+	if disappeared_dolphin == dolphin_player:
+		winner_tag = dolphin_opponent.get_meta("dolphin_tag", "Unknown")
+	else:
+		winner_tag = dolphin_player.get_meta("dolphin_tag", "Unknown")
+	
+	var winner_name = "🏆 %s Wins!" % winner_tag
+	
+	# Show result menu with winner
+	var current_distance = 0.0
+	if hud and hud.has_method("get_current_distance"):
+		current_distance = hud.get_current_distance()
+	
+	if result_menu and result_menu.has_method("show_result"):
+		result_menu.show_result(current_distance, winner_name)
+	
+	print("🏆 Game Over! " + winner_name)
 
 
 func _on_restart_game_requested() -> void:
