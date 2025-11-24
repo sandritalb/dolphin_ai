@@ -45,14 +45,14 @@ var active_boats: Array = []
 @export var spawn_cycle_time: float = 2.0  # Seconds between spawn attempts
 @export var shark_min_depth_offset: float = 50.0  # Minimum offset below water level
 @export var shark_max_depth: float = 350.0  # Maximum depth (above this value)
-@export var spawn_chance_increase_rate: float = 0.004  # How much to increase spawn chances per second
+@export var spawn_chance_increase_rate: float = 0.0001  # How much to increase spawn chances per unit distance
 @export var max_spawn_chance: float = 0.8  # Maximum spawn chance cap
 
 # ============================================================================
 # INTERNAL STATE
 # ============================================================================
 var spawn_timer: float = 0.0
-var elapsed_time: float = 0.0  # Track time to increase spawn chances
+var start_position_x: float = 0.0  # Track starting position to calculate distance
 var current_shark_spawn_chance: float = 0.0
 var current_boat_spawn_chance: float = 0.0
 
@@ -96,8 +96,7 @@ func _physics_process(delta: float) -> void:
 	if not player:
 		return
 	
-	# Track elapsed time and increase spawn chances
-	elapsed_time += delta
+	# Update spawn chances based on distance traveled
 	_update_spawn_chances()
 	
 	# Update spawn timer
@@ -276,10 +275,11 @@ func _despawn_out_of_view_obstacles() -> void:
 # ============================================================================
 
 func _update_spawn_chances() -> void:
-	# Increase spawn chances based on elapsed time
-	current_shark_spawn_chance = min(shark_spawn_chance + (elapsed_time * spawn_chance_increase_rate), max_spawn_chance)
-	current_boat_spawn_chance = min(boat_spawn_chance + (elapsed_time * spawn_chance_increase_rate), max_spawn_chance)
-	# print("🔺 Updated spawn chances - Shark: %.2f, Boat: %.2f" % [current_shark_spawn_chance, current_boat_spawn_chance])
+	# Increase spawn chances based on distance traveled
+	var distance_traveled = max(0.0, player.position.x - start_position_x)
+	current_shark_spawn_chance = min(shark_spawn_chance + (distance_traveled * spawn_chance_increase_rate), max_spawn_chance)
+	current_boat_spawn_chance = min(boat_spawn_chance + (distance_traveled * spawn_chance_increase_rate), max_spawn_chance)
+	# print("🔺 Updated spawn chances - Shark: %.2f, Boat: %.2f (distance: %.0f)" % [current_shark_spawn_chance, current_boat_spawn_chance, distance_traveled])
 
 
 # ============================================================================
@@ -292,6 +292,7 @@ func connect_shark_signals_to_target(target: Node) -> void:
 	Called by GameManager when a game mode is selected.
 	"""
 	player = target
+	start_position_x = target.position.x  # Record starting position for distance tracking
 	print("🎯 Obstacle Generator: Setting player target to: %s" % target.name)
 
 

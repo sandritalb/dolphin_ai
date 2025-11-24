@@ -151,10 +151,10 @@ func _setup_camera() -> void:
 
 
 func _setup_hud() -> void:
-	"""Setup HUD to track player dolphin"""
-	if hud and hud.has_method("set_target"):
-		hud.set_target(dolphin_player)
-		print("📊 HUD tracking player dolphin")
+	"""Setup HUD to track both dolphins for max distance"""
+	if hud and hud.has_method("set_targets"):
+		hud.set_targets(dolphin_player, dolphin_opponent)
+		print("📊 HUD tracking both dolphins for max distance")
 
 
 func _on_shark_dolphin_touched() -> void:
