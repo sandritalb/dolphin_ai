@@ -40,6 +40,10 @@ var wave_spring_spacing = 2  # Apply waves every N springs
 
 @export var water_motion_factor = 0.006
 
+# Camera following - water moves with the camera
+var camera: Camera2D = null
+var last_camera_x: float = 0.0
+
 
 func _ready() -> void:
 	water_border.width = border_thickness
@@ -50,9 +54,18 @@ func _ready() -> void:
 		w.initialize(x_pos, water_motion_factor)
 		add_child(w)
 		springs.append(w)
+	
+	# Find the camera in the scene
+	await get_tree().process_frame
+	camera = get_viewport().get_camera_2d()
+	if camera:
+		last_camera_x = camera.global_position.x
 
 
 func _physics_process(_delta: float) -> void:
+	# Move water springs with the camera
+	_update_springs_with_camera()
+	
 	# Generate waves constantly
 	if wave_enabled:
 		wave_timer -= _delta
@@ -87,6 +100,37 @@ func _physics_process(_delta: float) -> void:
 	
 	draw_water_body()
 	draw_water_border()
+
+
+func _update_springs_with_camera() -> void:
+	if not camera:
+		camera = get_viewport().get_camera_2d()
+		if camera:
+			last_camera_x = camera.global_position.x
+		return
+	
+	var current_camera_x = camera.global_position.x
+	var camera_delta = current_camera_x - last_camera_x
+	
+	# Only process if camera moved right significantly
+	if camera_delta < distance_between_springs:
+		return
+	
+	last_camera_x = current_camera_x
+	
+	# Take the first spring (leftmost) and move it to the end (rightmost)
+	var first_spring = springs[0]
+	var last_spring = springs[springs.size() - 1]
+	
+	# Move first spring to be after the last spring
+	first_spring.position.x = last_spring.position.x + distance_between_springs
+	first_spring.velocity = 0
+	first_spring.height = first_spring.target_height
+	first_spring.position.y = first_spring.target_height
+	
+	# Remove from front and add to back
+	springs.pop_front()
+	springs.push_back(first_spring)
 	
 
 func splash(index: int, velocity: float) -> void:

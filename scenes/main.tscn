@@ -26,15 +26,18 @@ lookahead_distance = 400.0
 [node name="sea" type="Sprite2D" parent="background"]
 z_index = -1
 z_as_relative = false
-position = Vector2(2583.3003, 103)
-scale = Vector2(6.1693363, 0.45)
+position = Vector2(2583.0002, 120.19999)
+scale = Vector2(6.169922, 0.41640624)
 texture = ExtResource("4_choun")
 
 [node name="WaterBody" parent="background" instance=ExtResource("4_eb6dy")]
-position = Vector2(-591, -466)
+process_mode = 3
+modulate = Color(18.892157, 18.892157, 18.892157, 1)
+position = Vector2(-578, -127)
 spring_number = 50
 distance_between_springs = 40
-depth = 500.0
+depth = 5000.0
+border_thickness = 8.0
 wave_frequency = 0.2
 wave_amplitude = 0.1
 
