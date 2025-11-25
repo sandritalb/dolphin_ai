@@ -33,12 +33,22 @@ func _on_body_entered(body: Node2D) -> void:
 		# Apply enter effect only when body is moving down (positive velocity_y)
 		if velocity_y > 0:
 			splash(velocity_y)
+	elif body is CharacterBody2D:
+		var velocity_y = body.velocity.y
+		# Apply enter effect only when body is moving down (positive velocity_y)
+		if velocity_y > 0:
+			splash(velocity_y)
 	item_entered.emit(body)
 
 func _on_body_exited(body: Node2D) -> void:
 	print("Body exited: ", body.name)
 	if body is RigidBody2D:
 		var velocity_y = body.linear_velocity.y
+		# Apply exit effect only when body is moving up (negative velocity_y)
+		if velocity_y < 0:
+			splash(velocity_y)
+	elif body is CharacterBody2D:
+		var velocity_y = body.velocity.y
 		# Apply exit effect only when body is moving up (negative velocity_y)
 		if velocity_y < 0:
 			splash(velocity_y)

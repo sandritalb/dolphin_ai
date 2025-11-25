@@ -1,12 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://bj06yxbsjo35t"]
+[gd_scene load_steps=4 format=3 uid="uid://bj06yxbsjo35t"]
 
 [ext_resource type="Script" uid="uid://crk0aipvgxgot" path="res://water_demo/water_body.gd" id="1_tao8g"]
-[ext_resource type="Shader" uid="uid://dbtiu12jfxev6" path="res://water_demo/WaterBody.gdshader" id="2_2kwd3"]
 [ext_resource type="Script" uid="uid://ipd18f7hwh04" path="res://water_demo/smooth_path_modified.gd" id="3_3341m"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_yvbnd"]
-shader = ExtResource("2_2kwd3")
-shader_parameter/tint = Color(0.16470589, 0.7058824, 0.92156863, 1)
 
 [sub_resource type="Curve2D" id="Curve2D_iofi6"]
 
@@ -14,8 +9,7 @@ shader_parameter/tint = Color(0.16470589, 0.7058824, 0.92156863, 1)
 script = ExtResource("1_tao8g")
 
 [node name="WaterPolygon" type="Polygon2D" parent="."]
-material = SubResource("ShaderMaterial_yvbnd")
-color = Color(0, 0.5372549, 0.8392157, 1)
+color = Color(0, 10.581538, 16.00457, 1)
 
 [node name="WaterBorder" type="Path2D" parent="."]
 curve = SubResource("Curve2D_iofi6")

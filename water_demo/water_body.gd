@@ -22,6 +22,9 @@ var bottom = 0.0
 @onready var water_border = get_node("WaterBorder")
 @export var border_thickness = 4.0
 
+# Water color
+@export var water_color: Color = Color(0, 0.537, 0.839, 1)
+
 @onready var water_particles = preload("res://water_demo/WaterParticlesDemo.tscn")
 @export var splash_intensity = 5.0
 @export var detection_area_radius = 50.0
@@ -47,6 +50,7 @@ var last_camera_x: float = 0.0
 
 func _ready() -> void:
 	water_border.width = border_thickness
+	water_polygon.color = water_color
 	
 	# Initialize target_height and bottom based on actual global position
 	target_height = global_position.y
