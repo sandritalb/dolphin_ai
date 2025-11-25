@@ -14,8 +14,8 @@ var springs = []
 var passes = 8
 
 @export var depth = 100.0
-var target_height = global_position.y
-var bottom = target_height + depth
+var target_height = 0.0
+var bottom = 0.0
 
 @onready var water_polygon = get_node("WaterPolygon")
 
@@ -47,6 +47,10 @@ var last_camera_x: float = 0.0
 
 func _ready() -> void:
 	water_border.width = border_thickness
+	
+	# Initialize target_height and bottom based on actual global position
+	target_height = global_position.y
+	bottom = target_height + depth
 
 	for i in range(spring_number):
 		var w = water_pring.instantiate()
