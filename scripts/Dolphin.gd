@@ -41,6 +41,9 @@ var is_in_water: bool = true
 # Bubble Ring
 var bubble_ring_scene = preload("res://scenes/BubbleRing.tscn")
 
+# Sounds
+var boat_hit_sound = preload("res://sounds/boat_hit.mp3")
+
 # Speed burst state
 var speed_burst_timer: float = 0.0
 var is_speed_bursting: bool = false
@@ -217,6 +220,9 @@ func _check_boat_collision() -> void:
 func _apply_stun(boat: Node2D) -> void:
 	if not is_stunned:
 		is_stunned = true
+		
+		# Play boat hit sound with random pitch 
+		SoundManager.play_sound(boat_hit_sound, 0.8, 1.2, -5.0)
 		
 		# Calculate knockback direction (opposite to boat)
 		var knockback_direction = (position - boat.position).normalized()

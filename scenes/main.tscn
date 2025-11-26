@@ -15,6 +15,7 @@
 script = ExtResource("1_tipki")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.8, 0.8)
 limit_smoothed = true
 editor_draw_limits = true
 editor_draw_drag_margin = true
@@ -32,11 +33,12 @@ texture = ExtResource("4_choun")
 
 [node name="WaterBody" parent="background" instance=ExtResource("4_eb6dy")]
 process_mode = 3
+visible = false
 modulate = Color(18.892157, 18.892157, 18.892157, 1)
 position = Vector2(-578, -127)
 spring_number = 50
 distance_between_springs = 40
-depth = 5000.0
+depth = 50.0
 border_thickness = 8.0
 wave_frequency = 0.2
 wave_amplitude = 0.1
