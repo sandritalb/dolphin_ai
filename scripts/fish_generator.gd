@@ -174,8 +174,9 @@ func _on_fish_eaten(fish: Node2D) -> void:
 
 func _return_fish_to_pool(fish: Node2D) -> void:
 	"""Return a fish to the pool for reuse"""
-	fish.hide()
-	fish.process_mode = Node.PROCESS_MODE_DISABLED
+	# Use call_deferred to avoid disabling collision objects during physics callbacks
+	fish.call_deferred("hide")
+	fish.call_deferred("set_process_mode", Node.PROCESS_MODE_DISABLED)
 	fish.set_meta("pooled", true)
 	fish_pool.append(fish)
 
