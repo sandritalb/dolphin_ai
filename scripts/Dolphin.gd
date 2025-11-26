@@ -27,6 +27,10 @@ signal dolphin_disappeared_from_screen(dolphin: Node, dolphin_name: String)
 @export var speed_burst_multiplier = 2.6   # Multiplier for speed burst
 @export var speed_burst_duration = 0.1     # Duration of speed burst in seconds
 
+# Fish eating speed boost
+@export var fish_boost_multiplier = 1.5    # Speed multiplier when eating fish
+@export var fish_boost_duration = 0.5      # Duration of fish eating boost
+
 # Water interaction
 @export var water_level = -100.0           # Y position of water surface
 @export var water_detection_range = 10.0
@@ -45,10 +49,16 @@ var bubble_ring_scene = preload("res://scenes/BubbleRing.tscn")
 var boat_hit_sound = preload("res://sounds/boat_hit.mp3")
 var water_splash_out_sound = preload("res://sounds/jump_water_splash_sound_1.mp3")
 var water_splash_in_sound = preload("res://sounds/jump_water_splash_sound_2.mp3")
+var bite_sound = preload("res://sounds/bite.mp3")
 
 # Speed burst state
 var speed_burst_timer: float = 0.0
 var is_speed_bursting: bool = false
+
+# Fish boost state
+var fish_boost_timer: float = 0.0
+var is_fish_boosting: bool = false
+var fish_eaten_count: int = 0
 
 # Stun state
 var is_stunned: bool = false
@@ -113,6 +123,12 @@ func _physics_process(delta: float) -> void:
 		if speed_burst_timer <= 0.0:
 			is_speed_bursting = false
 	
+	# Update fish boost timer
+	if is_fish_boosting:
+		fish_boost_timer -= delta
+		if fish_boost_timer <= 0.0:
+			is_fish_boosting = false
+	
 	# Get input from controller
 	var input_direction = Vector2.ZERO
 	if controller and controller.has_method("get_input"):
@@ -140,6 +156,10 @@ func _physics_process(delta: float) -> void:
 			if is_speed_bursting:
 				current_accel *= speed_burst_multiplier
 				print("💨 Speed burst active!")
+			
+			# Apply fish boost multiplier if active
+			if is_fish_boosting:
+				current_accel *= fish_boost_multiplier
 			
 			# Accelerate toward max speed
 			velocity = velocity.move_toward(input_direction * max_speed, current_accel * delta)
@@ -205,6 +225,24 @@ func spawn_bubble_ring() -> void:
 		ring.rotation = rotation
 		
 		print("OoO Bubble Ring spawned!")
+
+
+func eat_fish() -> void:
+	"""Called when the dolphin eats a fish"""
+	fish_eaten_count += 1
+	
+	# Play bite sound
+	SoundManager.play_sound(bite_sound, 1.6, 1.8, -5.0)
+	
+	# Activate fish boost
+	is_fish_boosting = true
+	fish_boost_timer = fish_boost_duration
+	
+	# Give immediate velocity boost
+	if velocity.length() > 0:
+		velocity = velocity.normalized() * min(velocity.length() * fish_boost_multiplier, max_speed * fish_boost_multiplier)
+	
+	print("🐟 %s ate a fish! Total: %d" % [dolphin_name, fish_eaten_count])
 
 
 # ============================================================================

@@ -98,6 +98,7 @@ func _setup_game(player_scene: PackedScene, player_tag: String, opponent_scene: 
 	# Connect signals and setup game systems
 	_connect_dolphin_signals()
 	_setup_obstacle_generator()
+	_setup_fish_generator()
 	_setup_camera()
 	_setup_hud()
 	
@@ -140,6 +141,14 @@ func _setup_obstacle_generator() -> void:
 	if obstacle_generator:
 		obstacle_generator.connect_shark_signals_to_target(dolphin_player)
 		print("🔗 Connected obstacle generator to player dolphin")
+
+
+func _setup_fish_generator() -> void:
+	"""Setup fish generator to spawn fish ahead of player"""
+	var fish_generator = get_node_or_null("FishContainer")
+	if fish_generator and fish_generator.has_method("set_player_target"):
+		fish_generator.set_player_target(dolphin_player)
+		print("🐟 Connected fish generator to player dolphin")
 
 
 func _setup_camera() -> void:
