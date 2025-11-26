@@ -43,6 +43,8 @@ var bubble_ring_scene = preload("res://scenes/BubbleRing.tscn")
 
 # Sounds
 var boat_hit_sound = preload("res://sounds/boat_hit.mp3")
+var water_splash_out_sound = preload("res://sounds/jump_water_splash_sound_1.mp3")
+var water_splash_in_sound = preload("res://sounds/jump_water_splash_sound_2.mp3")
 
 # Speed burst state
 var speed_burst_timer: float = 0.0
@@ -246,6 +248,9 @@ func update_medium_state() -> void:
 	#print("🌊 Dolphin Y: ", position.y, " Water Level: ", water_level, " In Water: ", is_in_water)
 	# Detect water transitions and notify controller
 	if was_in_water and not is_in_water:
+		# Play splash sound when exiting water
+		SoundManager.play_sound(water_splash_out_sound, 0.9, 1.1, -19.0)
+		
 		# Activate speed burst when exiting water
 		print("💨 Exiting water - activating speed burst!", position.y, water_level-water_detection_range, was_in_water, is_in_water)
 		is_speed_bursting = true
@@ -259,6 +264,9 @@ func update_medium_state() -> void:
 		if controller and controller.has_method("on_exit_water"):
 			controller.on_exit_water()
 	elif not was_in_water and is_in_water:
+		# Play splash sound when entering water
+		SoundManager.play_sound(water_splash_in_sound, 0.9, 1.1, -15.0)
+		
 		if controller and controller.has_method("on_enter_water"):
 			controller.on_enter_water()
 		spawn_bubble_ring()
