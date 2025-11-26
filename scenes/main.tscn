@@ -85,10 +85,10 @@ transform = Transform2D(1, 0, 0, 1, 20, 20)
 process_mode = 3
 follow_viewport_enabled = false
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="BackgroundMusicPlayer" type="AudioStreamPlayer" parent="."]
 process_mode = 3
 stream = ExtResource("12_eb6dy")
-volume_db = -2.277
+volume_db = -3.0
 autoplay = true
 bus = &"Music"
 parameters/looping = true

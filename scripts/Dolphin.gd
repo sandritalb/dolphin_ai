@@ -67,6 +67,9 @@ func _ready():
 	velocity = Vector2.ZERO
 	is_in_water = true
 	
+	# Add to dolphins group for collision detection
+	add_to_group("dolphins")
+	
 	# Get sprite references
 	sprite_in = get_node_or_null("in")
 	sprite_out = get_node_or_null("out")
@@ -224,7 +227,7 @@ func _apply_stun(boat: Node2D) -> void:
 		is_stunned = true
 		
 		# Play boat hit sound with random pitch 
-		SoundManager.play_sound(boat_hit_sound, 0.8, 1.2, -5.0)
+		SoundManager.play_sound(boat_hit_sound, 0.8, 1.2, -3.0)
 		
 		# Calculate knockback direction (opposite to boat)
 		var knockback_direction = (position - boat.position).normalized()

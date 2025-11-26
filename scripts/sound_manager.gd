@@ -25,6 +25,7 @@ static func play_sound(stream: AudioStream, pitch_min: float = 0.9, pitch_max: f
 	player.volume_db = volume_db
 	player.bus = bus
 	player.pitch_scale = randf_range(pitch_min, pitch_max)
+	player.process_mode = Node.PROCESS_MODE_ALWAYS
 	
 	# Add to scene tree, play, and auto-remove when finished
 	var tree = Engine.get_main_loop() as SceneTree
@@ -59,6 +60,7 @@ static func play_sound_2d(stream: AudioStream, position: Vector2, pitch_min: flo
 	player.bus = bus
 	player.pitch_scale = randf_range(pitch_min, pitch_max)
 	player.global_position = position
+	player.process_mode = Node.PROCESS_MODE_ALWAYS
 	
 	# Add to scene tree, play, and auto-remove when finished
 	var tree = Engine.get_main_loop() as SceneTree
@@ -88,6 +90,7 @@ static func create_sound_player(stream: AudioStream, pitch_min: float = 0.9, pit
 	player.volume_db = volume_db
 	player.bus = bus
 	player.pitch_scale = randf_range(pitch_min, pitch_max)
+	player.process_mode = Node.PROCESS_MODE_ALWAYS
 	return player
 
 

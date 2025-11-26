@@ -18,6 +18,11 @@ signal dolphin_touched
 @export var patrol_direction: Vector2 = Vector2.RIGHT  # Direction to patrol (-1, 0 or 1, 0 for horizontal; 0, -1 or 0, 1 for vertical)
 
 # ============================================================================
+# SOUNDS
+# ============================================================================
+var bite_sound = preload("res://sounds/bite.mp3")
+
+# ============================================================================
 # INTERNAL STATE
 # ============================================================================
 var start_position: Vector2  # Point A (starting position)
@@ -71,7 +76,9 @@ func _physics_process(delta: float) -> void:
 # ============================================================================
 
 func _on_body_entered(body: Node2D) -> void:
-	# Check if the entering body is a dolphin (CharacterBody2D)
-	if body.name.begins_with("Dolphin"):
+	# Check if the entering body is a dolphin using group membership
+	if body.is_in_group("dolphins"):
 		print("💥 Shark touched dolphin!")
+		# Play bite sound with random pitch variation
+		SoundManager.play_sound(bite_sound, 0.9, 1.1, -3.0)
 		emit_signal("dolphin_touched")
