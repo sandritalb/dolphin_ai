@@ -1,12 +1,13 @@
-[gd_scene load_steps=12 format=3 uid="uid://crvd34oyxlqvf"]
+[gd_scene load_steps=13 format=3 uid="uid://crvd34oyxlqvf"]
 
-[ext_resource type="Script" uid="uid://36mglcqoomaa" path="res://scripts/camera.gd" id="1_jyhfs"]
+[ext_resource type="Script" path="res://scripts/camera.gd" id="1_jyhfs"]
 [ext_resource type="Script" uid="uid://cygc517leoia2" path="res://scripts/game_manager.gd" id="1_tipki"]
 [ext_resource type="PackedScene" uid="uid://k1dy8g8njeco" path="res://scenes/Border.tscn" id="2_sugp2"]
 [ext_resource type="Texture2D" uid="uid://b676u7vkxksk6" path="res://sprites/sea.png" id="4_choun"]
 [ext_resource type="PackedScene" uid="uid://bj06yxbsjo35t" path="res://water_demo/WaterBodyContinuous.tscn" id="4_eb6dy"]
 [ext_resource type="Script" uid="uid://c803solqrng77" path="res://scripts/obstacle_generator.gd" id="5_85g3d"]
-[ext_resource type="Script" uid="uid://go80kmqdnfw6" path="res://scripts/fish_generator.gd" id="7_ya4ey"]
+[ext_resource type="Script" path="res://scripts/fish_generator.gd" id="7_ya4ey"]
+[ext_resource type="Script" uid="uid://dwhfaqjniv1u7" path="res://scripts/deco_generator.gd" id="8_decos"]
 [ext_resource type="PackedScene" uid="uid://crsqhbm5qpveo" path="res://scenes/StartMenu.tscn" id="8_start"]
 [ext_resource type="PackedScene" uid="uid://b7w4lqmx0kyt0" path="res://scenes/HUD.tscn" id="9_hud"]
 [ext_resource type="PackedScene" uid="uid://18qcs0m6sg1y" path="res://scenes/ResultMenu.tscn" id="10_result"]
@@ -54,6 +55,9 @@ scale = Vector2(50, 0.5)
 position = Vector2(4398, 360)
 scale = Vector2(50, 0.5)
 
+[node name="DecoGenerator" type="Node" parent="."]
+script = ExtResource("8_decos")
+
 [node name="Obstacles" type="Node" parent="."]
 script = ExtResource("5_85g3d")
 pool_size = 30
@@ -67,14 +71,13 @@ max_spawn_chance = 0.9
 
 [node name="FishContainer" type="Node" parent="."]
 script = ExtResource("7_ya4ey")
-min_depth = 120.0
 max_depth = 300.0
 
 [node name="Spawn1" type="Node2D" parent="."]
-position = Vector2(0, -50)
+position = Vector2(-150, 60)
 
 [node name="Spawn2" type="Node2D" parent="."]
-position = Vector2(0, 73)
+position = Vector2(-150, 130)
 
 [node name="Canvas" type="Node2D" parent="."]
 

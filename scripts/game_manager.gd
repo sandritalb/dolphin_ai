@@ -141,6 +141,12 @@ func _setup_obstacle_generator() -> void:
 	if obstacle_generator:
 		obstacle_generator.connect_shark_signals_to_target(dolphin_player)
 		print("🔗 Connected obstacle generator to player dolphin")
+	
+	# Setup deco generator
+	var deco_generator = get_node_or_null("DecoGenerator")
+	if deco_generator and deco_generator.has_method("set_player"):
+		deco_generator.set_player(dolphin_player)
+		print("🔗 Connected deco generator to player dolphin")
 
 
 func _setup_fish_generator() -> void:
