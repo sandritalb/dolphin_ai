@@ -64,7 +64,8 @@ func randomize_ai_wander() -> void:
 	var random_angle = randf_range(-ai_max_wander_angle, ai_max_wander_angle)
 	
 	# Prefer moving right, but allow some vertical movement
-	ai_direction = Vector2(cos(random_angle), sin(random_angle)).normalized()
+	#ai_direction = Vector2(cos(random_angle), sin(random_angle)).normalized()
+	ai_direction = Vector2(1.0, sin(random_angle)).normalized()
 
 
 func on_exit_water() -> void:
