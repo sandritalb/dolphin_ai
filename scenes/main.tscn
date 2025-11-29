@@ -28,7 +28,7 @@ lookahead_distance = 400.0
 
 [node name="WaterBody" parent="background" instance=ExtResource("4_eb6dy")]
 process_mode = 3
-position = Vector2(-800, -2)
+position = Vector2(-773, 0)
 k = 0.02
 d = 0.04
 spring_number = 50

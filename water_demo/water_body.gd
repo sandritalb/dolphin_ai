@@ -118,27 +118,32 @@ func _update_springs_with_camera() -> void:
 		return
 	
 	var current_camera_x = camera.global_position.x
-	var camera_delta = current_camera_x - last_camera_x
 	
-	# Only process if camera moved right significantly
-	if camera_delta < distance_between_springs:
-		return
-	
-	last_camera_x = current_camera_x
-	
-	# Take the first spring (leftmost) and move it to the end (rightmost)
+	# Get the global X position of the first spring
 	var first_spring = springs[0]
-	var last_spring = springs[springs.size() - 1]
+	var first_spring_global_x = global_position.x + first_spring.position.x
 	
-	# Move first spring to be after the last spring
-	first_spring.position.x = last_spring.position.x + distance_between_springs
-	first_spring.velocity = 0
-	first_spring.height = first_spring.target_height
-	first_spring.position.y = first_spring.target_height
+	# Get viewport width to know when spring is off-screen
+	var viewport_width = get_viewport().get_visible_rect().size.x
+	var left_edge = current_camera_x - (viewport_width / 2) - (distance_between_springs * 5)
 	
-	# Remove from front and add to back
-	springs.pop_front()
-	springs.push_back(first_spring)
+	# Only recycle when the first spring is off the left edge of the screen
+	while first_spring_global_x < left_edge:
+		var last_spring = springs[springs.size() - 1]
+		
+		# Move first spring to be after the last spring
+		first_spring.position.x = last_spring.position.x + distance_between_springs
+		first_spring.velocity = 0
+		first_spring.height = first_spring.target_height
+		first_spring.position.y = first_spring.target_height
+		
+		# Remove from front and add to back
+		springs.pop_front()
+		springs.push_back(first_spring)
+		
+		# Update for next iteration
+		first_spring = springs[0]
+		first_spring_global_x = global_position.x + first_spring.position.x
 	
 
 func splash(index: int, velocity: float) -> void:
