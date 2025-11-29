@@ -53,7 +53,7 @@ position = Vector2(4396, -374)
 scale = Vector2(50, 0.5)
 
 [node name="BorderButton" parent="BorderContainer" instance=ExtResource("2_sugp2")]
-position = Vector2(4398, 360)
+position = Vector2(4256, 500)
 scale = Vector2(50, 0.5)
 
 [node name="Joint" type="Sprite2D" parent="BorderContainer"]
@@ -75,7 +75,6 @@ max_spawn_chance = 0.9
 
 [node name="FishContainer" type="Node" parent="."]
 script = ExtResource("7_ya4ey")
-max_depth = 300.0
 
 [node name="Spawn1" type="Node2D" parent="."]
 position = Vector2(-150, 60)

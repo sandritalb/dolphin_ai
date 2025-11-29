@@ -43,7 +43,6 @@ var active_fish: Array = []
 
 @export_category("Depth Settings")
 @export var min_depth: float = 120.0  # Minimum depth (Y position) for fish spawning
-@export var max_depth: float = 320.0  # Maximum depth (Y position) for fish spawning
 
 @export_category("Horizontal Spread")
 @export var spawn_width: float = 800.0  # Width range for random horizontal spawning
@@ -130,8 +129,8 @@ func _spawn_fish() -> void:
 func _position_fish_ahead(fish: Node2D) -> void:
 	# Position fish ahead of player, at the bottom of the sea
 	var spawn_x = player.position.x + spawn_distance_ahead + randf_range(-spawn_width / 2.0, spawn_width / 2.0)
-	# Spawn between min_depth and max_depth (bottom of the sea)
-	var spawn_y = randf_range(min_depth, max_depth)
+	# Spawn between min_depth and sea bottom
+	var spawn_y = randf_range(min_depth, Globals.SEA_BOTTOM)
 	var spawn_position = Vector2(spawn_x, spawn_y)
 	
 	# Set the fish's position

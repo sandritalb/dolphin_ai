@@ -43,7 +43,6 @@ var active_boats: Array = []
 @export var boat_spawn_chance: float = 0.3  # Chance to spawn boat per cycle
 @export var spawn_cycle_time: float = 2.0  # Seconds between spawn attempts
 @export var shark_min_depth_offset: float = 50.0  # Minimum offset below water level
-@export var shark_max_depth: float = 350.0  # Maximum depth (above this value)
 @export var spawn_chance_increase_rate: float = 0.0001  # How much to increase spawn chances per unit distance
 @export var max_spawn_chance: float = 0.8  # Maximum spawn chance cap
 
@@ -183,15 +182,15 @@ func _spawn_boat() -> void:
 func _position_shark_ahead(shark: Node2D) -> void:
 	# Position shark ahead of player, below water level
 	var spawn_x = player.position.x + spawn_distance_ahead
-	# Spawn between min_depth_offset and max_depth
-	var spawn_y = randf_range(Globals.WATER_LEVEL + shark_min_depth_offset, shark_max_depth)
+	# Spawn between min_depth_offset and sea bottom
+	var spawn_y = randf_range(Globals.WATER_LEVEL + shark_min_depth_offset, Globals.SEA_BOTTOM)
 	var spawn_position = Vector2(spawn_x, spawn_y)
 	
 	# Set the shark's position first
 	shark.position = spawn_position
 	
 	# Setup patrol points relative to shark position
-	shark.setup_patrol_points(spawn_position, Globals.WATER_LEVEL, shark_min_depth_offset, shark_max_depth)
+	shark.setup_patrol_points(spawn_position, Globals.WATER_LEVEL, shark_min_depth_offset, Globals.SEA_BOTTOM)
 	print("🦈 Shark spawned at position: ", shark.position)
 
 func _position_boat_ahead(boat: Node2D) -> void:

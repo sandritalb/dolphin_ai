@@ -28,8 +28,7 @@ var active_decos: Array = []
 @export var pool_size: int = 20
 @export var spawn_distance_ahead: float = 1400.0  # How far ahead to spawn
 @export var despawn_distance_behind: float = 900.0  # How far behind to despawn
-@export var spawn_y_min: float = 200.0  # Minimum Y position for spawning
-@export var spawn_y_max: float = 320.0  # Maximum Y position for spawning
+@export var spawn_y_min_offset: float = 200.0  # Minimum offset below water level for spawning
 @export var spawn_cycle_time: float = 3.0  # Seconds between spawn attempts
 @export var spawn_chance: float = 0.6  # Chance to spawn deco per cycle
 
@@ -106,7 +105,7 @@ func _spawn_deco() -> void:
 	
 	# Set random position ahead of the player
 	var spawn_x = player.global_position.x + spawn_distance_ahead
-	var spawn_y = randf_range(spawn_y_min, spawn_y_max)
+	var spawn_y = randf_range(Globals.SEA_BOTTOM - spawn_y_min_offset, Globals.SEA_BOTTOM)
 	deco.global_position = Vector2(spawn_x, spawn_y)
 	
 	# Setup random sprite and frame

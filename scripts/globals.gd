@@ -8,4 +8,5 @@ extends Node
 # ============================================================================
 # WORLD CONSTANTS
 # ============================================================================
-const WATER_LEVEL: float = 0.0  # Y position of water surface
+const WATER_LEVEL: float = 0.0    # Y position of water surface
+const SEA_BOTTOM: float = 500.0   # Y position of sea bottom
