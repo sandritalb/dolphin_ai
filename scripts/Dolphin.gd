@@ -66,6 +66,10 @@ var is_stunned: bool = false
 var was_visible_last_frame: bool = false
 var dolphin_name: String = ""
 
+# Camera bounds for vertical clamping
+var camera_top_bound: float = -300.0
+var camera_bottom_bound: float = 450.0
+
 # Controller references
 var controller: Node = null
 var sprite_in: AnimatedSprite2D
@@ -186,6 +190,9 @@ func _physics_process(delta: float) -> void:
 		velocity = velocity.normalized() * 600
 	
 	move_and_slide()
+	
+	# Clamp vertical position to camera bounds
+	position.y = clamp(position.y, camera_top_bound, camera_bottom_bound)
 	
 	# Rotate dolphin toward movement direction
 	if velocity.length() > 10.0:

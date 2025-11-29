@@ -216,7 +216,6 @@ func _setup_water_gradient() -> void:
 	
 	# Clear default points
 	gradient.remove_point(0)
-	#gradient.remove_point(0)
 	
 	# Add colors from top to bottom (based on sea.png blues)
 	gradient.add_point(0.0, Color("53aaa7"))
@@ -237,7 +236,7 @@ func _setup_water_gradient() -> void:
 	gradient_texture.fill_from = Vector2(0, 0)
 	gradient_texture.fill_to = Vector2(0, 1)  # Vertical gradient (top to bottom)
 	gradient_texture.width = 1
-	gradient_texture.height = 256
+	gradient_texture.height = depth
 	
 	water_polygon.texture = gradient_texture
 	water_polygon.color = Color.WHITE  # White so texture shows properly

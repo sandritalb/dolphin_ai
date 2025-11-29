@@ -1,12 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://crvd34oyxlqvf"]
+[gd_scene load_steps=11 format=3 uid="uid://crvd34oyxlqvf"]
 
 [ext_resource type="Script" path="res://scripts/camera.gd" id="1_jyhfs"]
 [ext_resource type="Script" uid="uid://cygc517leoia2" path="res://scripts/game_manager.gd" id="1_tipki"]
-[ext_resource type="PackedScene" uid="uid://k1dy8g8njeco" path="res://scenes/Border.tscn" id="2_sugp2"]
-[ext_resource type="Texture2D" uid="uid://b676u7vkxksk6" path="res://sprites/sea.png" id="4_choun"]
 [ext_resource type="PackedScene" uid="uid://bj06yxbsjo35t" path="res://water_demo/WaterBodyContinuous.tscn" id="4_eb6dy"]
 [ext_resource type="Script" uid="uid://c803solqrng77" path="res://scripts/obstacle_generator.gd" id="5_85g3d"]
-[ext_resource type="Texture2D" uid="uid://d1uk1od7rxu6r" path="res://water_demo/joint.png" id="6_trceg"]
 [ext_resource type="Script" uid="uid://go80kmqdnfw6" path="res://scripts/fish_generator.gd" id="7_ya4ey"]
 [ext_resource type="Script" uid="uid://dwhfaqjniv1u7" path="res://scripts/deco_generator.gd" id="8_decos"]
 [ext_resource type="PackedScene" uid="uid://crsqhbm5qpveo" path="res://scenes/StartMenu.tscn" id="8_start"]
@@ -28,36 +25,16 @@ lookahead_distance = 400.0
 
 [node name="background" type="Node" parent="."]
 
-[node name="sea" type="Sprite2D" parent="background"]
-visible = false
-z_index = -1
-z_as_relative = false
-position = Vector2(2583.0002, 120.19999)
-scale = Vector2(6.169922, 0.41640624)
-texture = ExtResource("4_choun")
-
 [node name="WaterBody" parent="background" instance=ExtResource("4_eb6dy")]
 process_mode = 3
-position = Vector2(-800, 0)
+position = Vector2(-800, -2)
+k = 0.02
+d = 0.04
 spring_number = 50
 distance_between_springs = 40
-depth = 600.0
+depth = 475.0
 border_thickness = 8.0
-wave_frequency = 0.2
-wave_amplitude = 0.1
-
-[node name="BorderContainer" type="Node" parent="."]
-
-[node name="BorderTop" parent="BorderContainer" instance=ExtResource("2_sugp2")]
-position = Vector2(4396, -374)
-scale = Vector2(50, 0.5)
-
-[node name="BorderButton" parent="BorderContainer" instance=ExtResource("2_sugp2")]
-position = Vector2(4256, 500)
-scale = Vector2(50, 0.5)
-
-[node name="Joint" type="Sprite2D" parent="BorderContainer"]
-texture = ExtResource("6_trceg")
+wave_amplitude = 0.3
 
 [node name="DecoGenerator" type="Node" parent="."]
 script = ExtResource("8_decos")

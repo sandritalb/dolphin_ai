@@ -208,7 +208,7 @@ func _get_valid_boat_spawn_position() -> Variant:
 	
 	for attempt in range(MAX_ATTEMPTS):
 		var spawn_x = player.position.x + spawn_distance_ahead + randf_range(-spawn_width / 2.0, spawn_width / 2.0)
-		var spawn_position = Vector2(spawn_x, Globals.WATER_LEVEL)
+		var spawn_position = Vector2(spawn_x, Globals.WATER_LEVEL+15)
 		
 		# Check distance from all active boats
 		var is_valid = true
