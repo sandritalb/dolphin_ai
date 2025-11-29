@@ -1,9 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://crvd34oyxlqvf"]
+[gd_scene load_steps=14 format=3 uid="uid://crvd34oyxlqvf"]
 
 [ext_resource type="Script" path="res://scripts/camera.gd" id="1_jyhfs"]
 [ext_resource type="Script" uid="uid://cygc517leoia2" path="res://scripts/game_manager.gd" id="1_tipki"]
 [ext_resource type="PackedScene" uid="uid://bj06yxbsjo35t" path="res://water_demo/WaterBodyContinuous.tscn" id="4_eb6dy"]
 [ext_resource type="PackedScene" path="res://scenes/SeaBottom.tscn" id="4_ya4ey"]
+[ext_resource type="PackedScene" uid="uid://dk8v6gdt5h3cq" path="res://scenes/GradientBackground.tscn" id="11_gradient"]
 [ext_resource type="Script" uid="uid://c803solqrng77" path="res://scripts/obstacle_generator.gd" id="5_85g3d"]
 [ext_resource type="Script" uid="uid://2l28qxfmwowd" path="res://scripts/cloud_generator.gd" id="5_eb6dy"]
 [ext_resource type="Script" uid="uid://go80kmqdnfw6" path="res://scripts/fish_generator.gd" id="7_ya4ey"]
@@ -15,6 +16,9 @@
 
 [node name="Main" type="Node"]
 script = ExtResource("1_tipki")
+
+[node name="GradientBackground" parent="." instance=ExtResource("11_gradient")]
+layer = -1
 
 [node name="Camera2D" type="Camera2D" parent="."]
 offset = Vector2(0, 100)
