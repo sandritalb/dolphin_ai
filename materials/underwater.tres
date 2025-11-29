@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://besong3ggoeus"]
+
+[ext_resource type="Shader" uid="uid://bnh4b6j7pasqk" path="res://shaders/underwater.gdshader" id="1_shader"]
+
+[resource]
+shader = ExtResource("1_shader")
+shader_parameter/wave_amplitude = 1.0
+shader_parameter/wave_frequency = 0.8
+shader_parameter/wave_speed = 0.6
+shader_parameter/water_tint = Color(0.4, 0.7, 1, 1)
+shader_parameter/tint_strength = 0.25
+shader_parameter/color_pulse_speed = 0.3
+shader_parameter/color_pulse_amount = 0.05

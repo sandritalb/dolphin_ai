@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://k1dy8g8njeco" path="res://scenes/Border.tscn" id="2_sugp2"]
 [ext_resource type="Texture2D" uid="uid://b676u7vkxksk6" path="res://sprites/sea.png" id="4_choun"]
 [ext_resource type="PackedScene" uid="uid://bj06yxbsjo35t" path="res://water_demo/WaterBodyContinuous.tscn" id="4_eb6dy"]
-[ext_resource type="Script" uid="uid://c803solqrng77" path="res://scripts/obstacle_generator.gd" id="5_85g3d"]
+[ext_resource type="Script" path="res://scripts/obstacle_generator.gd" id="5_85g3d"]
 [ext_resource type="Script" path="res://scripts/fish_generator.gd" id="7_ya4ey"]
 [ext_resource type="Script" uid="uid://dwhfaqjniv1u7" path="res://scripts/deco_generator.gd" id="8_decos"]
 [ext_resource type="PackedScene" uid="uid://crsqhbm5qpveo" path="res://scenes/StartMenu.tscn" id="8_start"]
@@ -97,7 +97,7 @@ follow_viewport_enabled = false
 [node name="BackgroundMusicPlayer" type="AudioStreamPlayer" parent="."]
 process_mode = 3
 stream = ExtResource("12_eb6dy")
-volume_db = -3.0
+volume_db = 6.0
 autoplay = true
 bus = &"Music"
 parameters/looping = true

@@ -1,25 +1,29 @@
-[gd_scene load_steps=5 format=3 uid="uid://c8brxu6djm861"]
+[gd_scene load_steps=6 format=3 uid="uid://c8brxu6djm861"]
 
 [ext_resource type="Script" uid="uid://dth7p8tn16w2v" path="res://scripts/background_deco.gd" id="1_ap4l2"]
 [ext_resource type="Texture2D" uid="uid://bv6ga812ij8ak" path="res://sprites/set_1.png" id="1_wj3hi"]
 [ext_resource type="Texture2D" uid="uid://7eqn28djoe2o" path="res://sprites/set_2.png" id="2_ap4l2"]
 [ext_resource type="Texture2D" uid="uid://ckbchvn4dobgw" path="res://sprites/set_3.png" id="3_0scxx"]
+[ext_resource type="Material" uid="uid://besong3ggoeus" path="res://materials/underwater.tres" id="4_underwater"]
 
 [node name="BackgroundDeco" type="Node2D"]
 scale = Vector2(0.3, 0.3)
 script = ExtResource("1_ap4l2")
 
 [node name="set1" type="Sprite2D" parent="."]
+material = ExtResource("4_underwater")
 texture = ExtResource("1_wj3hi")
 hframes = 3
 vframes = 3
 
 [node name="set2" type="Sprite2D" parent="."]
+material = ExtResource("4_underwater")
 texture = ExtResource("2_ap4l2")
 hframes = 3
 vframes = 3
 
 [node name="set3" type="Sprite2D" parent="."]
+material = ExtResource("4_underwater")
 texture = ExtResource("3_0scxx")
 hframes = 3
 vframes = 3
