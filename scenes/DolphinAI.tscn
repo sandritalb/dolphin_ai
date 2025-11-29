@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://ctx3a85l4ts3r"]
+[gd_scene load_steps=16 format=3 uid="uid://ctx3a85l4ts3r"]
 
 [ext_resource type="Texture2D" uid="uid://cw1woppy0s7d6" path="res://sprites/dolphin_in.png" id="1_csw6p"]
-[ext_resource type="Script" uid="uid://b3827jbbou8r" path="res://scripts/dolphin.gd" id="1_dl5jv"]
+[ext_resource type="Script" uid="uid://b3827jbbou8r" path="res://scripts/Dolphin.gd" id="1_dl5jv"]
 [ext_resource type="Texture2D" uid="uid://degy36s5xlgv4" path="res://sprites/dolphin_out.png" id="2_qgn84"]
+[ext_resource type="Texture2D" uid="uid://bjjsh65t3p3pn" path="res://sprites/dolphin_ai.png" id="4_41h1n"]
 [ext_resource type="Script" uid="uid://daq0o1y61cnsx" path="res://scripts/dolphin_ai.gd" id="4_ai"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qgn84"]
@@ -35,6 +36,42 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_htgn3"]
+atlas = ExtResource("4_41h1n")
+region = Rect2(0, 0, 448, 384)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ecf0n"]
+atlas = ExtResource("4_41h1n")
+region = Rect2(0, 384, 448, 384)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ibate"]
+atlas = ExtResource("4_41h1n")
+region = Rect2(0, 768, 448, 384)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7m0w5"]
+atlas = ExtResource("4_41h1n")
+region = Rect2(448, 0, 448, 384)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yb0a4"]
+animations = [{
+"frames": [{
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_htgn3")
+}, {
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_ecf0n")
+}, {
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_ibate")
+}, {
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_7m0w5")
+}],
+"loop": true,
+"name": &"swimming",
+"speed": 5.0
+}]
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qgn84"]
 radius = 13.266365
 height = 87.819145
@@ -43,14 +80,24 @@ height = 87.819145
 script = ExtResource("1_dl5jv")
 
 [node name="in" type="AnimatedSprite2D" parent="."]
+visible = false
 position = Vector2(-3.199997, -15.199997)
 scale = Vector2(0.3, 0.3)
 sprite_frames = SubResource("SpriteFrames_g1ctg")
 
 [node name="out" type="AnimatedSprite2D" parent="."]
+visible = false
 position = Vector2(-4, -13.000001)
 scale = Vector2(0.3, 0.3)
 sprite_frames = SubResource("SpriteFrames_dl5jv")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-5, 14)
+rotation = 0.15707964
+scale = Vector2(0.3, 0.3)
+sprite_frames = SubResource("SpriteFrames_yb0a4")
+animation = &"swimming"
+frame_progress = 0.62999874
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.3962634

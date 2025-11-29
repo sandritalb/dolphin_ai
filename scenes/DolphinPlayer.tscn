@@ -1,37 +1,49 @@
-[gd_scene load_steps=10 format=3 uid="uid://ctx3a85l4ts2r"]
+[gd_scene load_steps=11 format=3 uid="uid://ctx3a85l4ts2r"]
 
-[ext_resource type="Script" uid="uid://b3827jbbou8r" path="res://scripts/dolphin.gd" id="1_u1i24"]
-[ext_resource type="Texture2D" uid="uid://cw1woppy0s7d6" path="res://sprites/dolphin_in.png" id="2_xpcap"]
-[ext_resource type="Texture2D" uid="uid://degy36s5xlgv4" path="res://sprites/dolphin_out.png" id="4_g7ysk"]
+[ext_resource type="Script" uid="uid://b3827jbbou8r" path="res://scripts/Dolphin.gd" id="1_u1i24"]
 [ext_resource type="Script" uid="uid://ltbyqkt0a8ho" path="res://scripts/dolphin_player.gd" id="5_rqavp"]
+[ext_resource type="Texture2D" uid="uid://1kuwj4gutm3u" path="res://sprites/dolphin_player.png" id="5_u1i24"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_qgn84"]
-atlas = ExtResource("2_xpcap")
-region = Rect2(512, 0, 512, 512)
+[sub_resource type="AtlasTexture" id="AtlasTexture_xpcap"]
+atlas = ExtResource("5_u1i24")
+region = Rect2(0, 0, 350, 298)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_g1ctg"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_g7ysk"]
+atlas = ExtResource("5_u1i24")
+region = Rect2(0, 596, 350, 298)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ca4j"]
+atlas = ExtResource("5_u1i24")
+region = Rect2(350, 0, 350, 298)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7bguc"]
+atlas = ExtResource("5_u1i24")
+region = Rect2(0, 596, 350, 298)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3sid3"]
+atlas = ExtResource("5_u1i24")
+region = Rect2(0, 298, 350, 298)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_udljj"]
 animations = [{
 "frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qgn84")
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_xpcap")
+}, {
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_g7ysk")
+}, {
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_3ca4j")
+}, {
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_7bguc")
+}, {
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_3sid3")
 }],
 "loop": true,
-"name": &"default",
-"speed": 5.0
-}]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_l8u8y"]
-atlas = ExtResource("4_g7ysk")
-region = Rect2(512, 0, 512, 512)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_dl5jv"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_l8u8y")
-}],
-"loop": true,
-"name": &"default",
+"name": &"swimming",
 "speed": 5.0
 }]
 
@@ -39,18 +51,15 @@ animations = [{
 radius = 13.266365
 height = 87.819145
 
-[node name="Dolphin" type="CharacterBody2D"]
+[node name="DolphinPlayer" type="CharacterBody2D"]
 script = ExtResource("1_u1i24")
 
-[node name="in" type="AnimatedSprite2D" parent="."]
-position = Vector2(-3.199997, -15.199997)
-scale = Vector2(0.3, 0.3)
-sprite_frames = SubResource("SpriteFrames_g1ctg")
-
-[node name="out" type="AnimatedSprite2D" parent="."]
-position = Vector2(-4, -13.000001)
-scale = Vector2(0.3, 0.3)
-sprite_frames = SubResource("SpriteFrames_dl5jv")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-9.000001, 9)
+rotation = 0.10471976
+scale = Vector2(0.4, 0.4)
+sprite_frames = SubResource("SpriteFrames_udljj")
+animation = &"swimming"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.3962634

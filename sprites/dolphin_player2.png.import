@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b676u7vkxksk6"
-path="res://.godot/imported/sea.png-24e46ab7d62823eddeeb9b0940aa70bb.ctex"
+uid="uid://dohyafvx057qf"
+path="res://.godot/imported/dolphin_player2.png-fffda0715c81967924b99fceb0543056.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/sea.png"
-dest_files=["res://.godot/imported/sea.png-24e46ab7d62823eddeeb9b0940aa70bb.ctex"]
+source_file="res://sprites/dolphin_player2.png"
+dest_files=["res://.godot/imported/dolphin_player2.png-fffda0715c81967924b99fceb0543056.ctex"]
 
 [params]
 
