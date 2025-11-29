@@ -50,7 +50,7 @@ var last_camera_x: float = 0.0
 
 func _ready() -> void:
 	water_border.width = border_thickness
-	water_polygon.color = water_color
+	_setup_water_gradient()
 	
 	# Initialize target_height and bottom based on actual global position
 	target_height = global_position.y
@@ -208,3 +208,36 @@ func draw_water_border() -> void:
 	water_border.curve = curve
 	water_border.smooth(true)
 	water_border.queue_redraw()
+
+
+func _setup_water_gradient() -> void:
+	var gradient = Gradient.new()
+	gradient.interpolation_mode = Gradient.GRADIENT_INTERPOLATE_CONSTANT  # Hard color changes
+	
+	# Clear default points
+	gradient.remove_point(0)
+	#gradient.remove_point(0)
+	
+	# Add colors from top to bottom (based on sea.png blues)
+	gradient.add_point(0.0, Color("53aaa7"))
+	gradient.add_point(0.08, Color("4a9f9f"))
+	gradient.add_point(0.16, Color("409094"))
+	gradient.add_point(0.24, Color("38848b"))
+	gradient.add_point(0.32, Color("2f7380"))
+	gradient.add_point(0.40, Color("266575"))
+	gradient.add_point(0.48, Color("215a6d"))
+	gradient.add_point(0.56, Color("205a6e"))
+	gradient.add_point(0.64, Color("1f5a6d"))
+	gradient.add_point(0.72, Color("1c5166"))
+	gradient.add_point(0.84, Color("1a435d"))
+	gradient.add_point(0.92, Color("173753"))
+	
+	var gradient_texture = GradientTexture2D.new()
+	gradient_texture.gradient = gradient
+	gradient_texture.fill_from = Vector2(0, 0)
+	gradient_texture.fill_to = Vector2(0, 1)  # Vertical gradient (top to bottom)
+	gradient_texture.width = 1
+	gradient_texture.height = 256
+	
+	water_polygon.texture = gradient_texture
+	water_polygon.color = Color.WHITE  # White so texture shows properly
