@@ -147,6 +147,12 @@ func _setup_obstacle_generator() -> void:
 	if deco_generator and deco_generator.has_method("set_player"):
 		deco_generator.set_player(dolphin_player)
 		print("🔗 Connected deco generator to player dolphin")
+	
+	# Setup cloud generator
+	var cloud_generator = get_node_or_null("background/CloudGenerator")
+	if cloud_generator and cloud_generator.has_method("set_player"):
+		cloud_generator.set_player(dolphin_player)
+		print("🔗 Connected cloud generator to player dolphin")
 
 
 func _setup_fish_generator() -> void:
