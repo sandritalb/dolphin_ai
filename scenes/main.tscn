@@ -5,9 +5,9 @@
 [ext_resource type="PackedScene" uid="uid://k1dy8g8njeco" path="res://scenes/Border.tscn" id="2_sugp2"]
 [ext_resource type="Texture2D" uid="uid://b676u7vkxksk6" path="res://sprites/sea.png" id="4_choun"]
 [ext_resource type="PackedScene" uid="uid://bj06yxbsjo35t" path="res://water_demo/WaterBodyContinuous.tscn" id="4_eb6dy"]
-[ext_resource type="Script" path="res://scripts/obstacle_generator.gd" id="5_85g3d"]
+[ext_resource type="Script" uid="uid://c803solqrng77" path="res://scripts/obstacle_generator.gd" id="5_85g3d"]
 [ext_resource type="Texture2D" uid="uid://d1uk1od7rxu6r" path="res://water_demo/joint.png" id="6_trceg"]
-[ext_resource type="Script" path="res://scripts/fish_generator.gd" id="7_ya4ey"]
+[ext_resource type="Script" uid="uid://go80kmqdnfw6" path="res://scripts/fish_generator.gd" id="7_ya4ey"]
 [ext_resource type="Script" uid="uid://dwhfaqjniv1u7" path="res://scripts/deco_generator.gd" id="8_decos"]
 [ext_resource type="PackedScene" uid="uid://crsqhbm5qpveo" path="res://scenes/StartMenu.tscn" id="8_start"]
 [ext_resource type="PackedScene" uid="uid://b7w4lqmx0kyt0" path="res://scenes/HUD.tscn" id="9_hud"]
@@ -18,7 +18,7 @@
 script = ExtResource("1_tipki")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-offset = Vector2(0, 200)
+offset = Vector2(0, 100)
 zoom = Vector2(0.8, 0.8)
 limit_smoothed = true
 editor_draw_limits = true
@@ -101,7 +101,7 @@ follow_viewport_enabled = false
 [node name="BackgroundMusicPlayer" type="AudioStreamPlayer" parent="."]
 process_mode = 3
 stream = ExtResource("12_eb6dy")
-volume_db = 6.0
+volume_db = -6.0
 autoplay = true
 bus = &"Music"
 parameters/looping = true
