@@ -8,7 +8,6 @@ extends Node
 # ============================================================================
 # CONSTANTS
 # ============================================================================
-const WATER_LEVEL: float = -100.0
 const SHARK_CONTAINER_NAME: String = "SharkContainer"
 const BOAT_CONTAINER_NAME: String = "BoatContainer"
 
@@ -185,20 +184,20 @@ func _position_shark_ahead(shark: Node2D) -> void:
 	# Position shark ahead of player, below water level
 	var spawn_x = player.position.x + spawn_distance_ahead
 	# Spawn between min_depth_offset and max_depth
-	var spawn_y = randf_range(WATER_LEVEL + shark_min_depth_offset, shark_max_depth)
+	var spawn_y = randf_range(Globals.WATER_LEVEL + shark_min_depth_offset, shark_max_depth)
 	var spawn_position = Vector2(spawn_x, spawn_y)
 	
 	# Set the shark's position first
 	shark.position = spawn_position
 	
 	# Setup patrol points relative to shark position
-	shark.setup_patrol_points(spawn_position, WATER_LEVEL, shark_min_depth_offset, shark_max_depth)
+	shark.setup_patrol_points(spawn_position, Globals.WATER_LEVEL, shark_min_depth_offset, shark_max_depth)
 	print("🦈 Shark spawned at position: ", shark.position)
 
 func _position_boat_ahead(boat: Node2D) -> void:
 	# Position boat ahead of player at water level
 	var spawn_x = player.position.x + spawn_distance_ahead + randf_range(-spawn_width / 2.0, spawn_width / 2.0)
-	boat.position = Vector2(spawn_x, WATER_LEVEL)
+	boat.position = Vector2(spawn_x, Globals.WATER_LEVEL)
 	boat.base_position = boat.position  # Reset bobbing base position
 	print("⛵ Boat spawned at position: ", boat.position)
 
@@ -210,7 +209,7 @@ func _get_valid_boat_spawn_position() -> Variant:
 	
 	for attempt in range(MAX_ATTEMPTS):
 		var spawn_x = player.position.x + spawn_distance_ahead + randf_range(-spawn_width / 2.0, spawn_width / 2.0)
-		var spawn_position = Vector2(spawn_x, WATER_LEVEL)
+		var spawn_position = Vector2(spawn_x, Globals.WATER_LEVEL)
 		
 		# Check distance from all active boats
 		var is_valid = true

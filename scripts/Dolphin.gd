@@ -32,7 +32,6 @@ signal dolphin_disappeared_from_screen(dolphin: Node, dolphin_name: String)
 @export var fish_boost_duration = 0.5      # Duration of fish eating boost
 
 # Water interaction
-@export var water_level = -100.0           # Y position of water surface
 @export var water_detection_range = 10.0
 
 # Stun/Impact mechanics
@@ -285,15 +284,15 @@ func _apply_stun(boat: Node2D) -> void:
 
 func update_medium_state() -> void:
 	var was_in_water = is_in_water
-	is_in_water = position.y > (water_level - water_detection_range)
-	#print("🌊 Dolphin Y: ", position.y, " Water Level: ", water_level, " In Water: ", is_in_water)
+	is_in_water = position.y > (Globals.WATER_LEVEL - water_detection_range)
+	#print("🌊 Dolphin Y: ", position.y, " Water Level: ", Globals.WATER_LEVEL, " In Water: ", is_in_water)
 	# Detect water transitions and notify controller
 	if was_in_water and not is_in_water:
 		# Play splash sound when exiting water
 		SoundManager.play_sound(water_splash_out_sound, 0.9, 1.1, -19.0)
 		
 		# Activate speed burst when exiting water
-		print("💨 Exiting water - activating speed burst!", position.y, water_level-water_detection_range, was_in_water, is_in_water)
+		print("💨 Exiting water - activating speed burst!", position.y, Globals.WATER_LEVEL-water_detection_range, was_in_water, is_in_water)
 		is_speed_bursting = true
 		speed_burst_timer = speed_burst_duration
 		
