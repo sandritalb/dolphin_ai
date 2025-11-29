@@ -38,7 +38,7 @@ border_thickness = 8.0
 wave_amplitude = 0.3
 
 [node name="SeaBottom" parent="background" instance=ExtResource("4_ya4ey")]
-position = Vector2(-743.0276, 506.1902)
+position = Vector2(-743, 505)
 
 [node name="DecoGenerator" type="Node" parent="."]
 script = ExtResource("8_decos")
