@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+@export_range(0.0, 1.0) var bottom_anchor: float = 0.4  # Controla hasta dónde llega el degradado
+
 func _ready():
 	var gradient = Gradient.new()
 	
@@ -19,12 +21,12 @@ func _ready():
 		var position = float(i) / (colors.size() - 1)
 		gradient.add_point(position, colors[i])
 	
-	# Crear un ColorRect con el degradado
+	# Crear un ColorRect con el degradado (solo mitad superior)
 	var color_rect = ColorRect.new()
 	color_rect.anchor_left = 0
 	color_rect.anchor_top = 0
 	color_rect.anchor_right = 1
-	color_rect.anchor_bottom = 1
+	color_rect.anchor_bottom = bottom_anchor  # Controlado por parámetro exportado
 	color_rect.color = Color.WHITE
 	
 	# Crear un shader para el degradado suave

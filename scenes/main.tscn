@@ -17,9 +17,6 @@
 [node name="Main" type="Node"]
 script = ExtResource("1_tipki")
 
-[node name="GradientBackground" parent="." instance=ExtResource("11_gradient")]
-layer = -1
-
 [node name="Camera2D" type="Camera2D" parent="."]
 offset = Vector2(0, 100)
 zoom = Vector2(0.8, 0.8)
@@ -30,6 +27,9 @@ script = ExtResource("1_jyhfs")
 lookahead_distance = 400.0
 
 [node name="background" type="Node" parent="."]
+
+[node name="GradientBackground" parent="background" instance=ExtResource("11_gradient")]
+layer = -1
 
 [node name="WaterBody" parent="background" instance=ExtResource("4_eb6dy")]
 process_mode = 3
