@@ -4,10 +4,10 @@
 
 [resource]
 shader = ExtResource("1_shader")
-shader_parameter/wave_amplitude = 1.0
-shader_parameter/wave_frequency = 0.8
-shader_parameter/wave_speed = 0.6
-shader_parameter/water_tint = Color(0.4, 0.7, 1, 1)
-shader_parameter/tint_strength = 0.25
-shader_parameter/color_pulse_speed = 0.3
-shader_parameter/color_pulse_amount = 0.05
+shader_parameter/wave_amplitude = 1.206000057285
+shader_parameter/wave_frequency = 1.0130000481175
+shader_parameter/wave_speed = 1.2450000591375
+shader_parameter/water_tint = Color(0.20481147, 0.3286951, 0.4525787, 1)
+shader_parameter/tint_strength = 0.52800002508
+shader_parameter/color_pulse_speed = 0.5
+shader_parameter/color_pulse_amount = 0.1
