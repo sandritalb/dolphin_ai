@@ -50,7 +50,7 @@ void fragment() {
 	vec3 final_color;
 	
 	if (vertical_pos < 0.1667) {
-		final_color = mix(color1, color2, vertical_pos / 0.1667);
+		final_color = mix(color2, color2, vertical_pos / 0.1667); // i removed color1 to make a smoother gradient
 	} else if (vertical_pos < 0.3334) {
 		final_color = mix(color2, color3, (vertical_pos - 0.1667) / 0.1667);
 	} else if (vertical_pos < 0.5) {
