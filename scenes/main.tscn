@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://crvd34oyxlqvf"]
+[gd_scene load_steps=12 format=3 uid="uid://crvd34oyxlqvf"]
 
 [ext_resource type="Script" path="res://scripts/camera.gd" id="1_jyhfs"]
 [ext_resource type="Script" uid="uid://cygc517leoia2" path="res://scripts/game_manager.gd" id="1_tipki"]
 [ext_resource type="PackedScene" uid="uid://bj06yxbsjo35t" path="res://water_demo/WaterBodyContinuous.tscn" id="4_eb6dy"]
+[ext_resource type="PackedScene" uid="uid://bb87rdaass6ji" path="res://scenes/SeaBottom.tscn" id="4_ya4ey"]
 [ext_resource type="Script" uid="uid://c803solqrng77" path="res://scripts/obstacle_generator.gd" id="5_85g3d"]
 [ext_resource type="Script" uid="uid://go80kmqdnfw6" path="res://scripts/fish_generator.gd" id="7_ya4ey"]
 [ext_resource type="Script" uid="uid://dwhfaqjniv1u7" path="res://scripts/deco_generator.gd" id="8_decos"]
@@ -35,6 +36,9 @@ distance_between_springs = 40
 depth = 475.0
 border_thickness = 8.0
 wave_amplitude = 0.3
+
+[node name="SeaBottom" parent="background" instance=ExtResource("4_ya4ey")]
+position = Vector2(-743.0276, 506.1902)
 
 [node name="DecoGenerator" type="Node" parent="."]
 script = ExtResource("8_decos")
