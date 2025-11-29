@@ -29,8 +29,3 @@ func _setup_random_deco() -> void:
 	var total_frames = selected_sprite.hframes * selected_sprite.vframes
 	var random_frame = randi() % total_frames
 	selected_sprite.frame = random_frame
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
