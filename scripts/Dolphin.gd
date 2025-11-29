@@ -72,8 +72,7 @@ var camera_bottom_bound: float = 450.0
 
 # Controller references
 var controller: Node = null
-var sprite_in: AnimatedSprite2D
-var sprite_out: AnimatedSprite2D
+var animated_sprite: AnimatedSprite2D
 
 
 func _ready():
@@ -83,9 +82,12 @@ func _ready():
 	# Add to dolphins group for collision detection
 	add_to_group("dolphins")
 	
-	# Get sprite references
-	sprite_in = get_node_or_null("in")
-	sprite_out = get_node_or_null("out")
+	# Get sprite reference
+	animated_sprite = get_node_or_null("AnimatedSprite2D")
+	
+	# Start swimming animation if starting in water
+	if animated_sprite and is_in_water:
+		animated_sprite.play("swimming")
 	
 	# Find controller node (either dolphin_player or dolphin_ai)
 	if has_node("DolphinPlayer"):
@@ -298,6 +300,10 @@ func update_medium_state() -> void:
 		# Play splash sound when exiting water
 		SoundManager.play_sound(water_splash_out_sound, 0.9, 1.1, -19.0)
 		
+		# Stop swimming animation when out of water
+		if animated_sprite:
+			animated_sprite.stop()
+		
 		# Activate speed burst when exiting water
 		print("💨 Exiting water - activating speed burst!", position.y, Globals.WATER_LEVEL-water_detection_range, was_in_water, is_in_water)
 		is_speed_bursting = true
@@ -313,6 +319,10 @@ func update_medium_state() -> void:
 	elif not was_in_water and is_in_water:
 		# Play splash sound when entering water
 		SoundManager.play_sound(water_splash_in_sound, 0.9, 1.1, -15.0)
+		
+		# Play swimming animation when in water
+		if animated_sprite:
+			animated_sprite.play("swimming")
 		
 		if controller and controller.has_method("on_enter_water"):
 			controller.on_enter_water()
