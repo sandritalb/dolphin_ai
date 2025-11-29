@@ -31,6 +31,8 @@ var active_clouds: Array = []
 @export var spawn_y_max: float = -100.0  # Maximum Y position (water level)
 @export var spawn_cycle_time: float = 2.0  # Seconds between spawn attempts
 @export var spawn_chance: float = 0.7  # Chance to spawn cloud per cycle
+@export var cloud_speed_min: float = 0.6  # Clouds move at 60% minimum
+@export var cloud_speed_max: float = 0.8  # Clouds move at 80% maximum
 
 # ============================================================================
 # INTERNAL STATE
@@ -65,6 +67,9 @@ func _process(delta: float) -> void:
 	if spawn_timer <= 0.0:
 		spawn_timer = spawn_cycle_time
 		_try_spawn_cloud()
+	
+	# Move clouds
+	_move_clouds()
 	
 	# Check and despawn out-of-view clouds
 	_despawn_out_of_view_clouds()
@@ -103,8 +108,14 @@ func _spawn_cloud() -> void:
 	
 	var cloud = cloud_pool.pop_front()
 	
-	# Set random position ahead of player
-	var spawn_x = player.global_position.x + spawn_distance_ahead + randf_range(-200, 200)
+	# Assign random speed multiplier (between 60% and 80%)
+	var random_speed = randf_range(cloud_speed_min, cloud_speed_max)
+	cloud.set_meta("speed_multiplier", random_speed)
+	
+	# Clouds spawn farther ahead based on their speed
+	# Faster clouds spawn closer, slower clouds spawn farther
+	var adjusted_spawn_distance = spawn_distance_ahead / random_speed
+	var spawn_x = player.global_position.x + adjusted_spawn_distance + randf_range(-200, 200)
 	var spawn_y = randf_range(spawn_y_min, spawn_y_max)
 	
 	cloud.global_position = Vector2(spawn_x, spawn_y)
@@ -118,7 +129,17 @@ func _spawn_cloud() -> void:
 		cloud.mostrar_frame_aleatorio()
 	
 	active_clouds.append(cloud)
-	print("☁️ Cloud spawned at: %s" % cloud.global_position)
+	print("☁️ Cloud spawned at: %s with speed: %.1f%%" % [cloud.global_position, random_speed * 100])
+
+# ============================================================================
+# MOVEMENT LOGIC
+# ============================================================================
+
+func _move_clouds() -> void:
+	"""Move clouds - they stay in their global position, don't follow player"""
+	# Clouds don't need to move, they stay where they spawn
+	# The parallax effect comes from spawning at different distances
+	pass
 
 
 # ============================================================================
