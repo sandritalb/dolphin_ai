@@ -25,14 +25,11 @@ var bottom = 0.0
 # Water color
 @export var water_color: Color = Color(0, 0.537, 0.839, 1)
 
-@onready var water_particles = preload("res://water_demo/WaterParticlesDemo.tscn")
 @export var splash_intensity = 5.0
 @export var detection_area_radius = 50.0
 
 var detection_areas = []
 var items_in_water = {}
-var particle_cooldown = {}
-@export var particle_cooldown_time = 0.5  # Cooldown between particle spawns
 
 # Wave generation
 @export var wave_enabled = true
@@ -100,12 +97,6 @@ func _physics_process(_delta: float) -> void:
 				right_deltas[i] = spread * (springs[i].height - springs[i + 1].height)
 				springs[i + 1].velocity += right_deltas[i]
 	
-	# Update cooldowns
-	for spring_index in particle_cooldown.keys():
-		particle_cooldown[spring_index] -= _delta
-		if particle_cooldown[spring_index] <= 0:
-			particle_cooldown.erase(spring_index)
-	
 	draw_water_body()
 	draw_water_border()
 
@@ -164,7 +155,6 @@ func _on_detection_area_entered(area: Area2D, spring_index: int) -> void:
 	if not items_in_water.has(area):
 		items_in_water[area] = spring_index
 		splash(spring_index, splash_intensity)
-		_play_water_particles(spring_index)
 
 
 func _on_detection_area_exited(area: Area2D, spring_index: int) -> void:
@@ -173,17 +163,6 @@ func _on_detection_area_exited(area: Area2D, spring_index: int) -> void:
 	if items_in_water.has(area):
 		items_in_water.erase(area)
 		splash(spring_index, splash_intensity)
-		_play_water_particles(spring_index)
-
-
-func _play_water_particles(spring_index: int) -> void:
-	# Only play particles if cooldown has expired
-	if not particle_cooldown.has(spring_index):
-		if spring_index >= 0 and spring_index < springs.size():
-			var particles = water_particles.instantiate()
-			particles.global_position = springs[spring_index].global_position
-			get_parent().add_child(particles)
-			particle_cooldown[spring_index] = particle_cooldown_time
 
 
 func draw_water_body() -> void:

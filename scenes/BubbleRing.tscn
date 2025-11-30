@@ -1,24 +1,33 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=4 format=3 uid="uid://c78xeqxpfv28v"]
 
-[ext_resource type="Script" path="res://scripts/bubble_ring.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://generatedbubble1" path="res://materials/generated_bubble.tres" id="2_tex"]
+[ext_resource type="Script" uid="uid://cmggbfcjawwrp" path="res://scripts/bubble_ring.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://slcd5138sb5g" path="res://materials/generated_bubble.tres" id="2_tex"]
 
 [sub_resource type="Gradient" id="Gradient_1"]
 colors = PackedColorArray(1, 1, 1, 0.8, 1, 1, 1, 0)
 
 [node name="BubbleRing" type="Node2D"]
+light_mask = 0
 script = ExtResource("1_script")
 
 [node name="Particles" type="CPUParticles2D" parent="."]
-amount = 60
+amount = 20
 texture = ExtResource("2_tex")
-lifetime = 0.5
+lifetime = 4.0
 local_coords = true
-emission_shape = 2
-emission_sphere_radius = 15.0
+emission_shape = 3
+emission_rect_extents = Vector2(5, 1)
+direction = Vector2(0, -1)
+spread = 14.1
 gravity = Vector2(0, 0)
-angular_velocity_min = 50.0
-angular_velocity_max = 100.0
-scale_amount_min = 0.02
-scale_amount_max = 0.05
+initial_velocity_min = 10.0
+initial_velocity_max = 10.0
+angular_velocity_min = 40.0
+angular_velocity_max = 50.0
+linear_accel_min = 6.0
+linear_accel_max = 10.0
+angle_min = -5.0
+angle_max = 5.0
+scale_amount_min = 0.1
+scale_amount_max = 0.15
 color_ramp = SubResource("Gradient_1")

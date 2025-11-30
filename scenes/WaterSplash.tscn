@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://byfjn6woydk2"]
+
+[ext_resource type="Script" uid="uid://cmggbfcjawwrp" path="res://scripts/bubble_ring.gd" id="1_pggod"]
+[ext_resource type="Texture2D" uid="uid://bjreigs072qx4" path="res://sprites/water_drop3.png" id="2_pggod"]
+
+[sub_resource type="Gradient" id="Gradient_1"]
+colors = PackedColorArray(1, 1, 1, 0.8, 1, 1, 1, 0)
+
+[node name="WaterSplash" type="Node2D"]
+light_mask = 0
+script = ExtResource("1_pggod")
+
+[node name="Particles" type="CPUParticles2D" parent="."]
+amount = 50
+texture = ExtResource("2_pggod")
+lifetime = 3.0
+explosiveness = 1.0
+local_coords = true
+emission_shape = 3
+emission_rect_extents = Vector2(5, 1)
+direction = Vector2(0, -1)
+spread = 90.0
+gravity = Vector2(0, 15)
+initial_velocity_min = 15.0
+initial_velocity_max = 20.0
+angular_velocity_min = 25.0
+angular_velocity_max = 50.0
+scale_amount_min = 0.1
+scale_amount_max = 0.15
+color_ramp = SubResource("Gradient_1")
