@@ -9,11 +9,12 @@ colors = PackedColorArray(1, 1, 1, 0.8, 1, 1, 1, 0)
 [node name="BubbleRing" type="Node2D"]
 light_mask = 0
 script = ExtResource("1_script")
+stop_emit_before_remove = true
 
 [node name="Particles" type="CPUParticles2D" parent="."]
-amount = 20
+amount = 10
 texture = ExtResource("2_tex")
-lifetime = 4.0
+lifetime = 1.5
 local_coords = true
 emission_shape = 3
 emission_rect_extents = Vector2(5, 1)

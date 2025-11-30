@@ -358,7 +358,7 @@ func update_medium_state() -> void:
 		
 		if controller and controller.has_method("on_enter_water"):
 			controller.on_enter_water()
-		spawn_bubble_ring()
+		# spawn_bubble_ring()
 
 
 # ============================================================================

@@ -13,7 +13,6 @@ var deco_scene = preload("res://scenes/BackgroundDeco.tscn")
 # ============================================================================
 # REFERENCES
 # ============================================================================
-var deco_container: Node = null
 var player: Node = null
 
 # ============================================================================
@@ -25,7 +24,7 @@ var active_decos: Array = []
 # ============================================================================
 # SETTINGS
 # ============================================================================
-@export var pool_size: int = 20
+@export var pool_size: int = 30
 @export var spawn_distance_ahead: float = 1400.0  # How far ahead to spawn
 @export var despawn_distance_behind: float = 900.0  # How far behind to despawn
 @export var spawn_y_min_offset: float = 200.0  # Minimum offset below water level for spawning
@@ -43,13 +42,6 @@ var spawn_timer: float = 0.0
 # ============================================================================
 
 func _ready() -> void:
-	# Create deco container if it doesn't exist (deferred to avoid setup conflicts)
-	deco_container = get_parent().find_child("DecoContainer")
-	if not deco_container:
-		deco_container = Node.new()
-		deco_container.name = "DecoContainer"
-		get_parent().add_child.call_deferred(deco_container)
-	
 	# Initialize pool (deferred)
 	_initialize_pool.call_deferred()
 	
@@ -78,7 +70,7 @@ func _initialize_pool() -> void:
 	"""Create pool of decorations"""
 	for i in range(pool_size):
 		var deco = deco_scene.instantiate()
-		deco_container.add_child(deco)
+		add_child(deco)
 		deco.hide()
 		deco.process_mode = Node.PROCESS_MODE_DISABLED
 		deco.set_meta("pooled", true)
@@ -103,14 +95,15 @@ func _spawn_deco() -> void:
 	
 	var deco = deco_pool.pop_front()
 	
-	# Set random position ahead of the player
+	# Set spawn x position ahead of the player
 	var spawn_x = player.global_position.x + spawn_distance_ahead
-	var spawn_y = randf_range(Globals.SEA_BOTTOM - spawn_y_min_offset, Globals.SEA_BOTTOM)
-	deco.global_position = Vector2(spawn_x, spawn_y)
 	
-	# Setup random sprite and frame
+	# Setup random sprite and frame, which returns the appropriate y position
+	var spawn_y = Globals.SEA_BOTTOM  # Default near sea bottom
 	if deco.has_method("_setup_random_deco"):
-		deco._setup_random_deco()
+		spawn_y = deco._setup_random_deco(spawn_y_min_offset)
+	
+	deco.global_position = Vector2(spawn_x, spawn_y)
 	
 	# Show and enable the deco
 	deco.show()
