@@ -126,24 +126,33 @@ func _update_with_camera() -> void:
 		return
 	
 	var current_camera_x = camera.global_position.x
-	var camera_delta = current_camera_x - last_camera_x
 	
-	# Only process if camera moved right by one segment
-	if camera_delta < segment_width:
-		return
+	# Get viewport width to know when sea bottom segment is off-screen
+	var viewport_width = get_viewport().get_visible_rect().size.x
+	# Use a larger buffer (5 segments) so recycling happens well off-screen
+	var left_edge = current_camera_x - (viewport_width / 2) - (segment_width * 5)
 	
-	last_camera_x = current_camera_x
+	# Check if the left edge of our polygon is off-screen
+	var polygon_left_edge = global_position.x
 	
-	# Move the whole node to the right by one segment (keeps visuals stable)
-	global_position.x += segment_width
+	var needs_redraw = false
 	
-	# Cycle points from left to right for each layer
-	_cycle_layer_heights(layer1_heights, layer1_base_height)
-	_cycle_layer_heights(layer2_heights, layer2_base_height)
-	_cycle_layer_heights(layer3_heights, layer3_base_height)
-	_cycle_layer_heights(layer4_heights, layer4_base_height)
+	# Use while loop to catch up if camera moved fast (like water_body.gd does)
+	while polygon_left_edge < left_edge:
+		# Move the whole node to the right by one segment (keeps visuals stable)
+		global_position.x += segment_width
+		polygon_left_edge = global_position.x
+		
+		# Cycle points from left to right for each layer
+		_cycle_layer_heights(layer1_heights, layer1_base_height)
+		_cycle_layer_heights(layer2_heights, layer2_base_height)
+		_cycle_layer_heights(layer3_heights, layer3_base_height)
+		_cycle_layer_heights(layer4_heights, layer4_base_height)
+		
+		needs_redraw = true
 	
-	_draw_all_layers()
+	if needs_redraw:
+		_draw_all_layers()
 
 
 func _cycle_layer_heights(heights: Array[float], base_height: float) -> void:
