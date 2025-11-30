@@ -15,6 +15,9 @@ var time_elapsed: float = 0.0
 func _ready():
 	base_position = position
 	
+	# Add to fish group for identification
+	add_to_group("fish")
+	
 	# Connect Area2D signal to detect dolphin collision
 	var area = get_node_or_null("Area2D")
 	if area:

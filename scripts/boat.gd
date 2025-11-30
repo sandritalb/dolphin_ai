@@ -12,6 +12,9 @@ var time_elapsed: float = 0.0
 
 func _ready():
 	base_position = position
+	
+	# Add to boats group for identification
+	add_to_group("boats")
 
 func _process(delta):
 	# Create smooth bobbing motion using sine wave

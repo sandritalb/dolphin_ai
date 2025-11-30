@@ -35,6 +35,9 @@ var is_moving_to_b: bool = true  # Direction flag
 # ============================================================================
 
 func _ready() -> void:
+	# Add to sharks group for identification
+	add_to_group("sharks")
+	
 	# Connect the body_entered signal to detect dolphin collision (CharacterBody2D)
 	body_entered.connect(_on_body_entered)
 
