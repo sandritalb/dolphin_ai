@@ -14,5 +14,6 @@ For some assets we use AI and resources from others, here the list of tools, mod
 * Sounds recorded at home
 * jump into water splash sound.wav by NIkhill Kumar -- https://freesound.org/s/320330/ -- License: Creative Commons 0
 * Dolphin.wav by Forpus_Prod -- https://freesound.org/s/391317/ -- License: Creative Commons 0
+* sharkIsNear.ogg by kradziej -- https://freesound.org/s/511281/ -- License: Creative Commons 0
 
 Huge thanks to everyone who made the tools, resources, and tutorials that helped me build this videogame!
