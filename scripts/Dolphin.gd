@@ -43,6 +43,7 @@ var is_in_water: bool = true
 
 # Bubble Ring
 var bubble_ring_scene = preload("res://scenes/BubbleRing.tscn")
+var water_splash_scene = preload("res://scenes/WaterSplash.tscn")
 
 # Sounds
 var boat_hit_sound = preload("res://sounds/boat_hit.mp3")
@@ -230,16 +231,26 @@ func spawn_bubble_ring() -> void:
 		
 	if bubble_ring_scene:
 		var ring = bubble_ring_scene.instantiate()
-		# Add to the same parent as dolphin (usually the main scene)
-		get_parent().add_child(ring)
+		ring.position = Vector2(15,-30)
+		add_child(ring)
 		
 		# Spawn in front of the dolphin
 		# Use a slight offset so it doesn't spawn inside
-		var spawn_offset = Vector2.RIGHT.rotated(rotation) * 40.0
-		ring.position = position + spawn_offset
-		ring.rotation = rotation
+
+		# ring.rotation = rotation
 		
 		print("OoO Bubble Ring spawned!")
+
+
+func _spawn_water_splash() -> void:
+	if water_splash_scene:
+		var splash = water_splash_scene.instantiate()
+		get_parent().add_child(splash)
+		
+		# Spawn at dolphin's X position but at water level Y
+		splash.position = Vector2(position.x, Globals.WATER_LEVEL)
+		
+		print("💦 Water splash spawned at sea level!")
 
 
 func eat_fish() -> void:
@@ -250,6 +261,8 @@ func eat_fish() -> void:
 	SoundManager.play_sound(bite_sound, 1.6, 1.8, -5.0)
 	# Play dolphin happy sound
 	SoundManager.play_sound(dolphin_happy_sound, 0.9, 1.1, -5.0)
+	if not is_fish_boosting:
+		spawn_bubble_ring()
 	
 	# Activate fish boost
 	is_fish_boosting = true
@@ -313,6 +326,9 @@ func update_medium_state() -> void:
 		# Play splash sound when exiting water
 		SoundManager.play_sound(water_splash_out_sound, 0.9, 1.1, -19.0)
 		
+		# Spawn water splash at sea level
+		_spawn_water_splash()
+		
 		# Stop swimming animation when out of water
 		if animated_sprite:
 			animated_sprite.stop()
@@ -332,6 +348,9 @@ func update_medium_state() -> void:
 	elif not was_in_water and is_in_water:
 		# Play splash sound when entering water
 		SoundManager.play_sound(water_splash_in_sound, 0.9, 1.1, -15.0)
+		
+		# Spawn water splash at sea level
+		_spawn_water_splash()
 		
 		# Play swimming animation when in water
 		if animated_sprite:
