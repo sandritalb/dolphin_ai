@@ -36,8 +36,8 @@ var active_boats: Array = []
 # SETTINGS
 # ============================================================================
 @export var pool_size: int = 20
-@export var spawn_distance_ahead: float = 1400.0  # How far ahead to spawn
-@export var despawn_distance_behind: float = 900.0  # How far behind to despawn
+@export var spawn_distance_ahead: float = 1600.0  # How far ahead to spawn
+@export var despawn_distance_behind: float = 1200.0  # How far behind to despawn
 @export var spawn_width: float = 1000.0  # Width range for random spawning
 @export var shark_spawn_chance: float = 0.3  # Chance to spawn shark per cycle
 @export var boat_spawn_chance: float = 0.3  # Chance to spawn boat per cycle
