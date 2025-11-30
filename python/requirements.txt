@@ -1,4 +1,0 @@
-gym
-stable-baselines3
-websocket-client
-numpy
