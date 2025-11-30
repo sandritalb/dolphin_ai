@@ -33,7 +33,7 @@ var active_fish: Array = []
 
 @export_category("Spawn Distance")
 @export var spawn_distance_ahead: float = 1400.0  # How far ahead to spawn
-@export var despawn_distance_behind: float = 900.0  # How far behind to despawn
+@export var despawn_distance_behind: float = 1400.0  # How far behind to despawn (accounts for camera lookahead + viewport width)
 
 @export_category("Spawn Chances")
 @export_range(0.0, 1.0) var fish_spawn_chance: float = 0.4  # Base chance to spawn fish per cycle
