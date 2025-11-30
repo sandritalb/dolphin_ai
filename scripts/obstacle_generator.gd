@@ -42,7 +42,7 @@ var active_boats: Array = []
 @export var shark_spawn_chance: float = 0.3  # Chance to spawn shark per cycle
 @export var boat_spawn_chance: float = 0.3  # Chance to spawn boat per cycle
 @export var spawn_cycle_time: float = 2.0  # Seconds between spawn attempts
-@export var shark_min_depth_offset: float = 50.0  # Minimum offset below water level
+@export var shark_min_depth_offset: float = 100.0  # Minimum offset below water level
 @export var spawn_chance_increase_rate: float = 0.0001  # How much to increase spawn chances per unit distance
 @export var max_spawn_chance: float = 0.8  # Maximum spawn chance cap
 
