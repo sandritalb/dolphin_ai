@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://crsqhbm5qpveo"]
 
-[ext_resource type="Script" path="res://scripts/start_menu.gd" id="1_5t9q1"]
+[ext_resource type="Script" uid="uid://c7w7ae4i1h5yw" path="res://scripts/start_menu.gd" id="1_5t9q1"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_menu"]
 
@@ -31,7 +31,7 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 2
-text = "Infinite run"
+text = "1 Player"
 
 [node name="PlayerIAButton" type="Button" parent="Panel/VBoxContainer"]
 layout_mode = 2
