@@ -133,6 +133,9 @@ func _physics_process(delta: float) -> void:
 		fish_boost_timer -= delta
 		if fish_boost_timer <= 0.0:
 			is_fish_boosting = false
+			# Restore normal animation speed
+			if animated_sprite:
+				animated_sprite.speed_scale = 1.0
 	
 	# Get input from controller
 	var input_direction = Vector2.ZERO
@@ -164,9 +167,7 @@ func _physics_process(delta: float) -> void:
 			
 			# Apply fish boost multiplier if active
 			if is_fish_boosting:
-				print("💨 Fish boost active! prev", current_accel)
 				current_accel *= fish_boost_multiplier
-				print("💨 Fish boost active! result", current_accel)
 			
 			# Calculate target speed (boosted if fish boost is active)
 			var target_speed = max_speed * fish_boost_multiplier if is_fish_boosting else max_speed
@@ -250,6 +251,10 @@ func eat_fish() -> void:
 	# Activate fish boost
 	is_fish_boosting = true
 	fish_boost_timer = fish_boost_duration
+	
+	# Speed up animation during boost
+	if animated_sprite:
+		animated_sprite.speed_scale = fish_boost_multiplier
 	
 	# Give immediate velocity boost
 	if velocity.length() > 0:
