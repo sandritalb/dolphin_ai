@@ -12,7 +12,6 @@ var cloud_scene = preload("res://scenes/Cloud.tscn")
 # ============================================================================
 # REFERENCES
 # ============================================================================
-var cloud_container: Node = null
 var player: Node = null
 
 # ============================================================================
@@ -31,8 +30,8 @@ var active_clouds: Array = []
 @export var spawn_y_max: float = -100.0  # Maximum Y position (water level)
 @export var spawn_cycle_time: float = 2.0  # Seconds between spawn attempts
 @export var spawn_chance: float = 0.7  # Chance to spawn cloud per cycle
-@export var cloud_speed_min: float = 0.6  # Clouds move at 60% minimum
-@export var cloud_speed_max: float = 0.8  # Clouds move at 80% maximum
+@export var cloud_speed_min: float = 0.3  # Clouds near sea level move at 30% of camera speed
+@export var cloud_speed_max: float = 0.7  # Clouds high in sky move at 70% of camera speed
 
 # ============================================================================
 # INTERNAL STATE
@@ -45,15 +44,8 @@ var spawn_timer: float = 0.0
 # ============================================================================
 
 func _ready() -> void:
-	# Create cloud container if it doesn't exist (deferred to avoid setup conflicts)
-	cloud_container = get_parent().find_child("CloudContainer")
-	if not cloud_container:
-		cloud_container = Node.new()
-		cloud_container.name = "CloudContainer"
-		get_parent().add_child.call_deferred(cloud_container)
-	
-	# Initialize pool (deferred)
-	_initialize_pool.call_deferred()
+	# Use this node itself as the container
+	_initialize_pool()
 	
 	print("✅ Cloud Generator initialized with pool of %d" % pool_size)
 
@@ -83,7 +75,7 @@ func _initialize_pool() -> void:
 	"""Create pool of clouds"""
 	for i in range(pool_size):
 		var cloud = cloud_scene.instantiate()
-		cloud_container.add_child(cloud)
+		add_child(cloud)  # Add directly to this node
 		cloud.hide()
 		cloud.process_mode = Node.PROCESS_MODE_DISABLED
 		cloud.set_meta("pooled", true)
@@ -108,15 +100,30 @@ func _spawn_cloud() -> void:
 	
 	var cloud = cloud_pool.pop_front()
 	
-	# Assign random speed multiplier (between 60% and 80%)
-	var random_speed = randf_range(cloud_speed_min, cloud_speed_max)
-	cloud.set_meta("speed_multiplier", random_speed)
+	# Determine spawn Y position first
+	var spawn_y = randf_range(spawn_y_min, spawn_y_max)
+	
+	# Calculate depth factor: 0.0 = top of sky (spawn_y_min), 1.0 = near sea level (spawn_y_max)
+	var depth_factor = (spawn_y - spawn_y_min) / (spawn_y_max - spawn_y_min)
+	
+	# Speed multiplier based on depth: lower clouds (higher depth_factor) move slower
+	# This creates parallax effect - clouds near water seem farther away
+	var speed_multiplier = lerp(cloud_speed_max, cloud_speed_min, depth_factor)
+	
+	cloud.set_meta("speed_multiplier", speed_multiplier)
+	
+	# Set speed multiplier on cloud (percentage of camera speed)
+	if cloud.has_method("set_movement_speed"):
+		cloud.set_movement_speed(speed_multiplier)
+	
+	# Set scale based on depth (lower clouds are smaller)
+	if cloud.has_method("set_scale_based_on_depth"):
+		cloud.set_scale_based_on_depth(depth_factor)
 	
 	# Clouds spawn farther ahead based on their speed
 	# Faster clouds spawn closer, slower clouds spawn farther
-	var adjusted_spawn_distance = spawn_distance_ahead / random_speed
+	var adjusted_spawn_distance = spawn_distance_ahead / speed_multiplier
 	var spawn_x = player.global_position.x + adjusted_spawn_distance + randf_range(-200, 200)
-	var spawn_y = randf_range(spawn_y_min, spawn_y_max)
 	
 	cloud.global_position = Vector2(spawn_x, spawn_y)
 	
@@ -129,16 +136,16 @@ func _spawn_cloud() -> void:
 		cloud.mostrar_frame_aleatorio()
 	
 	active_clouds.append(cloud)
-	print("☁️ Cloud spawned at: %s with speed: %.1f%%" % [cloud.global_position, random_speed * 100])
+	print("☁️ Cloud spawned at Y: %.0f, depth: %.2f, speed: %.0f%%" % [spawn_y, depth_factor, speed_multiplier * 100])
 
 # ============================================================================
 # MOVEMENT LOGIC
 # ============================================================================
 
 func _move_clouds() -> void:
-	"""Move clouds - they stay in their global position, don't follow player"""
-	# Clouds don't need to move, they stay where they spawn
-	# The parallax effect comes from spawning at different distances
+	"""Clouds now handle their own movement in cloud.gd"""
+	# Movement is now handled by each cloud's _process() function
+	# This allows for individual speed control based on depth
 	pass
 
 
@@ -172,3 +179,48 @@ func set_player(player_node: Node) -> void:
 	"""Set the player reference for spawn/despawn calculations"""
 	player = player_node
 	print("✅ Cloud Generator: Player reference set")
+	
+	# Spawn some initial clouds immediately
+	_spawn_initial_clouds()
+
+
+func _spawn_initial_clouds() -> void:
+	"""Spawn initial clouds across the visible area"""
+	if not player:
+		return
+	
+	# Spawn 5-8 clouds at various distances ahead
+	var initial_count = randi_range(5, 8)
+	for i in range(initial_count):
+		if cloud_pool.is_empty():
+			break
+		
+		var cloud = cloud_pool.pop_front()
+		
+		# Spread clouds across the visible and near-visible area
+		var spawn_y = randf_range(spawn_y_min, spawn_y_max)
+		var depth_factor = (spawn_y - spawn_y_min) / (spawn_y_max - spawn_y_min)
+		var speed_multiplier = lerp(cloud_speed_max, cloud_speed_min, depth_factor)
+		
+		cloud.set_meta("speed_multiplier", speed_multiplier)
+		
+		# Set speed multiplier (percentage of camera speed)
+		if cloud.has_method("set_movement_speed"):
+			cloud.set_movement_speed(speed_multiplier)
+		
+		if cloud.has_method("set_scale_based_on_depth"):
+			cloud.set_scale_based_on_depth(depth_factor)
+		
+		# Spread initial clouds from behind player to ahead
+		var spawn_x = player.global_position.x + randf_range(-200, spawn_distance_ahead)
+		
+		cloud.global_position = Vector2(spawn_x, spawn_y)
+		cloud.show()
+		cloud.process_mode = Node.PROCESS_MODE_INHERIT
+		
+		if cloud.has_method("mostrar_frame_aleatorio"):
+			cloud.mostrar_frame_aleatorio()
+		
+		active_clouds.append(cloud)
+	
+	print("☁️ Spawned %d initial clouds" % initial_count)

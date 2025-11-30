@@ -3,9 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://mryja7v45ih5" path="res://sprites/clouds.png" id="1_324vy"]
 [ext_resource type="Script" uid="uid://bip4jhn2nnhub" path="res://scripts/cloud.gd" id="2_r5hi7"]
 
-[node name="Cloud" type="Node2D"]
-
-[node name="Cloud" type="Sprite2D" parent="."]
+[node name="Cloud" type="Sprite2D"]
 texture = ExtResource("1_324vy")
 hframes = 3
 vframes = 3

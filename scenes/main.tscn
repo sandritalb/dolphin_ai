@@ -46,6 +46,7 @@ wave_amplitude = 0.3
 position = Vector2(-743, 505)
 
 [node name="CloudGenerator" type="Node" parent="background"]
+process_mode = 3
 script = ExtResource("5_eb6dy")
 
 [node name="DecoGenerator" type="Node" parent="."]
