@@ -87,4 +87,7 @@ func _on_body_entered(body: Node2D) -> void:
 		SoundManager.play_sound(bite_sound, 0.9, 1.1, -3.0)
 		# Play shark dead sound
 		SoundManager.play_sound(shark_dead_sound, 0.9, 1.1, 0.0)
+		# Notify the dolphin about the shark hit
+		if body.has_signal("shark_hit_signal"):
+			body.shark_hit_signal.emit(body)
 		emit_signal("dolphin_touched")

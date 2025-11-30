@@ -9,6 +9,9 @@ extends CharacterBody2D
 # SIGNALS
 # ============================================================================
 signal dolphin_disappeared_from_screen(dolphin: Node, dolphin_name: String)
+signal fish_eaten_signal(dolphin: Node)
+signal boat_hit_signal(dolphin: Node)
+signal shark_hit_signal(dolphin: Node)
 
 # ============================================================================
 # MOVEMENT PHYSICS
@@ -257,6 +260,9 @@ func eat_fish() -> void:
 	"""Called when the dolphin eats a fish"""
 	fish_eaten_count += 1
 	
+	# Emit signal for AI observation
+	fish_eaten_signal.emit(self)
+	
 	# Play bite sound
 	SoundManager.play_sound(bite_sound, 1.6, 1.8, -5.0)
 	# Play dolphin happy sound
@@ -297,6 +303,9 @@ func _check_boat_collision() -> void:
 func _apply_stun(boat: Node2D) -> void:
 	if not is_stunned:
 		is_stunned = true
+		
+		# Emit signal for AI observation
+		boat_hit_signal.emit(self)
 		
 		# Play boat hit sound with random pitch 
 		SoundManager.play_sound(boat_hit_sound, 0.8, 1.2, -3.0)

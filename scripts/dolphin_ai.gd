@@ -19,12 +19,37 @@ var ai_wander_interval: float = 2.0  # Change direction every 2 seconds
 var dolphin: Node = null
 var is_in_water: bool = true
 
+# Event tracking for observations
+var last_fish_eaten: bool = false
+var last_boat_hit: bool = false
+var last_shark_hit: bool = false
+
+# JSON observations
+var observations_json: String = ""
+
+
+func _physics_process(_delta: float) -> void:
+	# Get observations and convert to JSON
+	var observations = get_observations()
+	observations_json = JSON.stringify(observations)
+	print_debug("🤖 AI Observations: ", observations_json)
+
 
 func on_ready(parent_dolphin: Node) -> void:
 	dolphin = parent_dolphin
 	ai_direction = Vector2.RIGHT
 	randomize_ai_wander()
 	apply_ai_tint()
+	
+	# Connect to dolphin signals for event tracking
+	if dolphin:
+		if dolphin.has_signal("fish_eaten_signal"):
+			dolphin.fish_eaten_signal.connect(_on_fish_eaten)
+		if dolphin.has_signal("boat_hit_signal"):
+			dolphin.boat_hit_signal.connect(_on_boat_hit)
+		if dolphin.has_signal("shark_hit_signal"):
+			dolphin.shark_hit_signal.connect(_on_shark_hit)
+	
 	print("🤖 AI Controller initialized")
 
 
@@ -74,3 +99,98 @@ func on_exit_water() -> void:
 
 func on_enter_water() -> void:
 	pass  # AI dolphins don't print debug messages
+
+
+# ============================================================================
+# EVENT HANDLERS
+# ============================================================================
+
+func _on_fish_eaten(_dolphin: Node) -> void:
+	last_fish_eaten = true
+
+
+func _on_boat_hit(_dolphin: Node) -> void:
+	last_boat_hit = true
+
+
+func _on_shark_hit(_dolphin: Node) -> void:
+	last_shark_hit = true
+
+
+# ============================================================================
+# OBSERVATIONS
+# ============================================================================
+
+func get_observations() -> Dictionary:
+	"""
+	Get observations for AI training/inference.
+	Returns a dictionary with positions of all game entities and event flags.
+	"""
+	var observations = {
+		"dolphin": {
+			"position": {"x": 0.0, "y": 0.0},
+			"velocity": {"x": 0.0, "y": 0.0},
+			"is_in_water": is_in_water,
+			"is_stunned": false,
+			"is_fish_boosting": false,
+			"fish_eaten_count": 0
+		},
+		"dolphins": [],
+		"fish": [],
+		"boats": [],
+		"sharks": [],
+		"events": {
+			"fish_eaten": last_fish_eaten,
+			"boat_hit": last_boat_hit,
+			"shark_hit": last_shark_hit
+		}
+	}
+	
+	# Get own dolphin position and state
+	if dolphin:
+		observations["dolphin"]["position"] = {"x": dolphin.position.x, "y": dolphin.position.y}
+		observations["dolphin"]["velocity"] = {"x": dolphin.velocity.x, "y": dolphin.velocity.y}
+		observations["dolphin"]["is_in_water"] = dolphin.is_in_water if "is_in_water" in dolphin else is_in_water
+		observations["dolphin"]["is_stunned"] = dolphin.is_stunned if "is_stunned" in dolphin else false
+		observations["dolphin"]["is_fish_boosting"] = dolphin.is_fish_boosting if "is_fish_boosting" in dolphin else false
+		observations["dolphin"]["fish_eaten_count"] = dolphin.fish_eaten_count if "fish_eaten_count" in dolphin else 0
+	
+	# Get all dolphins in the scene
+	var all_dolphins = get_tree().get_nodes_in_group("dolphins")
+	for d in all_dolphins:
+		if d != dolphin:  # Exclude self
+			observations["dolphins"].append({
+				"position": {"x": d.position.x, "y": d.position.y},
+				"velocity": {"x": d.velocity.x, "y": d.velocity.y}
+			})
+	
+	# Get all fish in the scene
+	var all_fish = get_tree().get_nodes_in_group("fish")
+	for f in all_fish:
+		if f.visible:  # Only include visible (active) fish
+			observations["fish"].append({
+				"position": {"x": f.position.x, "y": f.position.y}
+			})
+	
+	# Get all boats in the scene
+	var all_boats = get_tree().get_nodes_in_group("boats")
+	for b in all_boats:
+		if b.visible:  # Only include visible (active) boats
+			observations["boats"].append({
+				"position": {"x": b.position.x, "y": b.position.y}
+			})
+	
+	# Get all sharks in the scene
+	var all_sharks = get_tree().get_nodes_in_group("sharks")
+	for s in all_sharks:
+		if s.visible:  # Only include visible (active) sharks
+			observations["sharks"].append({
+				"position": {"x": s.position.x, "y": s.position.y}
+			})
+	
+	# Reset event flags after reading (they're one-shot events)
+	last_fish_eaten = false
+	last_boat_hit = false
+	last_shark_hit = false
+	
+	return observations
