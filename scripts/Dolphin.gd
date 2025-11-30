@@ -28,8 +28,8 @@ signal dolphin_disappeared_from_screen(dolphin: Node, dolphin_name: String)
 @export var speed_burst_duration = 0.1     # Duration of speed burst in seconds
 
 # Fish eating speed boost
-@export var fish_boost_multiplier = 1.5    # Speed multiplier when eating fish
-@export var fish_boost_duration = 0.5      # Duration of fish eating boost
+@export var fish_boost_multiplier = 1.3    # Speed multiplier when eating fish
+@export var fish_boost_duration = 2      # Duration of fish eating boost
 
 # Water interaction
 @export var water_detection_range = 10.0
@@ -164,10 +164,15 @@ func _physics_process(delta: float) -> void:
 			
 			# Apply fish boost multiplier if active
 			if is_fish_boosting:
+				print("💨 Fish boost active! prev", current_accel)
 				current_accel *= fish_boost_multiplier
+				print("💨 Fish boost active! result", current_accel)
 			
-			# Accelerate toward max speed
-			velocity = velocity.move_toward(input_direction * max_speed, current_accel * delta)
+			# Calculate target speed (boosted if fish boost is active)
+			var target_speed = max_speed * fish_boost_multiplier if is_fish_boosting else max_speed
+			
+			# Accelerate toward target speed
+			velocity = velocity.move_toward(input_direction * target_speed, current_accel * delta)
 		else:
 			# Apply water friction when no input
 			velocity = velocity.move_toward(Vector2.ZERO, water_friction * delta)
