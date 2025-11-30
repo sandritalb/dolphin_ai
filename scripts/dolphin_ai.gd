@@ -10,6 +10,9 @@ extends Node
 @export var ai_max_wander_angle = PI / 4  # Max angle AI wanders
 @export var ai_tint_color: Color = Color.LIGHT_BLUE  # Tint color for AI dolphins
 
+var websocket: WebSocketPeer = null
+var websocket_connected: bool = false
+
 # AI state
 var ai_direction: Vector2 = Vector2.RIGHT
 var ai_wander_timer: float = 0.0
@@ -27,15 +30,52 @@ var last_shark_hit: bool = false
 # JSON observations
 var observations_json: String = ""
 
-
 func _physics_process(_delta: float) -> void:
-	# Get observations and convert to JSON
-	var observations = get_observations()
-	observations_json = JSON.stringify(observations)
-	print_debug("🤖 AI Observations: ", observations_json)
+	# Poll websocket to process incoming data
+	if websocket:
+		websocket.poll()
+		
+		# Track connection state
+		var current_state = websocket.get_ready_state()
+		
+		# Only send if websocket is ready
+		if current_state == WebSocketPeer.STATE_OPEN:
+			if not websocket_connected:
+				print("🤖 WebSocket NOW READY for first send")
+				websocket_connected = true
+			
+			var observations = get_observations()
+			observations_json = JSON.stringify(observations)
+			websocket.send_text(observations_json)
+			print_debug("🤖 AI Observations sent: ", observations_json)
+		else:
+			if websocket_connected:
+				print("🤖 WARNING: WebSocket lost connection! State: ", current_state, " (", _get_state_name(current_state), ")")
+				websocket_connected = false
+			print_debug("🤖 AI WebSocket not ready, state: ", current_state)
+
+
+func _get_state_name(state: int) -> String:
+	match state:
+		WebSocketPeer.STATE_CONNECTING:
+			return "CONNECTING"
+		WebSocketPeer.STATE_OPEN:
+			return "OPEN"
+		WebSocketPeer.STATE_CLOSING:
+			return "CLOSING"
+		WebSocketPeer.STATE_CLOSED:
+			return "CLOSED"
+		_:
+			return "UNKNOWN"
 
 
 func on_ready(parent_dolphin: Node) -> void:
+	websocket = WebSocketPeer.new()
+	var error = websocket.connect_to_url("ws://localhost:8765")
+	if error != OK:
+		print("Failed to connect to WebSocket", error)
+	else:
+		print("WebSocket connection initiated, waiting for STATE_OPEN...")
 	dolphin = parent_dolphin
 	ai_direction = Vector2.RIGHT
 	randomize_ai_wander()

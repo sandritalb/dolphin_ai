@@ -10,20 +10,31 @@ async def handler(websocket):
 
     try:
         async for message in websocket:
-            data = json.loads(message)
+            try:
+                data = json.loads(message)
+                print(f"📨 Recibido desde Godot: {data}")
 
-            # Recibimos OBSERVACIÓN desde Godot
-            observation = data["obs"]
+                # Recibimos OBSERVACIÓN desde Godot (complete observation dict)
+                observation = data
 
-            # Aquí decides la acción (0,1,2…) o envías lo que quieras
-            action = 0  # por ahora fijo, luego pondremos la IA
+                # Aquí decides la acción (0,1,2…) o envías lo que quieras
+                action = 0  # por ahora fijo, luego pondremos la IA
 
-            # Enviar acción de vuelta a Godot
-            await websocket.send(json.dumps({"action": action}))
-    except:
-        print("Godot desconectado")
+                # Enviar acción de vuelta a Godot
+                response = json.dumps({"action": action})
+                await websocket.send(response)
+                print(f"✅ Acción enviada: {response}")
+            except json.JSONDecodeError as e:
+                print(f"❌ Error al parsear JSON: {e}")
+                print(f"   Mensaje recibido: {message}")
+            except Exception as e:
+                print(f"❌ Error procesando mensaje: {e}")
+                raise
+    except Exception as e:
+        print(f"❌ Godot desconectado: {e}")
     finally:
-        clients.remove(websocket)
+        clients.discard(websocket)
+        print("Godot removido de clientes")
 
 async def main():
     print("Servidor WebSocket escuchando en ws://localhost:8765")

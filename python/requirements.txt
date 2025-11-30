@@ -1,4 +1,5 @@
 gym
 stable-baselines3
 websocket-client
+websockets
 numpy
