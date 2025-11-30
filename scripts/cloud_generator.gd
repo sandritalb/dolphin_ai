@@ -30,8 +30,8 @@ var active_clouds: Array = []
 @export var spawn_y_max: float = -100.0  # Maximum Y position (water level)
 @export var spawn_cycle_time: float = 2.0  # Seconds between spawn attempts
 @export var spawn_chance: float = 0.7  # Chance to spawn cloud per cycle
-@export var cloud_speed_min: float = 0.3  # Clouds near sea level move at 30% of camera speed
-@export var cloud_speed_max: float = 0.7  # Clouds high in sky move at 70% of camera speed
+@export var cloud_speed_min: float = 0.6  # Clouds near sea level move at 30% of camera speed
+@export var cloud_speed_max: float = 0.9  # Clouds high in sky move at 70% of camera speed
 
 # ============================================================================
 # INTERNAL STATE
@@ -106,9 +106,10 @@ func _spawn_cloud() -> void:
 	# Calculate depth factor: 0.0 = top of sky (spawn_y_min), 1.0 = near sea level (spawn_y_max)
 	var depth_factor = (spawn_y - spawn_y_min) / (spawn_y_max - spawn_y_min)
 	
-	# Speed multiplier based on depth: lower clouds (higher depth_factor) move slower
-	# This creates parallax effect - clouds near water seem farther away
-	var speed_multiplier = lerp(cloud_speed_max, cloud_speed_min, depth_factor)
+	# Speed multiplier based on depth: clouds near sea level need HIGHER multiplier
+	# Higher multiplier = cloud moves more with camera = appears to move left SLOWER (farther away)
+	# Lower multiplier = cloud moves less with camera = appears to move left FASTER (closer)
+	var speed_multiplier = lerp(cloud_speed_min, cloud_speed_max, depth_factor)
 	
 	cloud.set_meta("speed_multiplier", speed_multiplier)
 	
@@ -200,7 +201,7 @@ func _spawn_initial_clouds() -> void:
 		# Spread clouds across the visible and near-visible area
 		var spawn_y = randf_range(spawn_y_min, spawn_y_max)
 		var depth_factor = (spawn_y - spawn_y_min) / (spawn_y_max - spawn_y_min)
-		var speed_multiplier = lerp(cloud_speed_max, cloud_speed_min, depth_factor)
+		var speed_multiplier = lerp(cloud_speed_min, cloud_speed_max, depth_factor)
 		
 		cloud.set_meta("speed_multiplier", speed_multiplier)
 		
