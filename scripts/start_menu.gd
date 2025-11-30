@@ -8,11 +8,12 @@ extends CanvasLayer
 # ============================================================================
 # SIGNALS
 # ============================================================================
-signal game_mode_selected(mode: int)  # 1 for single player, 2 for two players
+signal game_mode_selected(mode: int)  # 1 for single player, 2 for two players or infinite mode
 
 # ============================================================================
 # CONSTANTS
 # ============================================================================
+const MODE_0_INFINITE = 0
 const MODE_1_PLAYER = 1
 const MODE_2_PLAYERS = 2
 
@@ -31,16 +32,23 @@ func _ready() -> void:
 	print("🎮 StartMenu: _ready() called")
 	
 	# Get button references
-	var single_player_btn = $Panel/VBoxContainer/SinglePlayerButton
+	var infinite_mode_btn = $Panel/VBoxContainer/InfiniteRun
+	var single_player_btn = $Panel/VBoxContainer/PlayerIAButton
 	var two_player_btn = $Panel/VBoxContainer/TwoPlayersButton
 	var quit_btn = $Panel/VBoxContainer/QuitButton
 	
 	# Connect mode selection buttons
+	if infinite_mode_btn:
+		infinite_mode_btn.pressed.connect(_on_infinite_mode_pressed)
+		print("✅ Connected InfiniteRun")
+	else:
+		print("❌ Could not find InfiniteRun")
+	
 	if single_player_btn:
 		single_player_btn.pressed.connect(_on_single_player_pressed)
-		print("✅ Connected SinglePlayerButton")
+		print("✅ Connected PlayerIAButton")
 	else:
-		print("❌ Could not find SinglePlayerButton")
+		print("❌ Could not find PlayerIAButton")
 	
 	if two_player_btn:
 		two_player_btn.pressed.connect(_on_two_players_pressed)
@@ -88,6 +96,13 @@ func hide_menu() -> void:
 # ============================================================================
 # SIGNAL HANDLERS
 # ============================================================================
+
+func _on_infinite_mode_pressed() -> void:
+	print("🎮 Starting Infinite Run mode...")
+	game_started = true
+	game_mode_selected.emit(MODE_0_INFINITE)
+	hide_menu()
+
 
 func _on_single_player_pressed() -> void:
 	print("🎮 Starting Single Player mode...")

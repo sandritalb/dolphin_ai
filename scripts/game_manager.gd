@@ -8,6 +8,7 @@ extends Node
 # ============================================================================
 # CONSTANTS
 # ============================================================================
+const MODE_0_INFINITE = 0
 const MODE_1_PLAYER = 1
 const MODE_2_PLAYERS = 2
 
@@ -74,7 +75,9 @@ func _on_game_mode_selected(mode: int) -> void:
 	print("🎮 GameManager: Game mode selected - ", mode)
 	game_mode = mode
 	
-	if game_mode == MODE_1_PLAYER:
+	if game_mode == MODE_0_INFINITE:
+		_setup_infinite_mode()
+	elif game_mode == MODE_1_PLAYER:
 		_setup_game(DOLPHIN_PLAYER, TAG_PLAYER_1, DOLPHIN_AI, TAG_AI)
 	elif game_mode == MODE_2_PLAYERS:
 		_setup_game(DOLPHIN_PLAYER, TAG_PLAYER_1, DOLPHIN_PLAYER2, TAG_PLAYER_2)
@@ -83,6 +86,30 @@ func _on_game_mode_selected(mode: int) -> void:
 # ============================================================================
 # GAME SETUP
 # ============================================================================
+
+func _setup_infinite_mode() -> void:
+	"""Setup infinite run mode with only player 1"""
+	print("🐬 GameManager: Setting up Infinite Run mode - Player 1 only")
+	
+	# Clear existing dolphins
+	_clear_dolphins()
+	
+	# Instantiate only the player
+	dolphin_player = _create_dolphin(DOLPHIN_PLAYER, spawn1.position, TAG_PLAYER_1)
+	dolphin_opponent = null
+	
+	# Connect signals and setup game systems
+	if dolphin_player and dolphin_player.has_signal("dolphin_disappeared_from_screen"):
+		dolphin_player.dolphin_disappeared_from_screen.connect(_on_dolphin_disappeared)
+	
+	_setup_obstacle_generator()
+	_setup_fish_generator()
+	_setup_camera_infinite()
+	_setup_hud_infinite()
+	
+	# Start game
+	get_tree().paused = false
+	print("▶️ Game unpaused - Starting Infinite Run!")
 
 func _setup_game(player_scene: PackedScene, player_tag: String, opponent_scene: PackedScene, opponent_tag: String) -> void:
 	"""Setup game with specified dolphin scenes and tags"""
@@ -171,11 +198,26 @@ func _setup_camera() -> void:
 		print("📷 Camera setup: following both dolphins")
 
 
+func _setup_camera_infinite() -> void:
+	"""Setup camera to follow only the player in infinite mode"""
+	if camera:
+		camera.target_a = dolphin_player
+		camera.target_b = null
+		print("📷 Camera setup: following player only")
+
+
 func _setup_hud() -> void:
 	"""Setup HUD to track both dolphins for max distance"""
 	if hud and hud.has_method("set_targets"):
 		hud.set_targets(dolphin_player, dolphin_opponent)
 		print("📊 HUD tracking both dolphins for max distance")
+
+
+func _setup_hud_infinite() -> void:
+	"""Setup HUD for infinite mode with only player"""
+	if hud and hud.has_method("set_targets"):
+		hud.set_targets(dolphin_player, null)
+		print("📊 HUD tracking player only")
 
 
 func _on_shark_dolphin_touched() -> void:

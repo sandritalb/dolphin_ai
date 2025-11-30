@@ -29,10 +29,7 @@ var observations_json: String = ""
 
 
 func _physics_process(_delta: float) -> void:
-	# Get observations and convert to JSON
 	var observations = get_observations()
-	observations_json = JSON.stringify(observations)
-	print_debug("🤖 AI Observations: ", observations_json)
 
 
 func on_ready(parent_dolphin: Node) -> void:
