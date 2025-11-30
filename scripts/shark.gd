@@ -21,6 +21,7 @@ signal dolphin_touched
 # SOUNDS
 # ============================================================================
 var bite_sound = preload("res://sounds/bite.mp3")
+var shark_dead_sound = preload("res://sounds/shark_dead.mp3")
 
 # ============================================================================
 # INTERNAL STATE
@@ -84,4 +85,6 @@ func _on_body_entered(body: Node2D) -> void:
 		print("💥 Shark touched dolphin!")
 		# Play bite sound with random pitch variation
 		SoundManager.play_sound(bite_sound, 0.9, 1.1, -3.0)
+		# Play shark dead sound
+		SoundManager.play_sound(shark_dead_sound, 0.9, 1.1, 0.0)
 		emit_signal("dolphin_touched")

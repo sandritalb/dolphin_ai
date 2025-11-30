@@ -49,6 +49,7 @@ var boat_hit_sound = preload("res://sounds/boat_hit.mp3")
 var water_splash_out_sound = preload("res://sounds/jump_water_splash_sound_1.mp3")
 var water_splash_in_sound = preload("res://sounds/jump_water_splash_sound_2.mp3")
 var bite_sound = preload("res://sounds/bite.mp3")
+var dolphin_happy_sound = preload("res://sounds/dolphin_happy.mp3")
 
 # Speed burst state
 var speed_burst_timer: float = 0.0
@@ -247,6 +248,8 @@ func eat_fish() -> void:
 	
 	# Play bite sound
 	SoundManager.play_sound(bite_sound, 1.6, 1.8, -5.0)
+	# Play dolphin happy sound
+	SoundManager.play_sound(dolphin_happy_sound, 0.9, 1.1, -5.0)
 	
 	# Activate fish boost
 	is_fish_boosting = true
