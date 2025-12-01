@@ -74,14 +74,14 @@ position = Vector2(-150, 130)
 
 [node name="Canvas" type="Node2D" parent="."]
 
+[node name="HUD" parent="Canvas" instance=ExtResource("9_hud")]
+offset = Vector2(20, 20)
+transform = Transform2D(1, 0, 0, 1, 20, 20)
+
 [node name="StartMenu" parent="Canvas" instance=ExtResource("8_start")]
 process_mode = 3
 offset = Vector2(600, 400)
 transform = Transform2D(1, 0, 0, 1, 600, 400)
-
-[node name="HUD" parent="Canvas" instance=ExtResource("9_hud")]
-offset = Vector2(20, 20)
-transform = Transform2D(1, 0, 0, 1, 20, 20)
 
 [node name="ResultMenu" parent="Canvas" instance=ExtResource("10_result")]
 process_mode = 3

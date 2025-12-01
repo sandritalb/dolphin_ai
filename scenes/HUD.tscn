@@ -1,4 +1,4 @@
-[gd_scene load_steps=1 format=3 uid="uid://b7w4lqmx0kyt0"]
+[gd_scene load_steps=2 format=3 uid="uid://b7w4lqmx0kyt0"]
 
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_hmw6y"]
 
@@ -6,23 +6,15 @@
 script = ExtResource("1_hmw6y")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-anchors_left = 0.02
-anchors_top = 0.02
-anchors_right = 0.3
-anchors_bottom = 0.2
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
-theme_override_font_sizes/separation = 10
+offset_right = 2706.0
+offset_bottom = 1268.0
 
 [node name="DistanceLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-text = "Distance: 0 m"
 theme_override_font_sizes/font_size = 24
+text = "Distance: 0 m"
 
 [node name="SpeedLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-text = "Speed: 0 kts"
 theme_override_font_sizes/font_size = 24
-
+text = "Speed: 0 kts"
