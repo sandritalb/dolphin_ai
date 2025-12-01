@@ -41,7 +41,7 @@ func _on_body_entered(body: Node2D) -> void:
 	item_entered.emit(body)
 
 func _on_body_exited(body: Node2D) -> void:
-	print("Body exited: ", body.name)
+	# print("Body exited: ", body.name)
 	if body is RigidBody2D:
 		var velocity_y = body.linear_velocity.y
 		# Apply exit effect only when body is moving up (negative velocity_y)
