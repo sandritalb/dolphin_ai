@@ -17,14 +17,66 @@ extends Node
 @export var joy_axis_y: String = ""  # e.g., "P1_joy_y" or "P2_joy_y"
 @export var joystick_deadzone: float = 0.2
 
+# Player identification
+@export var player_number: int = 1  # Set to 1 or 2 in the editor
+
 # Parent dolphin reference
 var dolphin: Node = null
 var is_in_water: bool = true
 
+# Final input value after combining touch + keyboard
+var input_vector := Vector2.ZERO
+
+# Touch-only input here
+var touch_vector := Vector2.ZERO
+var touch_active := false  # Track if touch is currently held
 
 func on_ready(parent_dolphin: Node) -> void:
 	dolphin = parent_dolphin
+	set_process_unhandled_input(true)
 	print("🎮 Player Controller initialized")
+
+func _unhandled_input(event):
+	var pos: Vector2
+	var is_touch = false
+	
+	# Touch
+	if event is InputEventScreenTouch:
+		pos = event.position
+		is_touch = true
+		touch_active = event.pressed  # Track if pressed or released
+	# Mouse (Desktop testing)
+	elif event is InputEventMouseButton:
+		pos = event.position
+		is_touch = true
+		touch_active = event.pressed  # Track if pressed or released
+	else:
+		return
+
+	if not touch_active:
+		touch_vector = Vector2.ZERO  # Clear when released
+		return
+
+	# Screen size
+	var size = get_viewport().get_visible_rect().size
+	var half_w = size.x / 2
+	var half_h = size.y / 2
+
+	print("Touch at: ", pos, " Screen size: ", size)
+
+	# Determine zone (4 areas)
+	if pos.x <= half_w and player_number == 1:
+		if pos.y < half_h:
+			touch_vector = Vector2(1, -1)   # TOP-LEFT
+		else:
+			touch_vector = Vector2(1, 1)    # BOTTOM-LEFT
+	elif pos.x > half_w and player_number == 2:
+		if pos.y < half_h:
+			touch_vector = Vector2(1, -1)   # TOP-RIGHT
+		else:
+			touch_vector = Vector2(1, 1)    # BOTTOM-RIGHT
+
+
 
 
 func get_input(_delta: float) -> Vector2:
@@ -35,6 +87,11 @@ func get_input(_delta: float) -> Vector2:
 		is_in_water = dolphin.get_meta("is_in_water")
 	elif dolphin and "is_in_water" in dolphin:
 		is_in_water = dolphin.is_in_water
+	
+	# Touch input has priority - return immediately if active
+	if touch_active and touch_vector != Vector2.ZERO:
+		print("Touch input direction: ", touch_vector)
+		return touch_vector
 	
 	# Directional controls - only work in water!
 	if is_in_water:

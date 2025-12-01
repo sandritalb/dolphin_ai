@@ -68,3 +68,4 @@ key_down = "P2_down"
 key_debug = "P2_debug"
 joy_axis_x = "P2_joy_x"
 joy_axis_y = "P2_joy_y"
+player_number = 2

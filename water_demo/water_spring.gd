@@ -27,7 +27,7 @@ func _ready() -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	print("Body entered: ", body.name)
+	# print("Body entered: ", body.name)
 	if body is RigidBody2D:
 		var velocity_y = body.linear_velocity.y
 		# Apply enter effect only when body is moving down (positive velocity_y)

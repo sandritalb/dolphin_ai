@@ -16,30 +16,30 @@ signal shark_hit_signal(dolphin: Node)
 # ============================================================================
 # MOVEMENT PHYSICS
 # ============================================================================
-@export var max_speed = 300.0              # Maximum movement speed (pixels/second)
-@export var acceleration = 1000.0          # Acceleration rate (pixels/second²)
-@export var friction = 800.0               # Friction when no input (pixels/second²)
+@export var max_speed = 300.0 # Maximum movement speed (pixels/second)
+@export var acceleration = 1000.0 # Acceleration rate (pixels/second²)
+@export var friction = 800.0 # Friction when no input (pixels/second²)
 
 # Water vs Air physics
-@export var water_acceleration = 1000.0    # Acceleration in water
-@export var air_friction = 300.0          # Low friction in air
-@export var water_friction = 1500.0         # High friction in water
-@export var gravity = 800.0                # Gravity force (pixels/second²)
+@export var water_acceleration = 1000.0 # Acceleration in water
+@export var air_friction = 300.0 # Low friction in air
+@export var water_friction = 1500.0 # High friction in water
+@export var gravity = 800.0 # Gravity force (pixels/second²)
 
 # Speed burst on exit water
-@export var speed_burst_multiplier = 2.6   # Multiplier for speed burst
-@export var speed_burst_duration = 0.1     # Duration of speed burst in seconds
+@export var speed_burst_multiplier = 2.6 # Multiplier for speed burst
+@export var speed_burst_duration = 0.1 # Duration of speed burst in seconds
 
 # Fish eating speed boost
-@export var fish_boost_multiplier = 1.3    # Speed multiplier when eating fish
-@export var fish_boost_duration = 2      # Duration of fish eating boost
+@export var fish_boost_multiplier = 1.3 # Speed multiplier when eating fish
+@export var fish_boost_duration = 2 # Duration of fish eating boost
 
 # Water interaction
 @export var water_detection_range = 10.0
 
 # Stun/Impact mechanics
-@export var stun_duration: float = 0.1     # Stun duration on boat collision (seconds)
-@export var stun_knockback: float = 150.0  # Knockback speed when hit (pixels/second)
+@export var stun_duration: float = 0.1 # Stun duration on boat collision (seconds)
+@export var stun_knockback: float = 150.0 # Knockback speed when hit (pixels/second)
 
 # Internal state
 var is_in_water: bool = true
@@ -185,7 +185,6 @@ func _physics_process(delta: float) -> void:
 	else:
 		# AIR PHYSICS - Apply gravity and friction
 		# Maintain horizontal momentum but add gravity
-		
 		# Apply gravity (stronger downward pull)
 		velocity.y += gravity * delta
 		
@@ -194,7 +193,7 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0.0, air_friction * delta * 0.5)
 	
 	# Apply velocity and collision
-	velocity = velocity  # This just assigns our calculated velocity
+	velocity = velocity # This just assigns our calculated velocity
 	
 	# Cap velocity to maximum speed of 1000 or 600 in water
 	if velocity.length() > 1000.0 and not is_in_water:
@@ -234,7 +233,7 @@ func spawn_bubble_ring() -> void:
 		
 	if bubble_ring_scene:
 		var ring = bubble_ring_scene.instantiate()
-		ring.position = Vector2(15,-30)
+		ring.position = Vector2(15, -30)
 		add_child(ring)
 		
 		# Spawn in front of the dolphin
@@ -343,7 +342,7 @@ func update_medium_state() -> void:
 			animated_sprite.stop()
 		
 		# Activate speed burst when exiting water
-		print("💨 Exiting water - activating speed burst!", position.y, Globals.WATER_LEVEL-water_detection_range, was_in_water, is_in_water)
+		print("💨 Exiting water - activating speed burst!", position.y, Globals.WATER_LEVEL - water_detection_range, was_in_water, is_in_water)
 		is_speed_bursting = true
 		speed_burst_timer = speed_burst_duration
 		
