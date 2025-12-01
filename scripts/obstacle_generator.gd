@@ -35,14 +35,15 @@ var active_boats: Array = []
 # ============================================================================
 # SETTINGS
 # ============================================================================
-@export var pool_size: int = 20
+@export var shark_pool_size: int = 30
+@export var boat_pool_size: int = 20
 @export var spawn_distance_ahead: float = 1600.0  # How far ahead to spawn
 @export var despawn_distance_behind: float = 1200.0  # How far behind to despawn
 @export var spawn_width: float = 1000.0  # Width range for random spawning
 @export var shark_spawn_chance: float = 0.3  # Chance to spawn shark per cycle
 @export var boat_spawn_chance: float = 0.3  # Chance to spawn boat per cycle
 @export var spawn_cycle_time: float = 2.0  # Seconds between spawn attempts
-@export var shark_min_depth_offset: float = 100.0  # Minimum offset below water level
+@export var shark_min_depth_offset: float = 70.0  # Minimum offset below water level
 @export var spawn_chance_increase_rate: float = 0.0001  # How much to increase spawn chances per unit distance
 @export var max_spawn_chance: float = 0.8  # Maximum spawn chance cap
 
@@ -87,7 +88,7 @@ func _ready() -> void:
 	current_shark_spawn_chance = shark_spawn_chance
 	current_boat_spawn_chance = boat_spawn_chance
 	
-	print("✅ Obstacle Generator initialized with pools of %d" % pool_size)
+	# print("✅ Obstacle Generator initialized - Sharks: %d, Boats: %d" % [shark_pool_size, boat_pool_size])
 
 
 func _physics_process(delta: float) -> void:
@@ -113,7 +114,7 @@ func _physics_process(delta: float) -> void:
 
 func _initialize_pools() -> void:
 	# Create shark pool
-	for i in range(pool_size):
+	for i in range(shark_pool_size):
 		var shark = shark_scene.instantiate()
 		shark_container.add_child(shark)
 		shark.hide()
@@ -122,7 +123,7 @@ func _initialize_pools() -> void:
 		shark_pool.append(shark)
 	
 	# Create boat pool
-	for i in range(pool_size):
+	for i in range(boat_pool_size):
 		var boat = boat_scene.instantiate()
 		boat_container.add_child(boat)
 		boat.hide()
