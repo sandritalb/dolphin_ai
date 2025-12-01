@@ -20,6 +20,8 @@ Huge thanks to everyone who made the tools, resources, and tutorials that helped
 
 ## How to play
 
+<https://jesusnoseq.itch.io/dolphin>
+
 ### Touch/Mobile
 
 #### Player 1 (Left Half of Screen)
