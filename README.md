@@ -17,3 +17,41 @@ For some assets we use AI and resources from others, here the list of tools, mod
 * sharkIsNear.ogg by kradziej -- https://freesound.org/s/511281/ -- License: Creative Commons 0
 
 Huge thanks to everyone who made the tools, resources, and tutorials that helped me build this videogame!
+
+## How to play
+
+### Touch/Mobile
+
+#### Player 1 (Left Half of Screen)
+
+* Tap **top-left** → Swim up
+* Tap **bottom-left** → Swim down
+
+#### Player 2 (Right Half of Screen)
+
+* Tap **top-right** → Swim up
+* Tap **bottom-right** → Swim down
+
+### Keyboard
+
+#### Player 1
+
+* **W key** → Swim up
+* **S key** → Swim down
+
+### Player 2
+
+* **UP Arrow** → Swim up
+* **DOWN Arrow** → Swim down
+
+## Gamepad/Joystick
+
+* **Left Analog Stick Up/Down** → Swim up/down
+
+## Game Mechanics
+
+* Dolphins automatically swim **forward**
+* **Tap/press** to control **vertical movement** (jump up or dive down)
+* **Jump out of water** to avoid obstacles and get a speed boost
+* **Collect fish** to get a speed boost
+* **Avoid sharks and boats**
